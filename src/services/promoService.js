@@ -94,8 +94,76 @@ function cancelPromoCode(code, adminUsername, reason = 'Admin cancellation') {
   return { success: true, code: promo.code };
 }
 
+function unredeemPromoCode(code, adminUsername) {
+  const promo = db.prepare('SELECT id, code, status FROM promo_codes WHERE code = ?').get(code.toUpperCase().trim());
+
+  if (!promo) {
+    return { success: false, error: 'الرمز الترويجي غير موجود.' };
+  }
+
+  db.prepare("UPDATE promo_codes SET status = 'ACTIVE', redeemed_at = NULL WHERE id = ?").run(promo.id);
+  logAdminAction(adminUsername, 'PROMO_REACTIVATED', promo.code, 'SUCCESS', {});
+
+  return { success: true, code: promo.code, status: 'ACTIVE' };
+}
+
+function lookupPromoCode(term) {
+  if (!term || typeof term !== 'string') {
+    return { success: false, error: 'يرجى تقديم كود الخصم أو رقم الجوال للبحث.' };
+  }
+  const cleanTerm = term.trim();
+  const upperTerm = cleanTerm.toUpperCase();
+
+  // Try matching by exact promo code
+  let promo = db.prepare(`
+    SELECT p.id, p.code, p.status, p.created_at, p.expires_at, p.redeemed_at,
+           pr.label as prize_label, pr.type as prize_type, pr.subtext as prize_subtext,
+           p.participant_id,
+           COALESCE(pt.name, 'غير محدد') as participant_name,
+           COALESCE(pt.phone, '---') as participant_phone
+    FROM promo_codes p
+    LEFT JOIN participants pt ON p.participant_id = pt.id
+    JOIN prizes pr ON p.prize_id = pr.id
+    WHERE p.code = ?
+  `).get(upperTerm);
+
+  // If not found by code, try matching by phone
+  if (!promo) {
+    let cleanPhone = cleanTerm.replace(/[\s\-\(\)\.]/g, '');
+    if (cleanPhone.startsWith('+966')) cleanPhone = '0' + cleanPhone.slice(4);
+    else if (cleanPhone.startsWith('00966')) cleanPhone = '0' + cleanPhone.slice(5);
+    else if (cleanPhone.startsWith('966')) cleanPhone = '0' + cleanPhone.slice(3);
+    else if (/^5[0-9]{8}$/.test(cleanPhone)) cleanPhone = '0' + cleanPhone;
+
+    promo = db.prepare(`
+      SELECT p.id, p.code, p.status, p.created_at, p.expires_at, p.redeemed_at,
+             pr.label as prize_label, pr.type as prize_type, pr.subtext as prize_subtext,
+             p.participant_id,
+             COALESCE(pt.name, 'غير محدد') as participant_name,
+             COALESCE(pt.phone, '---') as participant_phone
+      FROM promo_codes p
+      LEFT JOIN participants pt ON p.participant_id = pt.id
+      JOIN prizes pr ON p.prize_id = pr.id
+      WHERE pt.phone = ?
+      ORDER BY p.created_at DESC
+      LIMIT 1
+    `).get(cleanPhone);
+  }
+
+  if (!promo) {
+    return { success: false, error: 'لم يتم العثور على أي كود ترويجي مطابق للرمز أو رقم الجوال المدخل.' };
+  }
+
+  return {
+    success: true,
+    promo
+  };
+}
+
 module.exports = {
   generateCode,
   redeemPromoCode,
-  cancelPromoCode
+  cancelPromoCode,
+  unredeemPromoCode,
+  lookupPromoCode
 };

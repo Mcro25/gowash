@@ -80,9 +80,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       currentTab = target;
       topbarTitle.textContent = tabTitles[target] || "لوحة التحكم";
+      if (window.innerWidth <= 768) {
+        document.querySelector(".sidebar")?.classList.remove("is-open");
+      }
       loadCurrentTab();
     });
   });
+
+  const sidebarToggleBtn = document.getElementById("sidebarToggleBtn");
+  const sidebar = document.querySelector(".sidebar");
+  if (sidebarToggleBtn && sidebar) {
+    sidebarToggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("is-open");
+    });
+  }
 
   function loadCurrentTab() {
     switch (currentTab) {
@@ -124,6 +135,145 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.error("Error loading overview:", err);
     }
+  }
+
+  // Quick Lookup & Instant Redeem Handler on Overview
+  function initQuickLookup() {
+    const input = document.getElementById("quickLookupInput");
+    const btn = document.getElementById("quickLookupBtn");
+    const resultBox = document.getElementById("quickLookupResult");
+
+    if (!input || !btn || !resultBox) return;
+
+    async function doLookup() {
+      const term = input.value.trim();
+      if (!term) {
+        showToast("يرجى إدخال كود الخصم أو رقم الجوال", "error");
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = "جاري الفحص...";
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `<div style="color: var(--admin-soft); padding: 10px;">جاري فحص قاعدة البيانات...</div>`;
+
+      try {
+        const res = await fetchWithCsrf(`/api/admin/promos/lookup?term=${encodeURIComponent(term)}`);
+        const data = await res.json();
+        btn.disabled = false;
+        btn.textContent = "🔍 فحص الكود";
+
+        if (!res.ok || !data.success || !data.promo) {
+          resultBox.innerHTML = `
+            <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #FCA5A5; padding: 14px 18px; border-radius: var(--radius-md);">
+              ❌ ${escapeHtml(data.error || "لم يتم العثور على الكود")}
+            </div>
+          `;
+          return;
+        }
+
+        const p = data.promo;
+        const statusBadge = p.status === 'ACTIVE'
+          ? `<span class="badge badge-active">نشط وجاهز للاستخدام</span>`
+          : (p.status === 'REDEEMED' ? `<span class="badge badge-redeemed">تم الاستخدام مسبقاً</span>` : `<span class="badge badge-cancelled">${escapeHtml(p.status)}</span>`);
+
+        resultBox.innerHTML = `
+          <div style="background: rgba(14, 34, 56, 0.95); border: 1px solid rgba(29, 111, 184, 0.4); border-radius: var(--radius-md); padding: 18px; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <span style="font-family: monospace; font-size: 1.25rem; font-weight: 900; color: #FFF; letter-spacing: 1px;">${escapeHtml(p.code)}</span>
+              ${statusBadge}
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 16px; font-size: 0.88rem;">
+              <div>🎁 الجائزة: <strong style="color: #FCD34D;">${escapeHtml(p.prize_label)} (${escapeHtml(p.prize_subtext || '')})</strong></div>
+              <div>👤 العميل: <strong>${escapeHtml(p.participant_name)}</strong></div>
+              <div dir="ltr" style="text-align: right;">📱 الجوال: <strong>${escapeHtml(p.participant_phone)}</strong></div>
+              <div>⏳ الصلاحية: <span>${escapeHtml(new Date(p.expires_at).toLocaleString('ar-SA'))}</span></div>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              ${p.status === 'ACTIVE' ? `
+                <button type="button" class="btn-primary" style="background: #10B981; font-size: 0.88rem; padding: 6px 16px;" onclick="window.quickRedeem('${escapeHtml(p.code)}')">
+                  ✅ صرف الكود الآن (Redeem)
+                </button>
+              ` : ''}
+              ${p.status === 'REDEEMED' ? `
+                <button type="button" class="btn-action-sm" style="background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid #F59E0B; padding: 6px 14px; font-size: 0.85rem;" onclick="window.quickUnredeem('${escapeHtml(p.code)}')">
+                  ↩️ إلغاء حالة الاستخدام وإعادته نشطاً
+                </button>
+              ` : ''}
+              ${p.status !== 'CANCELLED' ? `
+                <button type="button" class="btn-action-sm cancel" style="padding: 6px 14px; font-size: 0.85rem;" onclick="window.quickCancel('${escapeHtml(p.code)}')">
+                  🚫 إلغاء الكود
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "🔍 فحص الكود";
+        resultBox.innerHTML = `<div style="color: #F87171;">حدث خطأ في الاتصال بالخادم.</div>`;
+      }
+    }
+
+    btn.addEventListener("click", doLookup);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") doLookup();
+    });
+
+    window.quickRedeem = async (code) => {
+      if (!confirm(`هل أنت متأكد من صرف الكود ${code}؟`)) return;
+      try {
+        const res = await fetchWithCsrf(`/api/admin/promos/${code}/redeem`, { method: "POST" });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          showToast(data.error || "فشل صرف الكود", "error");
+          return;
+        }
+        showToast(`تم صرف الكود ${code} بنجاح!`);
+        doLookup();
+        loadOverview();
+      } catch (e) {
+        showToast("خطأ أثناء صرف الكود", "error");
+      }
+    };
+
+    window.quickUnredeem = async (code) => {
+      if (!confirm(`إعادة الكود ${code} للحالة النشطة؟`)) return;
+      try {
+        const res = await fetchWithCsrf(`/api/admin/promos/${code}/unredeem`, { method: "POST" });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          showToast(data.error || "فشل العملية", "error");
+          return;
+        }
+        showToast(`تمت إعادة الكود ${code} كنشط.`);
+        doLookup();
+        loadOverview();
+      } catch (e) {
+        showToast("خطأ أثناء إعادة تنشيط الكود", "error");
+      }
+    };
+
+    window.quickCancel = async (code) => {
+      const reason = prompt("سبب إلغاء الكود:");
+      if (reason === null) return;
+      try {
+        const res = await fetchWithCsrf(`/api/admin/promos/${code}/cancel`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reason: reason || "إلغاء يدوي" })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          showToast(data.error || "فشل إلغاء الكود", "error");
+          return;
+        }
+        showToast(`تم إلغاء الكود ${code}.`);
+        doLookup();
+        loadOverview();
+      } catch (e) {
+        showToast("خطأ أثناء إلغاء الكود", "error");
+      }
+    };
   }
 
   // 2. Campaign Settings
@@ -310,19 +460,32 @@ document.addEventListener("DOMContentLoaded", () => {
       tbody.innerHTML = "";
 
       if (data.data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--admin-muted); padding: 24px;">لا توجد سجلات تدوير مطابقة.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--admin-muted); padding: 24px;">لا توجد سجلات تدوير مطابقة.</td></tr>`;
       } else {
         data.data.forEach(s => {
           const tr = document.createElement("tr");
           const dateStr = new Date(s.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
+
+          let actions = "";
+          if (s.promo_code && s.promo_status === 'ACTIVE') {
+            actions = `<button class="btn-action-sm redeem" onclick="window.redeemCode('${escapeHtml(s.promo_code)}')">تحديد كمُستخدَم ✅</button>`;
+          } else if (s.promo_code && s.promo_status === 'REDEEMED') {
+            actions = `<button class="btn-action-sm" style="background: rgba(29, 111, 184, 0.15); color: #60A5FA; border-color: rgba(29, 111, 184, 0.3);" onclick="window.unredeemCode('${escapeHtml(s.promo_code)}')">إعادة كنشط 🔄</button>`;
+          } else {
+            actions = `<span style="color: var(--admin-muted); font-size: 0.8rem;">---</span>`;
+          }
+
+          const statusDisplay = s.promo_status === 'REDEEMED' ? 'مُستخدَم' : (s.promo_status === 'ACTIVE' ? 'نشط' : (s.promo_status || 'ACTIVE'));
+
           tr.innerHTML = `
             <td style="font-family: monospace; font-size: 0.8rem;">${escapeHtml(s.id.substring(0, 8))}...</td>
             <td><strong>${escapeHtml(s.participant_name || 'غير محدد')}</strong></td>
             <td><span dir="ltr" style="font-family: monospace; font-size: 0.85rem; color: #60A5FA;">${escapeHtml(s.participant_phone || '---')}</span></td>
             <td><strong>${escapeHtml(s.prize_label)}</strong></td>
             <td><strong style="color: #72F3AA; font-family: monospace;">${escapeHtml(s.promo_code || '---')}</strong></td>
-            <td><span class="badge badge-${(s.promo_status || 'active').toLowerCase()}">${escapeHtml(s.promo_status || 'ACTIVE')}</span></td>
+            <td><span class="badge badge-${(s.promo_status || 'active').toLowerCase()}">${statusDisplay}</span></td>
             <td style="font-size: 0.84rem;">${dateStr}</td>
+            <td>${actions}</td>
           `;
           tbody.appendChild(tr);
         });
@@ -365,12 +528,23 @@ document.addEventListener("DOMContentLoaded", () => {
           let actions = "";
           if (p.status === 'ACTIVE') {
             actions = `
-              <button class="btn-action-sm redeem" onclick="window.redeemCode('${p.code}')">صرف الكود</button>
-              <button class="btn-action-sm cancel" onclick="window.cancelCode('${p.code}')">إلغاء</button>
+              <button class="btn-action-sm redeem" onclick="window.redeemCode('${escapeHtml(p.code)}')">تحديد كمُستخدَم ✅</button>
+              <button class="btn-action-sm cancel" onclick="window.cancelCode('${escapeHtml(p.code)}')">إلغاء</button>
+            `;
+          } else if (p.status === 'REDEEMED') {
+            actions = `
+              <button class="btn-action-sm" style="background: rgba(29, 111, 184, 0.15); color: #60A5FA; border-color: rgba(29, 111, 184, 0.3);" onclick="window.unredeemCode('${escapeHtml(p.code)}')">إعادة كنشط 🔄</button>
+              <button class="btn-action-sm cancel" onclick="window.cancelCode('${escapeHtml(p.code)}')">إلغاء</button>
+            `;
+          } else if (p.status === 'CANCELLED') {
+            actions = `
+              <button class="btn-action-sm" style="background: rgba(16, 185, 129, 0.15); color: #34D399; border-color: rgba(16, 185, 129, 0.3);" onclick="window.unredeemCode('${escapeHtml(p.code)}')">إعادة تفعيل 🔄</button>
             `;
           } else {
-            actions = `<span style="color: var(--admin-muted); font-size: 0.8rem;">لا توجد إجراءات</span>`;
+            actions = `<span style="color: var(--admin-muted); font-size: 0.8rem;">منتهي الصلاحية</span>`;
           }
+
+          const statusDisplay = p.status === 'REDEEMED' ? 'مُستخدَم' : (p.status === 'ACTIVE' ? 'نشط' : (p.status === 'CANCELLED' ? 'ملغي' : 'منتهي'));
 
           tr.innerHTML = `
             <td><strong style="color: #72F3AA; font-family: monospace; font-size: 1.05rem;">${escapeHtml(p.code)}</strong></td>
@@ -378,7 +552,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <td><span dir="ltr" style="font-family: monospace; font-size: 0.85rem; color: #60A5FA;">${escapeHtml(p.participant_phone || '---')}</span></td>
             <td><strong>${escapeHtml(p.prize_label)}</strong></td>
             <td style="font-size: 0.82rem;">${createdStr}</td>
-            <td><span class="badge badge-${p.status.toLowerCase()}">${escapeHtml(p.status)}</span></td>
+            <td><span class="badge badge-${p.status.toLowerCase()}">${statusDisplay}</span></td>
             <td style="font-size: 0.82rem;">${redeemedStr}</td>
             <td>${actions}</td>
           `;
@@ -396,17 +570,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.redeemCode = async function(code) {
-    if (!confirm(`هل تريد تأكيد صرف واستخدام الكود ${code} للعميل؟`)) return;
+    if (!confirm(`هل تريد تأكيد تحديد واستخدام الكود ${code} للعميل؟`)) return;
     try {
       const res = await fetchWithCsrf(`/api/admin/promos/${code}/redeem`, { method: "POST" });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        showToast(data.error || "فشل صرف الكود", "error");
+        showToast(data.error || "فشل تحديد الكود كمُستخدَم", "error");
         return;
       }
-      showToast(`تم صرف الكود ${code} بنجاح!`);
+      showToast(`تم تحديد الكود ${code} كمُستخدَم بنجاح! ✅`);
       loadPromos(promosPage);
+      if (document.getElementById("spinsTableBody")) loadSpins(spinsPage);
       loadOverview();
+      if (window.currentQuickLookupCode === code) {
+        window.doQuickLookup(code);
+      }
+    } catch (err) {
+      showToast("حدث خطأ في الاتصال", "error");
+    }
+  };
+
+  window.unredeemCode = async function(code) {
+    if (!confirm(`هل تريد إلغاء حالة الاستخدام وإعادة تفعيل الكود ${code} كنشط؟`)) return;
+    try {
+      const res = await fetchWithCsrf(`/api/admin/promos/${code}/unredeem`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        showToast(data.error || "فشل إعادة تفعيل الكود", "error");
+        return;
+      }
+      showToast(`تمت إعادة الكود ${code} إلى الحالة النشطة بنجاح! 🔄`);
+      loadPromos(promosPage);
+      if (document.getElementById("spinsTableBody")) loadSpins(spinsPage);
+      loadOverview();
+      if (window.currentQuickLookupCode === code) {
+        window.doQuickLookup(code);
+      }
     } catch (err) {
       showToast("حدث خطأ في الاتصال", "error");
     }
@@ -423,7 +622,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       showToast(`تم إلغاء الكود ${code}.`);
       loadPromos(promosPage);
+      if (document.getElementById("spinsTableBody")) loadSpins(spinsPage);
       loadOverview();
+      if (window.currentQuickLookupCode === code) {
+        window.doQuickLookup(code);
+      }
     } catch (err) {
       showToast("حدث خطأ في الاتصال", "error");
     }
@@ -433,6 +636,123 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("promoStatusFilter")?.addEventListener("change", () => loadPromos(1));
   document.getElementById("promosPrevBtn")?.addEventListener("click", () => { if (promosPage > 1) loadPromos(promosPage - 1); });
   document.getElementById("promosNextBtn")?.addEventListener("click", () => { loadPromos(promosPage + 1); });
+
+  // Quick Promo Lookup & Mark Used Handler
+  window.currentQuickLookupCode = null;
+
+  window.doQuickLookup = async function(termOverride) {
+    const input = document.getElementById("quickLookupInput");
+    const term = termOverride || input?.value.trim();
+    const resultBox = document.getElementById("quickLookupResult");
+    if (!resultBox) return;
+
+    if (!term) {
+      showToast("يرجى إدخال كود الخصم أو رقم الجوال للبحث", "warning");
+      return;
+    }
+
+    try {
+      const res = await fetchWithCsrf(`/api/admin/promos/lookup?term=${encodeURIComponent(term)}`);
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        resultBox.style.display = "block";
+        resultBox.innerHTML = `
+          <div style="padding: 14px 18px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; color: #FCA5A5;">
+            ⚠️ ${escapeHtml(data.error || 'لم يتم العثور على أي كود مطابق.')}
+          </div>
+        `;
+        return;
+      }
+
+      const p = data.promo;
+      window.currentQuickLookupCode = p.code;
+
+      const createdStr = new Date(p.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
+      const redeemedStr = p.redeemed_at ? new Date(p.redeemed_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : null;
+
+      let statusBadge = "";
+      let actionBtn = "";
+
+      if (p.status === 'ACTIVE') {
+        statusBadge = `<span class="badge badge-active" style="font-size: 0.95rem; padding: 6px 14px;">جاهز للاستخدام (نشط)</span>`;
+        actionBtn = `
+          <button class="btn-primary" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); padding: 10px 22px; font-weight: 800; font-size: 1rem; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);" onclick="window.redeemCode('${escapeHtml(p.code)}')">
+            تحديد الكود كمُستخدَم الآن (صرف) ✅
+          </button>
+          <button class="btn-action-sm cancel" style="padding: 9px 18px;" onclick="window.cancelCode('${escapeHtml(p.code)}')">
+            إلغاء الكود
+          </button>
+        `;
+      } else if (p.status === 'REDEEMED') {
+        statusBadge = `<span class="badge badge-redeemed" style="font-size: 0.95rem; padding: 6px 14px;">مُستخدَم (${redeemedStr})</span>`;
+        actionBtn = `
+          <div style="color: #60A5FA; font-size: 0.95rem; width: 100%; margin-bottom: 6px;">
+            ℹ️ تم تسجيل استخدام هذا الكود في: <strong>${redeemedStr}</strong>
+          </div>
+          <button class="btn-action-sm" style="background: rgba(29, 111, 184, 0.2); color: #60A5FA; border-color: rgba(29, 111, 184, 0.4); padding: 8px 16px;" onclick="window.unredeemCode('${escapeHtml(p.code)}')">
+            إلغاء الاستخدام وإعادة كنشط 🔄
+          </button>
+        `;
+      } else if (p.status === 'CANCELLED') {
+        statusBadge = `<span class="badge badge-cancelled" style="font-size: 0.95rem; padding: 6px 14px;">ملغي</span>`;
+        actionBtn = `
+          <button class="btn-action-sm" style="background: rgba(16, 185, 129, 0.2); color: #34D399; padding: 8px 16px;" onclick="window.unredeemCode('${escapeHtml(p.code)}')">
+            إعادة تفعيل الكود كنشط 🔄
+          </button>
+        `;
+      } else {
+        statusBadge = `<span class="badge badge-expired" style="font-size: 0.95rem; padding: 6px 14px;">منتهي الصلاحية</span>`;
+      }
+
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `
+        <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; padding: 18px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 12px;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">الكود الترويجي</span>
+              <strong style="font-family: monospace; font-size: 1.45rem; color: #72F3AA; letter-spacing: 1px;">${escapeHtml(p.code)}</strong>
+            </div>
+            <div>${statusBadge}</div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 18px;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">اسم العميل</span>
+              <strong style="font-size: 1rem; color: #FFFFFF;">${escapeHtml(p.participant_name)}</strong>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">رقم الجوال</span>
+              <strong dir="ltr" style="font-size: 1rem; font-family: monospace; color: #60A5FA;">${escapeHtml(p.participant_phone)}</strong>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">الجائزة المستحقة</span>
+              <strong style="font-size: 1rem; color: #FFD700;">${escapeHtml(p.prize_label)}</strong>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">تاريخ الإنشاء</span>
+              <span style="font-size: 0.85rem; color: var(--admin-soft);">${createdStr}</span>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
+            ${actionBtn}
+          </div>
+        </div>
+      `;
+    } catch (err) {
+      console.error("Lookup error:", err);
+      showToast("حدث خطأ في الاتصال بالخادم", "error");
+    }
+  };
+
+  document.getElementById("quickLookupBtn")?.addEventListener("click", () => window.doQuickLookup());
+  document.getElementById("quickLookupInput")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      window.doQuickLookup();
+    }
+  });
 
   // 6. Security Logs Loader
   async function loadSecurity() {
@@ -533,4 +853,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize
   checkAuth();
+  initQuickLookup();
 });

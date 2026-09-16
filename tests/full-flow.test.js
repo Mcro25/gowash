@@ -500,6 +500,61 @@ async function runTests() {
     });
 
     // ----------------------------------------------------
+    // Test 11b: Promo Code Admin Lookup by Code & Phone
+    // ----------------------------------------------------
+    await test("11b. Admin Promo Lookup by code and by phone returns accurate status and lead info", async () => {
+      // Lookup by code
+      const resCode = await fetch(`${BASE_URL}/api/admin/promos/lookup?term=${p1PromoCode}`, {
+        headers: { "Cookie": adminSessionCookie }
+      });
+      assert.strictEqual(resCode.status, 200);
+      const dataCode = await resCode.json();
+      assert.strictEqual(dataCode.success, true);
+      assert.strictEqual(dataCode.promo.code, p1PromoCode);
+      assert.strictEqual(dataCode.promo.status, 'REDEEMED');
+      assert.strictEqual(dataCode.promo.participant_phone, testPhone1);
+
+      // Lookup by phone
+      const resPhone = await fetch(`${BASE_URL}/api/admin/promos/lookup?term=${testPhone1}`, {
+        headers: { "Cookie": adminSessionCookie }
+      });
+      assert.strictEqual(resPhone.status, 200);
+      const dataPhone = await resPhone.json();
+      assert.strictEqual(dataPhone.success, true);
+      assert.strictEqual(dataPhone.promo.code, p1PromoCode);
+    });
+
+    // ----------------------------------------------------
+    // Test 11c: Promo Code Unredeem / Reactivation
+    // ----------------------------------------------------
+    await test("11c. Admin can unredeem/reactivate a promo code and redeem it again", async () => {
+      // Unredeem code
+      const unredeemRes = await fetch(`${BASE_URL}/api/admin/promos/${p1PromoCode}/unredeem`, {
+        method: "POST",
+        headers: {
+          "Cookie": adminSessionCookie,
+          "x-csrf-token": adminCsrfToken
+        }
+      });
+      assert.strictEqual(unredeemRes.status, 200);
+      const unredeemData = await unredeemRes.json();
+      assert.strictEqual(unredeemData.success, true);
+      assert.strictEqual(unredeemData.status, 'ACTIVE');
+
+      // Now redeem again
+      const reRedeemRes = await fetch(`${BASE_URL}/api/admin/promos/${p1PromoCode}/redeem`, {
+        method: "POST",
+        headers: {
+          "Cookie": adminSessionCookie,
+          "x-csrf-token": adminCsrfToken
+        }
+      });
+      assert.strictEqual(reRedeemRes.status, 200);
+      const reRedeemData = await reRedeemRes.json();
+      assert.strictEqual(reRedeemData.success, true);
+    });
+
+    // ----------------------------------------------------
     // Test 12: Promo Code Cancellation
     // ----------------------------------------------------
     await test("12. Promo Code cancellation works and prevents future redemption", async () => {

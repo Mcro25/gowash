@@ -6,7 +6,7 @@ const db = require('../db');
 const config = require('../config');
 const { requireAdmin, validateCsrf } = require('../middleware/auth');
 const { logAdminAction } = require('../services/auditService');
-const { redeemPromoCode, cancelPromoCode } = require('../services/promoService');
+const { redeemPromoCode, cancelPromoCode, unredeemPromoCode, lookupPromoCode } = require('../services/promoService');
 
 // POST /api/admin/login
 router.post('/login', (req, res) => {
@@ -318,9 +318,27 @@ router.get('/promos', (req, res) => {
   });
 });
 
+// GET /api/admin/promos/lookup?term=...
+router.get('/promos/lookup', (req, res) => {
+  const result = lookupPromoCode(req.query.term);
+  if (!result.success) {
+    return res.status(404).json(result);
+  }
+  res.json(result);
+});
+
 // POST /api/admin/promos/:code/redeem
 router.post('/promos/:code/redeem', validateCsrf, (req, res) => {
   const result = redeemPromoCode(req.params.code, req.admin.username);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+  res.json(result);
+});
+
+// POST /api/admin/promos/:code/unredeem
+router.post('/promos/:code/unredeem', validateCsrf, (req, res) => {
+  const result = unredeemPromoCode(req.params.code, req.admin.username);
   if (!result.success) {
     return res.status(400).json(result);
   }

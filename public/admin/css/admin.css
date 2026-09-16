@@ -464,8 +464,50 @@ tr:hover td {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 768px) {
-  body { flex-direction: column; }
-  .sidebar { width: 100%; }
-  .stats-grid { grid-template-columns: 1fr; }
+.btn-sidebar-toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--admin-border);
+  color: #FFF;
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
 }
+
+@media (max-width: 768px) {
+  body { 
+    flex-direction: column;
+    position: relative;
+  }
+  .btn-sidebar-toggle {
+    display: flex;
+  }
+  .sidebar { 
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 270px;
+    height: 100vh;
+    z-index: 1000;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.6);
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sidebar.is-open {
+    right: 0;
+  }
+  .main-wrapper {
+    width: 100%;
+  }
+  .stats-grid { 
+    grid-template-columns: 1fr; 
+  }
+  .topbar {
+    padding: 12px 16px;
+  }
+  .page-title {
+    font-size: 1.1rem;
+  }
+}
+
