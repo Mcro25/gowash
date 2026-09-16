@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Go Wash | فعالية اليوم الوطني السعودي 96 الحصرية</title>
+  <meta name="description" content="فعالية حصرية لليوم الوطني السعودي 96 مع مغسلة Go Wash المتنقلة. لف عجلة الحظ واربح عروض وخصومات وترقية باقة Signature." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Go Wash Brand Identity */
+      --gowash-blue: #1D6FB8;
+      --gowash-dark-blue: #0F2A4A;
+      --gowash-orange: #F15A24;
+      --gowash-orange-hover: #D94916;
+
+      /* Saudi National Day 96 Identity */
+      --nd-green-deep: #005429;
+      --nd-green-core: #006C35;
+      --nd-green-bright: #10B981;
+      --nd-gold: #D4AF37;
+
+      /* UI Surfaces */
+      --bg-dark: #071320;
+      --bg-card: #0E2034;
+      --bg-card-hover: #152E4A;
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --border-active: rgba(241, 90, 36, 0.4);
+      --border-green: rgba(0, 108, 53, 0.5);
+
+      --text-white: #FFFFFF;
+      --text-muted: #94A3B8;
+      --text-soft: #CBD5E1;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      font-family: 'Cairo', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 108, 53, 0.2) 0%, transparent 55%),
+        radial-gradient(circle at 10% 30%, rgba(29, 111, 184, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 90% 60%, rgba(241, 90, 36, 0.1) 0%, transparent 40%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .text-center { text-align: center; }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(7, 19, 32, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 100;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 82px;
+    }
+
+    /* Go Wash Exact Official Vector Logo */
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-svg {
+      height: 52px;
+      width: auto;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    .campaign-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(0, 108, 53, 0.3) 0%, rgba(7, 19, 32, 0.8) 100%);
+      border: 1px solid var(--border-green);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+    }
+
+    .ksa-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--nd-green-bright);
+      box-shadow: 0 0 10px var(--nd-green-bright);
+    }
+
+    .campaign-badge span {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #72F3AA;
+      letter-spacing: -0.2px;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      transition: var(--transition);
+    }
+
+    .nav-btn:hover {
+      background: rgba(29, 111, 184, 0.2);
+      border-color: var(--gowash-blue);
+      color: var(--text-white);
+    }
+
+    /* Exclusive National Day Banner Alert */
+    .exclusive-strip {
+      background: linear-gradient(90deg, #005429 0%, #007A3D 50%, #005429 100%);
+      color: #E2FFE8;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 7px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      letter-spacing: 0.3px;
+    }
+
+    /* Hero */
+    .hero-section {
+      padding: 45px 0 25px;
+      text-align: center;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(241, 90, 36, 0.12);
+      border: 1px solid rgba(241, 90, 36, 0.35);
+      padding: 5px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--gowash-orange);
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+
+    .text-gold {
+      color: #72F3AA;
+      text-shadow: 0 0 20px rgba(0, 108, 53, 0.6);
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-soft);
+      max-width: 620px;
+      margin: 0 auto 24px;
+    }
+
+    .countdown-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 10px 22px;
+      border-radius: var(--radius-full);
+      margin-bottom: 28px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .countdown-box strong {
+      color: var(--text-white);
+      font-feature-settings: "tnum";
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 800;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-hero {
+      background: linear-gradient(135deg, var(--gowash-blue) 0%, #155894 100%);
+      color: #FFFFFF;
+      padding: 14px 34px;
+      border-radius: var(--radius-md);
+      font-size: 1.1rem;
+      box-shadow: 0 10px 26px rgba(29, 111, 184, 0.4);
+    }
+
+    .btn-hero:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(29, 111, 184, 0.5);
+    }
+
+    /* Wheel Section */
+    .wheel-section {
+      padding: 40px 0 60px;
+    }
+
+    .section-title {
+      font-size: 2.1rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 34px;
+    }
+
+    .wheel-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #wheelCanvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.75), 0 0 0 8px rgba(0, 108, 53, 0.35);
+      touch-action: none;
+    }
+
+    .wheel-pointer-container {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .wheel-pointer {
+      width: 0;
+      height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-top: 32px solid var(--gowash-orange);
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.7));
+    }
+
+    .wheel-center-hub {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: var(--gowash-dark-blue);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), inset 0 0 0 3px var(--gowash-orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .hub-ring {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255, 255, 255, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hub-brand {
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1;
+    }
+
+    .hub-tag {
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: #72F3AA;
+      margin-top: 2px;
+    }
+
+    .spin-action-wrapper {
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    .btn-spin {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gowash-orange) 0%, #D44815 100%);
+      color: #FFFFFF;
+      padding: 16px 28px;
+      font-size: 1.25rem;
+      font-weight: 900;
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 28px rgba(241, 90, 36, 0.45);
+    }
+
+    .btn-spin:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(241, 90, 36, 0.55);
+    }
+
+    .btn-spin:disabled {
+      background: #253342;
+      color: #64748B;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .btn-loader {
+      display: none;
+      width: 22px;
+      height: 22px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #FFFFFF;
+      border-radius: 50%;
+      animation: spinLoader 0.8s linear infinite;
+    }
+
+    .btn-spin.is-loading .btn-text { display: none; }
+    .btn-spin.is-loading .btn-loader { display: inline-block; }
+
+    @keyframes spinLoader {
+      to { transform: rotate(360deg); }
+    }
+
+    .status-message {
+      min-height: 24px;
+      margin-top: 12px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-soft);
+    }
+
+    .status-message.error { color: #F87171; }
+
+    .eligibility-notice {
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--nd-green-bright);
+    }
+
+    .eligibility-notice.exhausted .indicator-dot {
+      background: #64748B;
+    }
+
+    /* Steps */
+    .steps-section {
+      padding: 50px 0;
+      background: rgba(14, 32, 52, 0.4);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 36px;
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      text-align: right;
+    }
+
+    .step-num {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: rgba(0, 108, 53, 0.25);
+      border: 1px solid var(--nd-green-core);
+      color: #72F3AA;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Two Cars Dedicated Offer */
+    .offers-section {
+      padding: 60px 0;
+    }
+
+    .offer-banner {
+      background: linear-gradient(135deg, #0D2338 0%, #081726 100%);
+      border: 1px solid rgba(241, 90, 36, 0.4);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .offer-accent-bar {
+      height: 5px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--nd-green-core) 0%, var(--gowash-blue) 50%, var(--gowash-orange) 100%);
+    }
+
+    .offer-content {
+      padding: 36px 32px;
+    }
+
+    .offer-meta-badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--gowash-orange);
+      background: rgba(241, 90, 36, 0.12);
+      border: 1px solid rgba(241, 90, 36, 0.3);
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      margin-bottom: 12px;
+    }
+
+    .offer-heading {
+      font-size: 1.9rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .offer-discount-tag {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: var(--gowash-orange);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .offer-text {
+      color: var(--text-soft);
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin-bottom: 20px;
+    }
+
+    .non-stackable-alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(241, 90, 36, 0.08);
+      border: 1px dashed rgba(241, 90, 36, 0.4);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      color: #FFB38A;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .alert-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--gowash-orange);
+    }
+
+    /* Terms */
+    .terms-section {
+      padding: 45px 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .terms-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .terms-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .terms-list li {
+      position: relative;
+      padding-right: 20px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .terms-list li::before {
+      content: "•";
+      position: absolute;
+      right: 0;
+      color: var(--nd-green-bright);
+      font-weight: bold;
+    }
+
+    /* Modal */
+    .modal-dialog {
+      border: none;
+      background: transparent;
+      padding: 0;
+      max-width: 480px;
+      width: calc(100% - 32px);
+      margin: auto;
+    }
+
+    .modal-dialog::backdrop {
+      background: rgba(4, 11, 20, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-active);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+      position: relative;
+      animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+    }
+
+    .modal-kicker {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #72F3AA;
+    }
+
+    .modal-title {
+      font-size: 1.45rem;
+      font-weight: 900;
+      margin-top: 4px;
+    }
+
+    .modal-prize-card {
+      margin: 20px 0;
+      padding: 22px;
+      background: #13273D;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+
+    .prize-badge-amount {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1.1;
+      font-feature-settings: "tnum";
+    }
+
+    .prize-badge-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--gowash-orange);
+      margin-top: 6px;
+    }
+
+    .prize-badge-sub {
+      font-size: 0.92rem;
+      color: var(--text-soft);
+      margin-top: 6px;
+    }
+
+    .promo-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+
+    .promo-label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .promo-code-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .promo-code-text {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: #72F3AA;
+    }
+
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-subtle);
+      color: #FFFFFF;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-copy:hover {
+      background: var(--gowash-blue);
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .btn-booking {
+      width: 100%;
+      background: var(--gowash-orange);
+      color: #FFFFFF;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      font-size: 1.05rem;
+      text-align: center;
+    }
+
+    .btn-booking:hover {
+      background: var(--gowash-orange-hover);
+    }
+
+    .btn-share {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+    }
+
+    .btn-share:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #FFFFFF;
+    }
+
+    .instructions-accordion {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 14px;
+    }
+
+    .accordion-toggle {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--text-soft);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    .accordion-content {
+      display: none;
+      padding-top: 10px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .instructions-accordion.active .accordion-content {
+      display: block;
+    }
+
+    .instructions-accordion.active .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Footer */
+    .footer {
+      padding: 40px 0;
+      background: #050E17;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .footer-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 500px;
+    }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 16px;
+      width: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+      .hero-title { font-size: 2.2rem; }
+    }
+
+    @media (max-width: 600px) {
+      .header-container { height: 72px; }
+      .logo-svg { height: 42px; }
+      .hero-title { font-size: 1.9rem; }
+      .wheel-wrapper { max-width: 310px; }
+      .offer-content { padding: 24px 18px; }
+      .modal-box { padding: 24px 18px; }
+      .countdown-box { flex-direction: column; gap: 6px; border-radius: var(--radius-md); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- شريط الحصرية لليوم الوطني 96 فقط -->
+  <div class="exclusive-strip">
+    🇸🇦 فعالية حصرية بمناسبة اليوم الوطني السعودي 96 — العروض سارية فقط طوال فترة احتفالات اليوم الوطني
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="brand-group">
+        <a href="#" class="brand-logo" aria-label="Go Wash جو واش">
+          <!-- الشعار الرسمي الدقيق المطابق للصورة: قطرة ماء زرقاء + جنط برتقالي + GOWASH + جو واش -->
+          <svg class="logo-svg" viewBox="0 0 460 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- G -->
+            <path d="M78 40.5C72 35 63 32 52 32C33 32 18 46 18 67C18 88 33 102 52 102C64 102 73 97 78 90V76H52V62H96V97C85 110 70 116 52 116C24 116 2 95 2 67C2 39 24 18 52 18C70 18 85 25 95 36L78 40.5Z" fill="#1D6FB8"/>
+            
+            <!-- O (Water Drop + Wheel Rim Icon) -->
+            <g transform="translate(104, 14)">
+              <!-- Outer Water Drop Silhouette -->
+              <path d="M48 2C48 2 10 46 10 74C10 97 27 114 48 114C69 114 86 97 86 74C86 46 48 2 48 2Z" fill="#1D6FB8"/>
+              <!-- Lower Orange Tire Arc -->
+              <path d="M12 72C12 95 28 111 48 111C68 111 84 95 84 72" stroke="#F15A24" stroke-width="12" stroke-linecap="round"/>
+              <!-- Rim Inner Hub Circle -->
+              <circle cx="48" cy="73" r="26" fill="#FFFFFF"/>
+              <circle cx="48" cy="73" r="21" stroke="#F15A24" stroke-width="4" fill="none"/>
+              <circle cx="48" cy="73" r="6" fill="#F15A24"/>
+              <!-- Rim Spokes -->
+              <line x1="48" y1="52" x2="48" y2="67" stroke="#F15A24" stroke-width="4" stroke-linecap="round"/>
+              <line x1="48" y1="79" x2="48" y2="94" stroke="#F15A24" stroke-width="4" stroke-linecap="round"/>
+              <line x1="27" y1="73" x2="42" y2="73" stroke="#F15A24" stroke-width="4" stroke-linecap="round"/>
+              <line x1="54" y1="73" x2="69" y2="73" stroke="#F15A24" stroke-width="4" stroke-linecap="round"/>
+              <line x1="33" y1="58" x2="44" y2="69" stroke="#F15A24" stroke-width="3" stroke-linecap="round"/>
+              <line x1="52" y1="77" x2="63" y2="88" stroke="#F15A24" stroke-width="3" stroke-linecap="round"/>
+              <line x1="33" y1="88" x2="44" y2="77" stroke="#F15A24" stroke-width="3" stroke-linecap="round"/>
+              <line x1="52" y1="69" x2="63" y2="58" stroke="#F15A24" stroke-width="3" stroke-linecap="round"/>
+            </g>
+
+            <!-- WASH Letters -->
+            <!-- W -->
+            <path d="M214 34L228 100H242L254 52L266 100H280L294 34H278L270 78L259 34H249L238 78L230 34H214Z" fill="#1D6FB8"/>
+            <!-- A -->
+            <path d="M324 34L304 100H320L325 84H347L352 100H368L348 34H324ZM329 70L336 47L343 70H329Z" fill="#1D6FB8"/>
+            <!-- S -->
+            <path d="M407 48C402 44 395 42 387 42C380 42 376 45 376 49C376 53 380 55 388 57L396 59C408 62 415 68 415 78C415 90 403 98 387 98C377 98 368 95 362 89L369 76C374 81 380 84 387 84C394 84 399 81 399 76C399 72 395 70 388 68L380 66C368 63 361 57 361 48C361 36 373 28 387 28C396 28 403 31 409 35L407 48Z" fill="#1D6FB8"/>
+            <!-- H -->
+            <path d="M430 34V100H446V72H468V100H484V34H468V58H446V34H430Z" fill="#1D6FB8" transform="translate(-10, 0)"/>
+
+            <!-- Arabic: جو واش -->
+            <text x="360" y="132" fill="#1D6FB8" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" text-anchor="middle">جو واش</text>
+          </svg>
+        </a>
+
+        <div class="campaign-badge">
+          <span class="ksa-dot"></span>
+          <span>اليوم الوطني 96</span>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#offers-section" class="nav-btn">عرض السيارتين 25%</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-kicker">
+          <span>🇸🇦 فعالية حصرية بمناسبة اليوم الوطني 96</span>
+        </div>
+        
+        <h1 class="hero-title">
+          جرّب حظك مع <span style="color: var(--gowash-blue);">Go Wash</span><br>
+          واحتفل بـ <span class="text-gold">اليوم الوطني 96</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+          لف العجلة واربح خصمك الفوري أو الترقية الكبرى لباقة GoWash Signature — العرض متاح حصرياً فقط طوال فترة احتفالات اليوم الوطني السعودي!
+        </p>
+
+        <div class="countdown-box">
+          <span>⏳ صلاحية الفعالية:</span>
+          <strong>متاحة حصرياً فقط خلال احتفالات اليوم الوطني 96</strong>
+        </div>
+
+        <div>
+          <a href="#wheel-section" class="btn btn-hero" id="heroStartBtn">
+            ابدأ الآن ولف العجلة
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spin Wheel Section -->
+    <section class="wheel-section" id="wheel-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2 class="section-title">وش راح تربح اليوم؟</h2>
+          <p class="section-subtitle">اضغط لف العجلة وسجل جائزتك الاحتفالية المخصصة لسيارتك</p>
+        </div>
+
+        <div class="wheel-wrapper">
+          <div class="wheel-pointer-container" aria-hidden="true">
+            <div class="wheel-pointer"></div>
+          </div>
+
+          <div class="canvas-container">
+            <canvas id="wheelCanvas" width="460" height="460" role="img" aria-label="عجلة حظ Go Wash لليوم الوطني 96"></canvas>
+            <div class="wheel-center-hub" aria-hidden="true">
+              <div class="hub-ring">
+                <span class="hub-brand">Go Wash</span>
+                <span class="hub-tag">اليوم الوطني 96</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="spin-action-wrapper text-center">
+          <button id="spinBtn" class="btn btn-spin" aria-label="لف عجلة الحظ الآن">
+            <span class="btn-text">لف العجلة</span>
+            <span class="btn-loader" aria-hidden="true"></span>
+          </button>
+          
+          <div id="spinStatusMsg" class="status-message" aria-live="polite"></div>
+          
+          <div id="eligibilityTracker" class="eligibility-notice">
+            <span class="indicator-dot"></span>
+            <span id="trackerText">فرصة تدوير واحدة فقط لكل عميل خلال الفعالية</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="steps-section">
+      <div class="container">
+        <h2 class="section-title text-center">3 خطوات للاستفادة من الفعالية</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <h3 class="step-title">لف العجلة</h3>
+            <p class="step-desc">اضغط على زر التدوير لتحديد جائزتك الوطنية الحصرية.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <h3 class="step-title">انسخ الكود</h3>
+            <p class="step-desc">احصل على كود الخصم الفريد GW96 الصادر فوراً لطلبك.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <h3 class="step-title">احجز وسيارتك تلمع</h3>
+            <p class="step-desc">شارك الكود مع فريق Go Wash واستمتع بغسيل متنقل فاخر عند بابك.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two Cars Dedicated Offer Section -->
+    <section class="offers-section" id="offers-section">
+      <div class="container">
+        <div class="offer-banner">
+          <div class="offer-accent-bar" aria-hidden="true"></div>
+          <div class="offer-content">
+            <div class="offer-meta-badge">عرض اليوم الوطني الخاص للسيارتين</div>
+            <h2 class="offer-heading">غسيل سيارتين في نفس الموقع</h2>
+            <div class="offer-discount-tag">خصم 25% فوري</div>
+            <p class="offer-text">
+              اطلب غسيل سيارتين معاً في نفس الموعد ونفس الموقع خلال احتفالات اليوم الوطني 96، واحصل على خصم 25% على الفاتورة الإجمالية مباشرة.
+            </p>
+            <div class="non-stackable-alert" role="note">
+              <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+              </svg>
+              <span>ملاحظة ملزمة: هذا العرض مستقل تماماً وغير قابل للجمع مع خصومات Spin Wheel أو أي عروض ترويجية أخرى.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terms -->
+    <section class="terms-section">
+      <div class="container">
+        <h2 class="terms-title">شروط وأحكام فعالية اليوم الوطني 96</h2>
+        <ul class="terms-list">
+          <li><strong>حصرية الفعالية:</strong> هذه الفعالية وجميع خصوماتها مخصصة فقط لاحتفالات اليوم الوطني السعودي 96 وتنتهي بانتهاء مدة الحملة.</li>
+          <li>فرصة الاستخدام محددة بمرة واحدة فقط لكل عميل / رقم هاتف.</li>
+          <li>العروض تطبق وفق التغطية التشغيلية وأوقات عمل أسطول Go Wash المتنقل.</li>
+          <li>لا يمكن الجمع بين العروض الترويجية إطلاقاً (إما كود العجلة أو عرض السيارتين 25%).</li>
+          <li>خصم غسيل سيارتين (25%) مستقل وغير قابل للإضافة مع خصومات العجلة.</li>
+          <li>جائزة "GoWash Signature Upgrade" تعني: (ادفع قيمة باقة الغسيل العادي واحصل على ترقية كاملة لباقة GoWash Signature الفاخرة).</li>
+          <li>الكود الترويجي مخصص للاستخدام الشخصي ولمرة واحدة فقط.</li>
+          <li>تحتفظ إدارة Go Wash بحق التحقق من صلاحية الأكواد وإيقاف الفعالية وفق الأنظمة والتعليمات المنشورة.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Winner Modal Dialog -->
+  <dialog id="winnerModal" class="modal-dialog" aria-labelledby="modalHeading" aria-modal="true">
+    <div class="modal-box">
+      <button id="modalCloseBtn" class="modal-close-btn" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="modal-header text-center">
+        <span class="modal-kicker">🇸🇦 مبروك فوزك في اليوم الوطني 96!</span>
+        <h3 id="modalHeading" class="modal-title">لقد ربحت مع Go Wash</h3>
+      </div>
+
+      <div class="modal-prize-card" id="modalPrizeCard"></div>
+
+      <div class="promo-box">
+        <span class="promo-label">الرمز الترويجي الحصري لليوم الوطني:</span>
+        <div class="promo-code-row">
+          <span id="promoCodeDisplay" class="promo-code-text">--------</span>
+          <button id="copyCodeBtn" class="btn-copy" aria-label="نسخ رمز الخصم">
+            <span id="copyBtnText">نسخ الكود</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <a id="bookingCtaBtn" href="https://wa.me/966580700242?text=" target="_blank" rel="noopener noreferrer" class="btn btn-booking">
+          احجز غسيلك بالخصم الآن
+        </a>
+        <button id="shareResultBtn" class="btn btn-share">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          شارك فوزك مع أصحابك
+        </button>
+      </div>
+
+      <div class="instructions-accordion">
+        <button type="button" class="accordion-toggle" id="instructionsToggle" aria-expanded="false">
+          كيف أستخدم الخصم؟
+          <span class="chevron">▾</span>
+        </button>
+        <div class="accordion-content" id="instructionsContent">
+          <p>1. انسخ الرمز الترويجي الظاهر أعلاه.</p>
+          <p>2. اضغط "احجز غسيلك بالخصم الآن" للتواصل الفوري مع خدمة عملاء Go Wash عبر الواتساب.</p>
+          <p>3. أرسل الكود قبل تأكيد موعد الغسيل المتنقل لتطبيق الخصم فوراً على فاتورتك.</p>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-desc">
+        <strong>Go Wash — جو واش</strong><br>
+        خدمة غسيل السيارات المتنقلة الأولى — نجيك وين ما كنت في كل أنحاء المملكة.
+      </div>
+      <div class="footer-copy">
+        <p>© 2026 Go Wash جو واش. جميع الحقوق محفوظة — الفعالية مخصصة حصرياً لاحتفالات اليوم الوطني السعودي 96.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Logic Engine -->
+  <script>
+    /**
+     * IMPORTANT SECURITY NOTE:
+     * Frontend is not trusted.
+     * All eligibility checks, prize selection, promo generation,
+     * and redemption validation must be performed server-side in production.
+     */
+
+    // Configuration
+    const campaignConfig = {
+      campaignName: "Go Wash Saudi National Day 96 Exclusive",
+      campaignCode: "GW96",
+      active: true,
+      maxSpinsPerCustomer: 1,
+
+      // 6 Equal Visual Sectors with National Day + Go Wash Identity
+      wheel: {
+        prizes: [
+          {
+            id: "discount_20",
+            label: "20%",
+            type: "discount",
+            amount: 20,
+            subtext: "خصم على غسيل Go Wash بمناسبة اليوم الوطني",
+            probability: 15.0,
+            color: "#1D6FB8", // Go Wash Blue
+            textColor: "#FFFFFF"
+          },
+          {
+            id: "discount_15",
+            label: "15%",
+            type: "discount",
+            amount: 15,
+            subtext: "خصم على غسيل سيارتك المتنقل",
+            probability: 25.0,
+            color: "#006C35", // Saudi National Day Green
+            textColor: "#FFFFFF"
+          },
+          {
+            id: "discount_10",
+            label: "10%",
+            type: "discount",
+            amount: 10,
+            subtext: "خصم فوري لاحتفال اليوم الوطني 96",
+            probability: 30.0,
+            color: "#0F2A4A", // Go Wash Navy
+            textColor: "#FFFFFF"
+          },
+          {
+            id: "discount_9_6",
+            label: "9.6%",
+            type: "discount",
+            amount: 9.6,
+            subtext: "خصم رمزي خاص باليوم الوطني 96",
+            probability: 19.0,
+            color: "#005429", // Deep KSA Green
+            textColor: "#72F3AA"
+          },
+          {
+            id: "discount_5",
+            label: "5%",
+            type: "discount",
+            amount: 5,
+            subtext: "خصم على خدمات غسيل Go Wash",
+            probability: 10.0,
+            color: "#14375A",
+            textColor: "#FFFFFF"
+          },
+          {
+            id: "signature_upgrade",
+            label: "Signature",
+            type: "upgrade",
+            amount: 100,
+            subtext: "ادفع قيمة الغسيل العادي واحصل على GoWash Signature",
+            probability: 1.0, // 1% Grand Prize
+            color: "#F15A24", // Go Wash Accent Orange
+            textColor: "#FFFFFF"
+          }
+        ]
+      },
+
+      offers: {
+        twoCars: {
+          enabled: true,
+          discount: 25,
+          stackable: false
+        }
+      }
+    };
+
+    // Probability Engine
+    const ProbabilityEngine = {
+      validate(prizes) {
+        const total = prizes.reduce((acc, p) => acc + (parseFloat(p.probability) || 0), 0);
+        return Math.abs(total - 100) < 0.001;
+      },
+      select(prizes) {
+        // TODO: Prize must be selected server-side in production.
+        const rand = Math.random() * 100;
+        let cumulative = 0;
+        for (let i = 0; i < prizes.length; i++) {
+          cumulative += prizes[i].probability;
+          if (rand < cumulative) return prizes[i];
+        }
+        return prizes[prizes.length - 1];
+      }
+    };
+
+    // Storage Demo Layer
+    const StorageService = {
+      KEY: "gowash_nd96_exclusive_session",
+      hasSpun() {
+        // TODO: Replace local eligibility check with server-side validation.
+        return localStorage.getItem(this.KEY) !== null;
+      },
+      save(prize, code) {
+        const data = {
+          date: new Date().toISOString(),
+          prize: prize.label,
+          code: code
+        };
+        localStorage.setItem(this.KEY, JSON.stringify(data));
+      },
+      getSaved() {
+        try {
+          return JSON.parse(localStorage.getItem(this.KEY));
+        } catch(e) { return null; }
+      }
+    };
+
+    // Promo & WhatsApp Helper
+    const Rewards = {
+      genCode() {
+        const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+        let part = "";
+        for (let i = 0; i < 4; i++) part += chars.charAt(Math.floor(Math.random() * chars.length));
+        return `GW96-${part}`;
+      },
+      getBookingUrl(code, prize) {
+        const phone = "966580700242"; // رقم Go Wash المعتمد
+        const text = `مرحباً Go Wash، شاركت في فعالية اليوم الوطني 96 وحصلت على:\n` +
+                     `الهدية: ${prize.label} (${prize.subtext})\n` +
+                     `الكود الحصري: ${code}\n` +
+                     `أرغب في حجز موعد لغسيل سيارتي.`;
+        return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+      }
+    };
+
+    // Canvas Wheel Engine
+    class VisualWheel {
+      constructor(canvasId, prizes) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext("2d");
+        this.prizes = prizes;
+        this.num = prizes.length;
+        this.arc = (2 * Math.PI) / this.num;
+        this.rotation = 0;
+        this.isSpinning = false;
+
+        this.initDPI();
+        this.draw();
+      }
+
+      initDPI() {
+        const dpr = window.devicePixelRatio || 1;
+        this.canvas.width = 460 * dpr;
+        this.canvas.height = 460 * dpr;
+        this.ctx.scale(dpr, dpr);
+        this.size = 460;
+      }
+
+      draw() {
+        const center = this.size / 2;
+        const radius = center - 8;
+
+        this.ctx.clearRect(0, 0, this.size, this.size);
+        this.ctx.save();
+        this.ctx.translate(center, center);
+        this.ctx.rotate(this.rotation);
+
+        for (let i = 0; i < this.num; i++) {
+          const p = this.prizes[i];
+          const start = i * this.arc;
+          const end = start + this.arc;
+
+          this.ctx.beginPath();
+          this.ctx.moveTo(0, 0);
+          this.ctx.arc(0, 0, radius, start, end);
+          this.ctx.fillStyle = p.color;
+          this.ctx.fill();
+
+          this.ctx.lineWidth = 2;
+          this.ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+          this.ctx.stroke();
+
+          // Sector text
+          this.ctx.save();
+          this.ctx.rotate(start + this.arc / 2);
+          this.ctx.textAlign = "right";
+          this.ctx.fillStyle = p.textColor;
+
+          if (p.type === "upgrade") {
+            this.ctx.font = "900 18px 'Cairo', sans-serif";
+            this.ctx.fillText("Signature", radius - 28, 6);
+          } else {
+            this.ctx.font = "900 24px 'Cairo', sans-serif";
+            this.ctx.fillText(p.label, radius - 30, 8);
+          }
+          this.ctx.restore();
+        }
+        this.ctx.restore();
+      }
+
+      calculateAngle(winningPrize) {
+        const index = this.prizes.findIndex(p => p.id === winningPrize.id);
+        const sectorCenter = (index * this.arc) + (this.arc / 2);
+        const pointer = 1.5 * Math.PI; // Top Center (270 deg)
+
+        const jitter = (Math.random() - 0.5) * (this.arc * 0.4);
+        let baseAngle = pointer - sectorCenter + jitter;
+        baseAngle = ((baseAngle % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
+
+        const spins = 6 * (2 * Math.PI);
+        const currentMod = this.rotation % (2 * Math.PI);
+        const distance = ((baseAngle - currentMod) + (2 * Math.PI)) % (2 * Math.PI);
+
+        return this.rotation + spins + distance;
+      }
+
+      spinTo(targetAngle, callback) {
+        this.isSpinning = true;
+        const start = this.rotation;
+        const delta = targetAngle - start;
+        const duration = 5200;
+        const startTime = performance.now();
+
+        const easeOut = (t) => 1 - Math.pow(1 - t, 5);
+
+        const frame = (now) => {
+          const elapsed = now - startTime;
+          const prog = Math.min(elapsed / duration, 1);
+          this.rotation = start + (delta * easeOut(prog));
+          this.draw();
+
+          if (prog < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            this.isSpinning = false;
+            this.rotation = targetAngle;
+            this.draw();
+            if (callback) callback();
+          }
+        };
+
+        requestAnimationFrame(frame);
+      }
+    }
+
+    // UI Orchestration
+    document.addEventListener("DOMContentLoaded", () => {
+      const spinBtn = document.getElementById("spinBtn");
+      const statusMsg = document.getElementById("spinStatusMsg");
+      const trackerText = document.getElementById("trackerText");
+      const trackerBox = document.getElementById("eligibilityTracker");
+      const modal = document.getElementById("winnerModal");
+      const closeBtn = document.getElementById("modalCloseBtn");
+      const prizeCard = document.getElementById("modalPrizeCard");
+      const codeDisplay = document.getElementById("promoCodeDisplay");
+      const copyBtn = document.getElementById("copyCodeBtn");
+      const copyText = document.getElementById("copyBtnText");
+      const bookingBtn = document.getElementById("bookingCtaBtn");
+      const shareBtn = document.getElementById("shareResultBtn");
+      const accordToggle = document.getElementById("instructionsToggle");
+      const accordContent = document.querySelector(".instructions-accordion");
+
+      if (!ProbabilityEngine.validate(campaignConfig.wheel.prizes)) {
+        statusMsg.textContent = "خطأ في ضبط نسب الاحتمالات (يجب أن تساوي 100%).";
+        statusMsg.classList.add("error");
+        spinBtn.disabled = true;
+        return;
+      }
+
+      const wheel = new VisualWheel("wheelCanvas", campaignConfig.wheel.prizes);
+
+      const disablePermanently = (msg) => {
+        spinBtn.disabled = true;
+        spinBtn.classList.remove("is-loading");
+        statusMsg.textContent = msg;
+        trackerBox.classList.add("exhausted");
+        trackerText.textContent = "تم استهلاك فرصة التدوير الخاصة بك في فعالية اليوم الوطني 96.";
+      };
+
+      if (StorageService.hasSpun()) {
+        const saved = StorageService.getSaved();
+        disablePermanently(`لقد حصلت مسبقاً على: (${saved ? saved.prize : 'جائزتك'})`);
+      }
+
+      document.getElementById("heroStartBtn")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("wheel-section").scrollIntoView({ behavior: "smooth" });
+      });
+
+      accordToggle?.addEventListener("click", () => {
+        const isExp = accordContent.classList.toggle("active");
+        accordToggle.setAttribute("aria-expanded", isExp);
+      });
+
+      closeBtn?.addEventListener("click", () => modal.close());
+      modal?.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
+
+      copyBtn?.addEventListener("click", async () => {
+        const code = codeDisplay.textContent;
+        if (!code || code === "--------") return;
+        try {
+          await navigator.clipboard.writeText(code);
+          copyText.textContent = "تم النسخ!";
+          setTimeout(() => copyText.textContent = "نسخ الكود", 2500);
+        } catch(e) {
+          copyText.textContent = "تم النسخ!";
+        }
+      });
+
+      shareBtn?.addEventListener("click", () => {
+        const code = codeDisplay.textContent;
+        const shareData = {
+          title: "Go Wash | احتفال اليوم الوطني السعودي 96",
+          text: `ربحت مع Go Wash في فعالية اليوم الوطني السعودي 96! كود الخصم: ${code}`,
+          url: window.location.href
+        };
+        if (navigator.share) {
+          navigator.share(shareData).catch(() => {});
+        } else {
+          navigator.clipboard.writeText(window.location.href);
+          alert("تم نسخ رابط الفعالية لمشاركته مع أصدقائك!");
+        }
+      });
+
+      spinBtn.addEventListener("click", () => {
+        if (wheel.isSpinning) return;
+        if (StorageService.hasSpun()) {
+          disablePermanently("عذراً، انتهت فرصتك المتاحة في هذه الفعالية.");
+          return;
+        }
+
+        spinBtn.disabled = true;
+        spinBtn.classList.add("is-loading");
+        statusMsg.textContent = "جاري السحب على جائزتك لاحتفال اليوم الوطني...";
+
+        setTimeout(() => {
+          const winningPrize = ProbabilityEngine.select(campaignConfig.wheel.prizes);
+          const targetAngle = wheel.calculateAngle(winningPrize);
+          statusMsg.textContent = "";
+
+          wheel.spinTo(targetAngle, () => {
+            const promo = Rewards.genCode();
+            StorageService.save(winningPrize, promo);
+            disablePermanently(`مبروك! فزت بـ ${winningPrize.label}`);
+
+            if (winningPrize.type === "upgrade") {
+              prizeCard.innerHTML = `
+                <div class="prize-badge-amount" style="color: var(--gowash-orange);">GoWash Signature</div>
+                <div class="prize-badge-title">ترقية مجانية فاخرة!</div>
+                <div class="prize-badge-sub">ادفع قيمة الغسيل العادي واحصل على باقة GoWash Signature الشاملة.</div>
+              `;
+            } else {
+              prizeCard.innerHTML = `
+                <div class="prize-badge-amount">${winningPrize.label}</div>
+                <div class="prize-badge-title">خصم اليوم الوطني على غسيلك</div>
+                <div class="prize-badge-sub">${winningPrize.subtext}</div>
+              `;
+            }
+
+            codeDisplay.textContent = promo;
+            bookingBtn.href = Rewards.getBookingUrl(promo, winningPrize);
+            modal.showModal();
+          });
+        }, 350);
+      });
+    });
+  </script>
+</body>
+</html>
