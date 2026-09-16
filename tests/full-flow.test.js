@@ -61,13 +61,32 @@ async function runTests() {
     });
 
     // ----------------------------------------------------
-    // Test 2: First Spin for a new participant
+    // Test 2a: Spin without terms acceptance is rejected
+    // ----------------------------------------------------
+    await test("2a. Spin without terms acceptance is rejected with 400 TERMS_NOT_ACCEPTED", async () => {
+      const res = await fetch(`${BASE_URL}/api/spin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": `gowash_pid=${crypto.randomUUID()}`
+        },
+        body: JSON.stringify({ termsAccepted: false })
+      });
+
+      assert.strictEqual(res.status, 400);
+      const data = await res.json();
+      assert.strictEqual(data.success, false);
+      assert.strictEqual(data.code, "TERMS_NOT_ACCEPTED");
+    });
+
+    // ----------------------------------------------------
+    // Test 2b: First Spin for a new participant with Terms Accepted
     // ----------------------------------------------------
     const participant1Cookie = `gowash_pid=${crypto.randomUUID()}`;
     let p1PromoCode = "";
     let p1PrizeId = "";
 
-    await test("2. First Spin executes successfully and returns valid prize and promo", async () => {
+    await test("2b. First Spin with terms acceptance executes successfully and returns valid prize and promo", async () => {
       const res = await fetch(`${BASE_URL}/api/spin`, {
         method: "POST",
         headers: {
@@ -75,7 +94,11 @@ async function runTests() {
           "Cookie": participant1Cookie,
           "Idempotency-Key": "test_idemp_1"
         },
-        body: JSON.stringify({ idempotencyKey: "test_idemp_1" })
+        body: JSON.stringify({
+          idempotencyKey: "test_idemp_1",
+          termsAccepted: true,
+          termsVersion: "1.0"
+        })
       });
 
       assert.strictEqual(res.status, 200);
@@ -92,6 +115,12 @@ async function runTests() {
 
       p1PromoCode = data.promo.code;
       p1PrizeId = data.prize.id;
+
+      // Verify consent record was stored in DB
+      const pid = participant1Cookie.replace("gowash_pid=", "");
+      const consentRecord = db.prepare("SELECT * FROM participant_consents WHERE participant_id = ?").get(pid);
+      assert.ok(consentRecord, "Consent must be recorded in DB");
+      assert.strictEqual(consentRecord.terms_version, "1.0");
     });
 
     // ----------------------------------------------------
@@ -105,7 +134,11 @@ async function runTests() {
           "Cookie": participant1Cookie,
           "Idempotency-Key": "different_key_2"
         },
-        body: JSON.stringify({ idempotencyKey: "different_key_2" })
+        body: JSON.stringify({
+          idempotencyKey: "different_key_2",
+          termsAccepted: true,
+          termsVersion: "1.0"
+        })
       });
 
       assert.strictEqual(res.status, 403);
@@ -126,7 +159,11 @@ async function runTests() {
           "Cookie": participant1Cookie,
           "Idempotency-Key": "test_idemp_1"
         },
-        body: JSON.stringify({ idempotencyKey: "test_idemp_1" })
+        body: JSON.stringify({
+          idempotencyKey: "test_idemp_1",
+          termsAccepted: true,
+          termsVersion: "1.0"
+        })
       });
 
       assert.strictEqual(res.status, 200);
@@ -150,7 +187,11 @@ async function runTests() {
             "Cookie": raceParticipantCookie,
             "Idempotency-Key": `race_key_${i}`
           },
-          body: JSON.stringify({ idempotencyKey: `race_key_${i}` })
+          body: JSON.stringify({
+            idempotencyKey: `race_key_${i}`,
+            termsAccepted: true,
+            termsVersion: "1.0"
+          })
         })
       );
 
@@ -173,25 +214,31 @@ async function runTests() {
     // Test 6: Campaign Paused & Kill Switch Blocks Spins
     // ----------------------------------------------------
     await test("6. Pausing campaign blocks new spins immediately with 400 CAMPAIGN_PAUSED", async () => {
-      // Pause campaign in DB
-      db.prepare("UPDATE campaign_settings SET status = 'PAUSED' WHERE id = 1").run();
+      try {
+        // Pause campaign in DB
+        db.prepare("UPDATE campaign_settings SET status = 'PAUSED' WHERE id = 1").run();
 
-      const newParticipantCookie = `gowash_pid=${crypto.randomUUID()}`;
-      const res = await fetch(`${BASE_URL}/api/spin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Cookie": newParticipantCookie
-        }
-      });
+        const newParticipantCookie = `gowash_pid=${crypto.randomUUID()}`;
+        const res = await fetch(`${BASE_URL}/api/spin`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cookie": newParticipantCookie
+          },
+          body: JSON.stringify({
+            termsAccepted: true,
+            termsVersion: "1.0"
+          })
+        });
 
-      assert.strictEqual(res.status, 400);
-      const data = await res.json();
-      assert.strictEqual(data.success, false);
-      assert.strictEqual(data.code, "CAMPAIGN_PAUSED");
-
-      // Reactivate campaign
-      db.prepare("UPDATE campaign_settings SET status = 'ACTIVE' WHERE id = 1").run();
+        assert.strictEqual(res.status, 400);
+        const data = await res.json();
+        assert.strictEqual(data.success, false);
+        assert.strictEqual(data.code, "CAMPAIGN_PAUSED");
+      } finally {
+        // Always reactivate campaign
+        db.prepare("UPDATE campaign_settings SET status = 'ACTIVE' WHERE id = 1").run();
+      }
     });
 
     // ----------------------------------------------------
@@ -343,7 +390,14 @@ async function runTests() {
       const freshCookie = `gowash_pid=${crypto.randomUUID()}`;
       const spinRes = await fetch(`${BASE_URL}/api/spin`, {
         method: "POST",
-        headers: { "Cookie": freshCookie }
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": freshCookie
+        },
+        body: JSON.stringify({
+          termsAccepted: true,
+          termsVersion: "1.0"
+        })
       });
       const spinData = await spinRes.json();
       const codeToCancel = spinData.promo.code;

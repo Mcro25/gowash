@@ -51,6 +51,18 @@ function initSchema() {
       user_agent TEXT
     );
 
+    CREATE TABLE IF NOT EXISTS participant_consents (
+      id TEXT PRIMARY KEY,
+      participant_id TEXT NOT NULL,
+      campaign_id TEXT NOT NULL,
+      terms_version TEXT NOT NULL,
+      accepted_at TEXT NOT NULL,
+      ip_hash TEXT,
+      FOREIGN KEY (participant_id) REFERENCES participants(id)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_consents_participant ON participant_consents(participant_id);
+
     CREATE TABLE IF NOT EXISTS spins (
       id TEXT PRIMARY KEY,
       participant_id TEXT NOT NULL,

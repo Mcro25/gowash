@@ -270,8 +270,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Spin Request Action
-  spinBtn.addEventListener("click", async () => {
+  // Terms Modal Elements
+  const termsModal = document.getElementById("termsModal");
+  const acceptTermsBtn = document.getElementById("acceptTermsBtn");
+  const declineTermsBtn = document.getElementById("declineTermsBtn");
+  let currentTermsVersion = "1.0";
+
+  // When clicking "لف العجلة", require Terms acceptance first
+  spinBtn.addEventListener("click", () => {
+    if (!wheelInstance || wheelInstance.isSpinning) return;
+    if (campaignState !== 'ACTIVE') return;
+
+    // Show Terms & Conditions Modal
+    termsModal.showModal();
+  });
+
+  // Decline Terms Handler
+  declineTermsBtn?.addEventListener("click", () => {
+    termsModal.close();
+    spinBtn.disabled = false;
+    spinBtn.classList.remove("is-loading");
+    statusMsg.textContent = "يجب الموافقة على الشروط والأحكام للمشاركة في الفعالية.";
+    statusMsg.classList.add("error");
+  });
+
+  // Prevent closing terms modal without explicit choice
+  termsModal?.addEventListener("cancel", (e) => {
+    e.preventDefault();
+    declineTermsBtn.click();
+  });
+
+  // Accept Terms & Execute Spin
+  acceptTermsBtn?.addEventListener("click", async () => {
+    termsModal.close();
+
     if (!wheelInstance || wheelInstance.isSpinning) return;
     if (campaignState !== 'ACTIVE') return;
 
@@ -295,7 +327,11 @@ document.addEventListener("DOMContentLoaded", () => {
           "Content-Type": "application/json",
           "Idempotency-Key": idempotencyKey
         },
-        body: JSON.stringify({ idempotencyKey })
+        body: JSON.stringify({
+          idempotencyKey,
+          termsAccepted: true,
+          termsVersion: currentTermsVersion
+        })
       });
 
       const data = await response.json();

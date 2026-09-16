@@ -199,6 +199,78 @@
     </section>
   </main>
 
+  <!-- Terms & Conditions Modal Dialog (Required Before Spin) -->
+  <dialog id="termsModal" class="modal-dialog" role="dialog" aria-labelledby="termsHeading" aria-modal="true">
+    <div class="terms-modal-box">
+      <div class="modal-header text-center">
+        <span class="modal-kicker">🇸🇦 فعالية Go Wash | اليوم الوطني السعودي 96</span>
+        <h3 id="termsHeading" class="modal-title" style="margin-top: 4px;">الشروط والأحكام</h3>
+      </div>
+
+      <p class="terms-intro-text text-center">
+        يرجى قراءة الشروط والأحكام والموافقة عليها قبل المشاركة في فعالية Go Wash لليوم الوطني السعودي 96.
+      </p>
+
+      <div class="terms-scroll-area">
+        <ol class="terms-scroll-list">
+          <li>
+            <span class="term-num">1</span>
+            المشاركة في الفعالية متاحة خلال فترة الحملة المحددة من Go Wash.
+          </li>
+          <li>
+            <span class="term-num">2</span>
+            لكل مشارك فرصة Spin واحدة فقط وفق إعدادات الحملة.
+          </li>
+          <li>
+            <span class="term-num">3</span>
+            يتم تحديد الجائزة إلكترونيًا من نظام الفعالية، وتُعرض النتيجة بعد إتمام عملية Spin.
+          </li>
+          <li>
+            <span class="term-num">4</span>
+            الحد الأقصى للخصم الناتج عن Spin Wheel هو 20%.
+          </li>
+          <li>
+            <span class="term-num">5</span>
+            الجائزة الكبرى هي دفع قيمة الغسيل العادي والحصول على باقة GoWash Signature وفق شروط الاستفادة من الجائزة.
+          </li>
+          <li>
+            <span class="term-num">6</span>
+            كل جائزة يتم إصدارها عبر Promo Code خاص بها، ويخضع الكود للصلاحية والحالة المحددة له.
+          </li>
+          <li>
+            <span class="term-num">7</span>
+            Promo Code غير صالح للاستخدام أكثر من مرة، ولا يمكن استخدام الكود بعد انتهاء صلاحيته أو إلغائه.
+          </li>
+          <li>
+            <span class="term-num">8</span>
+            عرض غسيل سيارتين في نفس الموقع يمنح خصم 25%، ولا يمكن دمجه مع خصومات Spin Wheel أو أي عرض آخر.
+          </li>
+          <li>
+            <span class="term-num">9</span>
+            لا يجوز محاولة استخدام النظام بطريقة غير مشروعة أو التحايل على عدد مرات المشاركة أو إعادة استخدام الجوائز.
+          </li>
+          <li>
+            <span class="term-num">10</span>
+            تحتفظ Go Wash بحق إيقاف الحملة أو تعديلها أو إنهائها وفق متطلبات الحملة وشروطها المنشورة.
+          </li>
+          <li>
+            <span class="term-num">11</span>
+            المشاركة تعني إقرار العميل بأنه قرأ الشروط والأحكام ووافق عليها.
+          </li>
+        </ol>
+      </div>
+
+      <div class="terms-action-buttons">
+        <button type="button" id="acceptTermsBtn" class="btn btn-accept-terms">
+          أوافق وأبدأ Spin
+        </button>
+        <button type="button" id="declineTermsBtn" class="btn btn-decline-terms">
+          رفض
+        </button>
+      </div>
+    </div>
+  </dialog>
+
   <!-- Winner Modal Dialog -->
   <dialog id="winnerModal" class="modal-dialog" aria-labelledby="modalHeading" aria-modal="true">
     <div class="modal-box">

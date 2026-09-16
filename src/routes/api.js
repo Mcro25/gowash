@@ -53,6 +53,7 @@ router.get('/campaign', (req, res) => {
       campaign: {
         status: campaign ? campaign.status : 'ACTIVE',
         name: campaign ? campaign.name : 'Go Wash Saudi National Day 96',
+        termsVersion: require('../config').CURRENT_TERMS_VERSION,
         offers: {
           twoCars: {
             title: 'غسيل سيارتين في نفس الموقع',
@@ -85,16 +86,21 @@ router.post('/spin', spinRateLimiter(30, 60000), (req, res) => {
     const idempotencyKey = req.headers['idempotency-key'] || req.body?.idempotencyKey || null;
     const ip = req.ip || req.connection.remoteAddress || '127.0.0.1';
     const userAgent = req.headers['user-agent'] || '';
+    const termsAccepted = req.body?.termsAccepted;
+    const termsVersion = req.body?.termsVersion;
 
     const result = executeSpin({
       participantId,
       idempotencyKey,
       ip,
-      userAgent
+      userAgent,
+      termsAccepted,
+      termsVersion
     });
 
     if (!result.success) {
-      const statusCode = result.code === 'ALREADY_SPUN' ? 403 : (result.code === 'CAMPAIGN_PAUSED' || result.code === 'CAMPAIGN_ENDED' ? 400 : 500);
+      const statusCode = result.code === 'ALREADY_SPUN' ? 403 :
+        (result.code === 'CAMPAIGN_PAUSED' || result.code === 'CAMPAIGN_ENDED' || result.code === 'TERMS_NOT_ACCEPTED' ? 400 : 500);
       return res.status(statusCode).json(result);
     }
 

@@ -26,12 +26,12 @@ function selectPrize(prizes) {
   return prizes[prizes.length - 1];
 }
 
-function executeSpin({ participantId, idempotencyKey, ip, userAgent }) {
+function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccepted, termsVersion }) {
   const now = new Date();
   const nowIso = now.toISOString();
   const ipH = hashIp(ip);
 
-  // 1. Validate Campaign Status
+  // 1. Validate Campaign Status First
   const campaign = db.prepare('SELECT status, start_date, end_date, max_spins_per_participant FROM campaign_settings WHERE id = 1').get();
   if (!campaign) {
     return { success: false, code: 'CAMPAIGN_NOT_FOUND', message: 'إعدادات الفعالية غير متاحة حالياً.' };
@@ -51,6 +51,15 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent }) {
 
   if (campaign.end_date && now > new Date(campaign.end_date)) {
     return { success: false, code: 'CAMPAIGN_EXPIRED', message: 'انتهت فترة فعالية اليوم الوطني 96.' };
+  }
+
+  // 2. Enforce Server-side Terms Consent
+  if (!termsAccepted || termsVersion !== config.CURRENT_TERMS_VERSION) {
+    return {
+      success: false,
+      code: 'TERMS_NOT_ACCEPTED',
+      message: 'يجب الموافقة على الشروط والأحكام للمشاركة في الفعالية.'
+    };
   }
 
   // 2. Check Idempotency Key
@@ -150,6 +159,13 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent }) {
       INSERT INTO spins (id, participant_id, prize_id, idempotency_key, created_at, ip_hash)
       VALUES (?, ?, ?, ?, ?, ?)
     `).run(spinId, participantId, winningPrize.id, idempotencyKey || null, nowIso, ipH);
+
+    // Record consent
+    const consentId = crypto.randomUUID();
+    db.prepare(`
+      INSERT INTO participant_consents (id, participant_id, campaign_id, terms_version, accepted_at, ip_hash)
+      VALUES (?, ?, 'national_day_96', ?, ?, ?)
+    `).run(consentId, participantId, termsVersion, nowIso, ipH);
 
     // Insert promo code
     db.prepare(`

@@ -34,4 +34,5 @@ module.exports = {
   CAMPAIGN_TIMEZONE: process.env.CAMPAIGN_TIMEZONE || 'Asia/Riyadh',
   SESSION_EXPIRY_MS: 12 * 60 * 60 * 1000, // 12 hours
   PROMO_EXPIRY_HOURS: 48, // 48 hours for promo codes
+  CURRENT_TERMS_VERSION: '1.0',
 };
