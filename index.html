@@ -97,18 +97,29 @@
       height: 82px;
     }
 
+    .brand-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: nowrap;
+    }
+
     /* Go Wash Exact Official Vector Logo */
     .brand-logo {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
       text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .brand-logo:hover {
+      transform: scale(1.02);
     }
 
     .logo-svg {
-      height: 52px;
+      height: 48px;
       width: auto;
-      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+      filter: drop-shadow(0 2px 10px rgba(0, 132, 255, 0.25));
     }
 
     .campaign-badge {
@@ -861,44 +872,55 @@
     <div class="container header-container">
       <div class="brand-group">
         <a href="#" class="brand-logo" aria-label="Go Wash جو واش">
-          <!-- الشعار الرسمي الدقيق المطابق للصورة: قطرة ماء زرقاء + جنط برتقالي + GOWASH + جو واش -->
-          <svg class="logo-svg" viewBox="0 0 460 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- الشعار الرسمي الاحترافي: قطرة ماء زرقاء مشعة + جنط برتقالي + GOWASH + جو واش عالية التباين -->
+          <svg class="logo-svg" viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="gwBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00A3FF"/>
+                <stop offset="100%" stop-color="#0066CC"/>
+              </linearGradient>
+              <linearGradient id="gwOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FF6B00"/>
+                <stop offset="100%" stop-color="#E04800"/>
+              </linearGradient>
+            </defs>
+
             <!-- G -->
-            <path d="M78 40.5C72 35 63 32 52 32C33 32 18 46 18 67C18 88 33 102 52 102C64 102 73 97 78 90V76H52V62H96V97C85 110 70 116 52 116C24 116 2 95 2 67C2 39 24 18 52 18C70 18 85 25 95 36L78 40.5Z" fill="#1D6FB8"/>
+            <path d="M80 38C73 33 63 30 51 30C31 30 16 45 16 67C16 89 31 104 51 104C63 104 73 99 79 91V76H51V62H95V97C84 110 69 117 51 117C21 117 0 95 0 67C0 39 21 17 51 17C69 17 84 24 95 36L80 38Z" fill="url(#gwBlue)"/>
             
             <!-- O (Water Drop + Wheel Rim Icon) -->
-            <g transform="translate(104, 14)">
+            <g transform="translate(104, 13)">
               <!-- Outer Water Drop Silhouette -->
-              <path d="M48 2C48 2 10 46 10 74C10 97 27 114 48 114C69 114 86 97 86 74C86 46 48 2 48 2Z" fill="#1D6FB8"/>
+              <path d="M48 2C48 2 10 46 10 74C10 97 27 114 48 114C69 114 86 97 86 74C86 46 48 2 48 2Z" fill="url(#gwBlue)"/>
               <!-- Lower Orange Tire Arc -->
-              <path d="M12 72C12 95 28 111 48 111C68 111 84 95 84 72" stroke="#F15A24" stroke-width="12" stroke-linecap="round"/>
+              <path d="M12 72C12 95 28 111 48 111C68 111 84 95 84 72" stroke="url(#gwOrange)" stroke-width="12" stroke-linecap="round"/>
               <!-- Rim Inner Hub Circle -->
               <circle cx="48" cy="73" r="26" fill="#FFFFFF"/>
-              <circle cx="48" cy="73" r="21" stroke="#F15A24" stroke-width="4" fill="none"/>
-              <circle cx="48" cy="73" r="6" fill="#F15A24"/>
+              <circle cx="48" cy="73" r="21" stroke="url(#gwOrange)" stroke-width="4" fill="none"/>
+              <circle cx="48" cy="73" r="6" fill="url(#gwOrange)"/>
               <!-- Rim Spokes -->
-              <line x1="48" y1="52" x2="48" y2="67" stroke="#F15A24" stroke-width="4" stroke-linecap="round"/>
-              <line x1="48" y1="79" x2="48" y2="94" stroke="#F15A24" stroke-width="4" stroke-linecap="round"/>
-              <line x1="27" y1="73" x2="42" y2="73" stroke="#F15A24" stroke-width="4" stroke-linecap="round"/>
-              <line x1="54" y1="73" x2="69" y2="73" stroke="#F15A24" stroke-width="4" stroke-linecap="round"/>
-              <line x1="33" y1="58" x2="44" y2="69" stroke="#F15A24" stroke-width="3" stroke-linecap="round"/>
-              <line x1="52" y1="77" x2="63" y2="88" stroke="#F15A24" stroke-width="3" stroke-linecap="round"/>
-              <line x1="33" y1="88" x2="44" y2="77" stroke="#F15A24" stroke-width="3" stroke-linecap="round"/>
-              <line x1="52" y1="69" x2="63" y2="58" stroke="#F15A24" stroke-width="3" stroke-linecap="round"/>
+              <line x1="48" y1="52" x2="48" y2="67" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="48" y1="79" x2="48" y2="94" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="27" y1="73" x2="42" y2="73" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="54" y1="73" x2="69" y2="73" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="33" y1="58" x2="44" y2="69" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="52" y1="77" x2="63" y2="88" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="33" y1="88" x2="44" y2="77" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="52" y1="69" x2="63" y2="58" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
             </g>
 
-            <!-- WASH Letters -->
+            <!-- WASH Letters (High-Contrast White) -->
             <!-- W -->
-            <path d="M214 34L228 100H242L254 52L266 100H280L294 34H278L270 78L259 34H249L238 78L230 34H214Z" fill="#1D6FB8"/>
+            <path d="M214 34L228 98H241L253 52L265 98H278L292 34H276L269 77L258 34H248L237 77L230 34H214Z" fill="#FFFFFF"/>
             <!-- A -->
-            <path d="M324 34L304 100H320L325 84H347L352 100H368L348 34H324ZM329 70L336 47L343 70H329Z" fill="#1D6FB8"/>
+            <path d="M322 34L303 98H319L324 82H346L351 98H367L347 34H322ZM328 68L335 46L342 68H328Z" fill="#FFFFFF"/>
             <!-- S -->
-            <path d="M407 48C402 44 395 42 387 42C380 42 376 45 376 49C376 53 380 55 388 57L396 59C408 62 415 68 415 78C415 90 403 98 387 98C377 98 368 95 362 89L369 76C374 81 380 84 387 84C394 84 399 81 399 76C399 72 395 70 388 68L380 66C368 63 361 57 361 48C361 36 373 28 387 28C396 28 403 31 409 35L407 48Z" fill="#1D6FB8"/>
+            <path d="M408 48C403 44 396 42 388 42C381 42 377 45 377 49C377 53 381 55 389 57L397 59C409 62 416 68 416 78C416 90 404 98 388 98C378 98 369 95 363 89L370 76C375 81 381 84 388 84C395 84 400 81 400 76C400 72 396 70 389 68L381 66C369 63 362 57 362 48C362 36 374 28 388 28C397 28 404 31 410 35L408 48Z" fill="#FFFFFF"/>
             <!-- H -->
-            <path d="M430 34V100H446V72H468V100H484V34H468V58H446V34H430Z" fill="#1D6FB8" transform="translate(-10, 0)"/>
+            <path d="M424 34V98H440V70H462V98H478V34H462V56H440V34H424Z" fill="#FFFFFF"/>
 
-            <!-- Arabic: جو واش -->
-            <text x="360" y="132" fill="#1D6FB8" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" text-anchor="middle">جو واش</text>
+            <!-- Arabic: جو واش (Centered beautifully below WASH) -->
+            <text x="346" y="130" fill="#38BDF8" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" letter-spacing="1" text-anchor="middle">جو واش</text>
           </svg>
         </a>
 
@@ -918,10 +940,6 @@
     <!-- Hero Section -->
     <section class="hero-section">
       <div class="container">
-        <div class="hero-kicker">
-          <span>🇸🇦 فعالية حصرية بمناسبة اليوم الوطني 96</span>
-        </div>
-        
         <h1 class="hero-title">
           جرّب حظك مع <span style="color: var(--gowash-blue);">Go Wash</span><br>
           واحتفل بـ <span class="text-gold">اليوم الوطني 96</span>
@@ -930,11 +948,6 @@
         <p class="hero-subtitle">
           لف العجلة واربح خصمك الفوري أو الترقية الكبرى لباقة GoWash Signature — العرض متاح حصرياً فقط طوال فترة احتفالات اليوم الوطني السعودي!
         </p>
-
-        <div class="countdown-box">
-          <span>⏳ صلاحية الفعالية:</span>
-          <strong>متاحة حصرياً فقط خلال احتفالات اليوم الوطني 96</strong>
-        </div>
 
         <div>
           <a href="#wheel-section" class="btn btn-hero" id="heroStartBtn">

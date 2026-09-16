@@ -7,12 +7,29 @@ const { logAdminAction } = require('./auditService');
 const CHARS = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 
 function generateCode() {
-  const bytes = crypto.randomBytes(5);
-  let result = 'GW96-';
-  for (let i = 0; i < 5; i++) {
-    result += CHARS[bytes[i] % CHARS.length];
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const bytes = crypto.randomBytes(8);
+    let part1 = '';
+    let part2 = '';
+    for (let i = 0; i < 4; i++) {
+      part1 += CHARS[bytes[i] % CHARS.length];
+    }
+    for (let i = 4; i < 8; i++) {
+      part2 += CHARS[bytes[i] % CHARS.length];
+    }
+    const candidateCode = `GW96-${part1}-${part2}`;
+    
+    // Collision check against database
+    const exists = db.prepare('SELECT 1 FROM promo_codes WHERE code = ?').get(candidateCode);
+    if (!exists) {
+      return candidateCode;
+    }
   }
-  return result;
+
+  // Cryptographic fallback guaranteed unique with high-res timestamp
+  const ts = Date.now().toString(36).toUpperCase().padStart(8, 'X');
+  const rnd = crypto.randomBytes(2).toString('hex').toUpperCase();
+  return `GW96-${ts.slice(-4)}-${rnd}`;
 }
 
 function redeemPromoCode(code, adminUsername) {

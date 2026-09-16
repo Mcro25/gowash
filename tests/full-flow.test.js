@@ -38,6 +38,11 @@ async function runTests() {
     server = app.listen(TEST_PORT, () => resolve());
   });
 
+  const testPhone1 = `05${crypto.randomInt(10000000, 99999999)}`;
+  const testRacePhone = `05${crypto.randomInt(10000000, 99999999)}`;
+  const testPausePhone = `05${crypto.randomInt(10000000, 99999999)}`;
+  const testCancelPhone = `05${crypto.randomInt(10000000, 99999999)}`;
+
   try {
     // ----------------------------------------------------
     // Test 1: Public Campaign Metadata & Sanity Check
@@ -48,6 +53,10 @@ async function runTests() {
       const data = await res.json();
       assert.strictEqual(data.success, true);
       assert.ok(data.campaign);
+      assert.ok(data.campaign.socialLinks, "Campaign must include socialLinks");
+      assert.strictEqual(data.campaign.socialLinks.whatsapp, "https://wa.me/966580700242");
+      assert.strictEqual(data.campaign.socialLinks.instagram, "https://instagram.com/Gowash.sa");
+      assert.strictEqual(data.campaign.socialLinks.tiktok, "https://www.tiktok.com/@Gowash.sa");
       assert.ok(Array.isArray(data.prizes));
       assert.strictEqual(data.prizes.length, 6);
 
@@ -80,13 +89,61 @@ async function runTests() {
     });
 
     // ----------------------------------------------------
-    // Test 2b: First Spin for a new participant with Terms Accepted
+    // Test 2a-name: Spin without name is rejected
+    // ----------------------------------------------------
+    await test("2a-name. Spin without name is rejected with 400 INVALID_NAME", async () => {
+      const res = await fetch(`${BASE_URL}/api/spin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": `gowash_pid=${crypto.randomUUID()}`
+        },
+        body: JSON.stringify({
+          termsAccepted: true,
+          termsVersion: "1.0",
+          name: "",
+          phone: testPhone1
+        })
+      });
+
+      assert.strictEqual(res.status, 400);
+      const data = await res.json();
+      assert.strictEqual(data.success, false);
+      assert.strictEqual(data.code, "INVALID_NAME");
+    });
+
+    // ----------------------------------------------------
+    // Test 2a-phone: Spin without valid Saudi phone is rejected
+    // ----------------------------------------------------
+    await test("2a-phone. Spin with invalid phone is rejected with 400 INVALID_PHONE", async () => {
+      const res = await fetch(`${BASE_URL}/api/spin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": `gowash_pid=${crypto.randomUUID()}`
+        },
+        body: JSON.stringify({
+          termsAccepted: true,
+          termsVersion: "1.0",
+          name: "أحمد السعيد",
+          phone: "0123456"
+        })
+      });
+
+      assert.strictEqual(res.status, 400);
+      const data = await res.json();
+      assert.strictEqual(data.success, false);
+      assert.strictEqual(data.code, "INVALID_PHONE");
+    });
+
+    // ----------------------------------------------------
+    // Test 2b: First Spin for a new participant with Terms Accepted & Valid Lead Info
     // ----------------------------------------------------
     const participant1Cookie = `gowash_pid=${crypto.randomUUID()}`;
     let p1PromoCode = "";
     let p1PrizeId = "";
 
-    await test("2b. First Spin with terms acceptance executes successfully and returns valid prize and promo", async () => {
+    await test("2b. First Spin with terms, name and phone executes successfully and returns valid prize and unique promo", async () => {
       const res = await fetch(`${BASE_URL}/api/spin`, {
         method: "POST",
         headers: {
@@ -97,7 +154,9 @@ async function runTests() {
         body: JSON.stringify({
           idempotencyKey: "test_idemp_1",
           termsAccepted: true,
-          termsVersion: "1.0"
+          termsVersion: "1.0",
+          name: "أحمد السعيد",
+          phone: testPhone1
         })
       });
 
@@ -108,7 +167,9 @@ async function runTests() {
       assert.ok(data.prize.id);
       assert.ok(data.prize.label);
       assert.ok(data.promo);
-      assert.match(data.promo.code, /^GW96-[2-9A-Z]{5}$/);
+      assert.match(data.promo.code, /^GW96-[2-9A-Z]{4}-[2-9A-Z]{4}$/);
+      assert.strictEqual(data.participant.name, "أحمد السعيد");
+      assert.strictEqual(data.participant.phone, testPhone1);
 
       // Verify probability is not leaked in spin response
       assert.strictEqual(data.prize.probability, undefined);
@@ -116,17 +177,21 @@ async function runTests() {
       p1PromoCode = data.promo.code;
       p1PrizeId = data.prize.id;
 
-      // Verify consent record was stored in DB
+      // Verify consent and participant record in DB
       const pid = participant1Cookie.replace("gowash_pid=", "");
       const consentRecord = db.prepare("SELECT * FROM participant_consents WHERE participant_id = ?").get(pid);
       assert.ok(consentRecord, "Consent must be recorded in DB");
       assert.strictEqual(consentRecord.terms_version, "1.0");
+
+      const pRecord = db.prepare("SELECT * FROM participants WHERE id = ?").get(pid);
+      assert.strictEqual(pRecord.name, "أحمد السعيد");
+      assert.strictEqual(pRecord.phone, testPhone1);
     });
 
     // ----------------------------------------------------
-    // Test 3: Second Spin rejection for same participant
+    // Test 3: Second Spin rejection for same participant cookie
     // ----------------------------------------------------
-    await test("3. Second Spin from same participant is rejected with 403 ALREADY_SPUN", async () => {
+    await test("3. Second Spin from same participant cookie is rejected with 403 ALREADY_SPUN", async () => {
       const res = await fetch(`${BASE_URL}/api/spin`, {
         method: "POST",
         headers: {
@@ -137,7 +202,9 @@ async function runTests() {
         body: JSON.stringify({
           idempotencyKey: "different_key_2",
           termsAccepted: true,
-          termsVersion: "1.0"
+          termsVersion: "1.0",
+          name: "أحمد السعيد",
+          phone: testPhone1
         })
       });
 
@@ -146,6 +213,50 @@ async function runTests() {
       assert.strictEqual(data.success, false);
       assert.strictEqual(data.code, "ALREADY_SPUN");
       assert.ok(data.existingPrize);
+    });
+
+    // ----------------------------------------------------
+    // Test 3b: Second Spin rejection for same phone number from different device/cookie
+    // ----------------------------------------------------
+    await test("3b. Second Spin from different cookie with same phone is rejected with 403 ALREADY_SPUN", async () => {
+      const differentDeviceCookie = `gowash_pid=${crypto.randomUUID()}`;
+      const res = await fetch(`${BASE_URL}/api/spin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": differentDeviceCookie
+        },
+        body: JSON.stringify({
+          termsAccepted: true,
+          termsVersion: "1.0",
+          name: "أحمد تجربة أخرى",
+          phone: testPhone1 // Same phone number!
+        })
+      });
+
+      assert.strictEqual(res.status, 403);
+      const data = await res.json();
+      assert.strictEqual(data.success, false);
+      assert.strictEqual(data.code, "ALREADY_SPUN");
+      assert.ok(data.existingPrize);
+      assert.strictEqual(data.existingPrize.code, p1PromoCode);
+    });
+
+    // ----------------------------------------------------
+    // Test 3c: Phone Prize Recovery
+    // ----------------------------------------------------
+    await test("3c. Prize recovery endpoint POST /api/check-prize restores prize by phone", async () => {
+      const res = await fetch(`${BASE_URL}/api/check-prize`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: testPhone1 })
+      });
+
+      assert.strictEqual(res.status, 200);
+      const data = await res.json();
+      assert.strictEqual(data.success, true);
+      assert.strictEqual(data.promo.code, p1PromoCode);
+      assert.strictEqual(data.participant.phone, testPhone1);
     });
 
     // ----------------------------------------------------
@@ -162,7 +273,9 @@ async function runTests() {
         body: JSON.stringify({
           idempotencyKey: "test_idemp_1",
           termsAccepted: true,
-          termsVersion: "1.0"
+          termsVersion: "1.0",
+          name: "أحمد السعيد",
+          phone: testPhone1
         })
       });
 
@@ -190,7 +303,9 @@ async function runTests() {
           body: JSON.stringify({
             idempotencyKey: `race_key_${i}`,
             termsAccepted: true,
-            termsVersion: "1.0"
+            termsVersion: "1.0",
+            name: "متسابق التزامن",
+            phone: testRacePhone
           })
         })
       );
@@ -227,7 +342,9 @@ async function runTests() {
           },
           body: JSON.stringify({
             termsAccepted: true,
-            termsVersion: "1.0"
+            termsVersion: "1.0",
+            name: "عميل تجربة الإيقاف",
+            phone: testPausePhone
           })
         });
 
@@ -386,6 +503,17 @@ async function runTests() {
     // Test 12: Promo Code Cancellation
     // ----------------------------------------------------
     await test("12. Promo Code cancellation works and prevents future redemption", async () => {
+      // Resume campaign if paused by test 6
+      await fetch(`${BASE_URL}/api/admin/campaign/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": adminSessionCookie,
+          "x-csrf-token": adminCsrfToken
+        },
+        body: JSON.stringify({ status: "ACTIVE" })
+      });
+
       // Create a spin for a new participant to get a fresh code
       const freshCookie = `gowash_pid=${crypto.randomUUID()}`;
       const spinRes = await fetch(`${BASE_URL}/api/spin`, {
@@ -396,7 +524,9 @@ async function runTests() {
         },
         body: JSON.stringify({
           termsAccepted: true,
-          termsVersion: "1.0"
+          termsVersion: "1.0",
+          name: "عميل تجربة الإلغاء",
+          phone: testCancelPhone
         })
       });
       const spinData = await spinRes.json();

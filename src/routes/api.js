@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const { executeSpin } = require('../services/spinService');
+const { executeSpin, checkPrizeByPhone } = require('../services/spinService');
 const { spinRateLimiter } = require('../middleware/rateLimiter');
 
 // GET /api/campaign - Public campaign metadata for client
@@ -54,6 +54,7 @@ router.get('/campaign', (req, res) => {
         status: campaign ? campaign.status : 'ACTIVE',
         name: campaign ? campaign.name : 'Go Wash Saudi National Day 96',
         termsVersion: require('../config').CURRENT_TERMS_VERSION,
+        socialLinks: require('../config').SOCIAL_LINKS,
         offers: {
           twoCars: {
             title: 'غسيل سيارتين في نفس الموقع',
@@ -88,6 +89,8 @@ router.post('/spin', spinRateLimiter(30, 60000), (req, res) => {
     const userAgent = req.headers['user-agent'] || '';
     const termsAccepted = req.body?.termsAccepted;
     const termsVersion = req.body?.termsVersion;
+    const name = req.body?.name;
+    const phone = req.body?.phone;
 
     const result = executeSpin({
       participantId,
@@ -95,12 +98,15 @@ router.post('/spin', spinRateLimiter(30, 60000), (req, res) => {
       ip,
       userAgent,
       termsAccepted,
-      termsVersion
+      termsVersion,
+      name,
+      phone
     });
 
     if (!result.success) {
-      const statusCode = result.code === 'ALREADY_SPUN' ? 403 :
-        (result.code === 'CAMPAIGN_PAUSED' || result.code === 'CAMPAIGN_ENDED' || result.code === 'TERMS_NOT_ACCEPTED' ? 400 : 500);
+      let statusCode = 400;
+      if (result.code === 'ALREADY_SPUN') statusCode = 403;
+      else if (result.code === 'SERVER_ERROR') statusCode = 500;
       return res.status(statusCode).json(result);
     }
 
@@ -108,6 +114,25 @@ router.post('/spin', spinRateLimiter(30, 60000), (req, res) => {
   } catch (err) {
     console.error('Unexpected spin endpoint error:', err);
     res.status(500).json({ success: false, error: 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.' });
+  }
+});
+
+// POST /api/check-prize - Lookup and restore participant's prize by phone number
+router.post('/check-prize', spinRateLimiter(20, 60000), (req, res) => {
+  try {
+    const { phone } = req.body || {};
+    if (!phone) {
+      return res.status(400).json({ success: false, error: 'يرجى إدخال رقم الجوال.' });
+    }
+    const result = checkPrizeByPhone(phone);
+    if (!result.success) {
+      const code = result.code === 'NOT_FOUND' ? 404 : 400;
+      return res.status(code).json(result);
+    }
+    res.json(result);
+  } catch (err) {
+    console.error('Error in check-prize:', err);
+    res.status(500).json({ success: false, error: 'حدث خطأ أثناء البحث عن الجائزة.' });
   }
 });
 

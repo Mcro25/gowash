@@ -26,7 +26,75 @@ function selectPrize(prizes) {
   return prizes[prizes.length - 1];
 }
 
-function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccepted, termsVersion }) {
+// Saudi phone normalization & validation
+function normalizeSaudiPhone(rawPhone) {
+  if (!rawPhone || typeof rawPhone !== 'string') return null;
+  let cleaned = rawPhone.trim().replace(/[\s\-\(\)\.]/g, '');
+  if (cleaned.startsWith('+966')) {
+    cleaned = '0' + cleaned.slice(4);
+  } else if (cleaned.startsWith('00966')) {
+    cleaned = '0' + cleaned.slice(5);
+  } else if (cleaned.startsWith('966')) {
+    cleaned = '0' + cleaned.slice(3);
+  }
+  // If user entered 5xxxxxxxx (9 digits), prepend 0
+  if (/^5[0-9]{8}$/.test(cleaned)) {
+    cleaned = '0' + cleaned;
+  }
+  // Must be 10 digits starting with 05
+  if (/^05[0-9]{8}$/.test(cleaned)) {
+    return cleaned;
+  }
+  return null;
+}
+
+function validateName(rawName) {
+  if (!rawName || typeof rawName !== 'string') return null;
+  const trimmed = rawName.trim();
+  if (trimmed.length < 2 || trimmed.length > 70) return null;
+  return trimmed;
+}
+
+function checkPrizeByPhone(rawPhone) {
+  const validPhone = normalizeSaudiPhone(rawPhone);
+  if (!validPhone) {
+    return { success: false, code: 'INVALID_PHONE', message: 'يرجى إدخال رقم جوال سعودي صحيح (مثال: 0580700242).' };
+  }
+  const spin = db.prepare(`
+    SELECT s.id, pr.label as prize_label, pr.type as prize_type, pr.subtext as prize_subtext,
+           p.code as promo_code, p.expires_at as promo_expires_at, p.status as promo_status,
+           pt.name as participant_name, pt.phone as participant_phone
+    FROM spins s
+    JOIN participants pt ON s.participant_id = pt.id
+    JOIN prizes pr ON s.prize_id = pr.id
+    LEFT JOIN promo_codes p ON s.id = p.spin_id
+    WHERE pt.phone = ?
+  `).get(validPhone);
+
+  if (!spin) {
+    return { success: false, code: 'NOT_FOUND', message: 'لا توجد جائزة مسجلة بهذا الرقم في فعالية اليوم الوطني 96.' };
+  }
+
+  return {
+    success: true,
+    prize: {
+      label: spin.prize_label,
+      type: spin.prize_type,
+      subtext: spin.prize_subtext
+    },
+    promo: {
+      code: spin.promo_code,
+      expiresAt: spin.promo_expires_at,
+      status: spin.promo_status
+    },
+    participant: {
+      name: spin.participant_name,
+      phone: spin.participant_phone
+    }
+  };
+}
+
+function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccepted, termsVersion, name, phone }) {
   const now = new Date();
   const nowIso = now.toISOString();
   const ipH = hashIp(ip);
@@ -62,7 +130,26 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccept
     };
   }
 
-  // 2. Check Idempotency Key
+  // 3. Enforce and Validate Name and Saudi Phone (Mandatory before Spin)
+  const validName = validateName(name);
+  if (!validName) {
+    return {
+      success: false,
+      code: 'INVALID_NAME',
+      message: 'يرجى إدخال اسمك الكريم (حرفين على الأقل).'
+    };
+  }
+
+  const validPhone = normalizeSaudiPhone(phone);
+  if (!validPhone) {
+    return {
+      success: false,
+      code: 'INVALID_PHONE',
+      message: 'يرجى إدخال رقم جوال سعودي صحيح يبدأ بـ 05 ويتكون من 10 أرقام (مثال: 0580700242).'
+    };
+  }
+
+  // 4. Check Idempotency Key
   if (idempotencyKey) {
     const existingIdempotent = db.prepare(`
       SELECT s.id, s.prize_id, pr.label as prize_label, pr.type as prize_type, pr.subtext as prize_subtext,
@@ -91,10 +178,41 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccept
     }
   }
 
-  // 3. Pre-check Participant Spin Limit
+  // 5. Check if Phone Number Already Spun
+  if (validPhone) {
+    const existingPhoneSpin = db.prepare(`
+      SELECT s.id, s.prize_id, pr.label as prize_label, pr.type as prize_type, pr.subtext as prize_subtext,
+             p.code as promo_code, p.expires_at as promo_expires_at, pt.name, pt.phone
+      FROM spins s
+      JOIN participants pt ON s.participant_id = pt.id
+      JOIN prizes pr ON s.prize_id = pr.id
+      LEFT JOIN promo_codes p ON s.id = p.spin_id
+      WHERE pt.phone = ?
+    `).get(validPhone);
+
+    if (existingPhoneSpin) {
+      logSecurityEvent(ipH, participantId, 'DUPLICATE_PHONE_SPIN_ATTEMPT', `Phone ${validPhone} attempted to spin again`);
+      return {
+        success: false,
+        code: 'ALREADY_SPUN',
+        message: 'تم استهلاك فرصة التدوير الخاصة بهذا الرقم في فعالية اليوم الوطني 96.',
+        existingPrize: {
+          label: existingPhoneSpin.prize_label,
+          type: existingPhoneSpin.prize_type,
+          subtext: existingPhoneSpin.prize_subtext,
+          code: existingPhoneSpin.promo_code,
+          expiresAt: existingPhoneSpin.promo_expires_at,
+          name: existingPhoneSpin.name,
+          phone: existingPhoneSpin.phone
+        }
+      };
+    }
+  }
+
+  // 6. Pre-check Participant Cookie ID Spin Limit
   const existingSpin = db.prepare(`
     SELECT s.id, s.prize_id, pr.label as prize_label, pr.type as prize_type, pr.subtext as prize_subtext,
-           p.code as promo_code
+           p.code as promo_code, p.expires_at as promo_expires_at
     FROM spins s
     JOIN prizes pr ON s.prize_id = pr.id
     LEFT JOIN promo_codes p ON s.id = p.spin_id
@@ -109,7 +227,10 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccept
       message: 'تم استهلاك فرصة التدوير الخاصة بك في فعالية اليوم الوطني 96.',
       existingPrize: {
         label: existingSpin.prize_label,
-        code: existingSpin.promo_code
+        type: existingSpin.prize_type,
+        subtext: existingSpin.prize_subtext,
+        code: existingSpin.promo_code,
+        expiresAt: existingSpin.promo_expires_at
       }
     };
   }
@@ -141,7 +262,7 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccept
     db.exec('BEGIN IMMEDIATE');
     inTransaction = true;
 
-    // Double-check inside transaction lock
+    // Double-check inside transaction lock for participant_id
     const checkCount = db.prepare('SELECT COUNT(*) as count FROM spins WHERE participant_id = ?').get(participantId);
     if (checkCount.count > 0) {
       db.exec('ROLLBACK');
@@ -152,6 +273,35 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccept
         code: 'ALREADY_SPUN',
         message: 'تم استهلاك فرصة التدوير الخاصة بك في فعالية اليوم الوطني 96.'
       };
+    }
+
+    // Double-check inside transaction lock for phone
+    if (validPhone) {
+      const checkPhone = db.prepare(`
+        SELECT COUNT(*) as count 
+        FROM spins s 
+        JOIN participants pt ON s.participant_id = pt.id 
+        WHERE pt.phone = ?
+      `).get(validPhone);
+      if (checkPhone && checkPhone.count > 0) {
+        db.exec('ROLLBACK');
+        inTransaction = false;
+        logSecurityEvent(ipH, participantId, 'CONCURRENT_PHONE_SPIN_BLOCKED', `Concurrent phone ${validPhone} blocked`);
+        return {
+          success: false,
+          code: 'ALREADY_SPUN',
+          message: 'تم استهلاك فرصة التدوير الخاصة بهذا الرقم في فعالية اليوم الوطني 96.'
+        };
+      }
+    }
+
+    // Update or insert participant record with verified name and phone
+    const existingP = db.prepare('SELECT id FROM participants WHERE id = ?').get(participantId);
+    if (existingP) {
+      db.prepare('UPDATE participants SET name = ?, phone = ? WHERE id = ?').run(validName, validPhone, participantId);
+    } else {
+      db.prepare('INSERT INTO participants (id, name, phone, first_seen_at, ip_hash, user_agent) VALUES (?, ?, ?, ?, ?, ?)')
+        .run(participantId, validName, validPhone, nowIso, ipH, userAgent || '');
     }
 
     // Insert spin record
@@ -188,6 +338,10 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccept
       promo: {
         code: promoCode,
         expiresAt: expiresIso
+      },
+      participant: {
+        name: validName,
+        phone: validPhone
       }
     };
   } catch (err) {
@@ -195,7 +349,7 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccept
       try { db.exec('ROLLBACK'); } catch (e) {}
     }
 
-    // If duplicate constraint on participant_id
+    // If duplicate constraint on participant_id or phone
     if (err.message && (err.message.includes('UNIQUE constraint failed') || err.message.includes('SQLITE_CONSTRAINT'))) {
       logSecurityEvent(ipH, participantId, 'RACE_CONDITION_CONSTRAINT_TRIPPED', err.message);
       return {
@@ -215,5 +369,8 @@ function executeSpin({ participantId, idempotencyKey, ip, userAgent, termsAccept
 }
 
 module.exports = {
-  executeSpin
+  executeSpin,
+  checkPrizeByPhone,
+  normalizeSaudiPhone,
+  validateName
 };

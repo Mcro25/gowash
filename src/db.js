@@ -46,10 +46,27 @@ function initSchema() {
 
     CREATE TABLE IF NOT EXISTS participants (
       id TEXT PRIMARY KEY,
+      name TEXT,
+      phone TEXT,
       first_seen_at TEXT NOT NULL,
       ip_hash TEXT,
       user_agent TEXT
     );
+
+  `);
+
+  try {
+    const cols = db.prepare("PRAGMA table_info(participants)").all();
+    if (!cols.some(c => c.name === 'phone')) {
+      db.exec(`ALTER TABLE participants ADD COLUMN phone TEXT;`);
+    }
+    if (!cols.some(c => c.name === 'name')) {
+      db.exec(`ALTER TABLE participants ADD COLUMN name TEXT;`);
+    }
+  } catch (e) {}
+
+  db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_participants_phone ON participants(phone);
 
     CREATE TABLE IF NOT EXISTS participant_consents (
       id TEXT PRIMARY KEY,
@@ -131,6 +148,20 @@ function initSchema() {
       details TEXT
     );
   `);
+
+  // Migration for existing tables
+  try {
+    const tableInfo = db.prepare("PRAGMA table_info(participants)").all();
+    const colNames = tableInfo.map(c => c.name);
+    if (!colNames.includes('name')) {
+      db.exec("ALTER TABLE participants ADD COLUMN name TEXT;");
+    }
+    if (!colNames.includes('phone')) {
+      db.exec("ALTER TABLE participants ADD COLUMN phone TEXT;");
+    }
+  } catch (e) {
+    // Ignore migration error
+  }
 
   // Seed default campaign settings if empty
   const campaign = db.prepare('SELECT id FROM campaign_settings WHERE id = 1').get();

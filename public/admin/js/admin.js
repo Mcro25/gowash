@@ -14,6 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => { toast.style.display = "none"; }, 3500);
   }
 
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+  }
+
   // Safe fetch wrapper with CSRF token
   async function fetchWithCsrf(url, options = {}) {
     options.headers = options.headers || {};
@@ -305,17 +310,18 @@ document.addEventListener("DOMContentLoaded", () => {
       tbody.innerHTML = "";
 
       if (data.data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--admin-muted); padding: 24px;">لا توجد سجلات تدوير مطابقة.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--admin-muted); padding: 24px;">لا توجد سجلات تدوير مطابقة.</td></tr>`;
       } else {
         data.data.forEach(s => {
           const tr = document.createElement("tr");
           const dateStr = new Date(s.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
           tr.innerHTML = `
-            <td style="font-family: monospace; font-size: 0.8rem;">${s.id.substring(0, 8)}...</td>
-            <td style="font-family: monospace; font-size: 0.8rem;">${s.participant_id.substring(0, 8)}...</td>
-            <td><strong>${s.prize_label}</strong></td>
-            <td><strong style="color: #72F3AA; font-family: monospace;">${s.promo_code || '---'}</strong></td>
-            <td><span class="badge badge-${(s.promo_status || 'active').toLowerCase()}">${s.promo_status || 'ACTIVE'}</span></td>
+            <td style="font-family: monospace; font-size: 0.8rem;">${escapeHtml(s.id.substring(0, 8))}...</td>
+            <td><strong>${escapeHtml(s.participant_name || 'غير محدد')}</strong></td>
+            <td><span dir="ltr" style="font-family: monospace; font-size: 0.85rem; color: #60A5FA;">${escapeHtml(s.participant_phone || '---')}</span></td>
+            <td><strong>${escapeHtml(s.prize_label)}</strong></td>
+            <td><strong style="color: #72F3AA; font-family: monospace;">${escapeHtml(s.promo_code || '---')}</strong></td>
+            <td><span class="badge badge-${(s.promo_status || 'active').toLowerCase()}">${escapeHtml(s.promo_status || 'ACTIVE')}</span></td>
             <td style="font-size: 0.84rem;">${dateStr}</td>
           `;
           tbody.appendChild(tr);
@@ -349,12 +355,11 @@ document.addEventListener("DOMContentLoaded", () => {
       tbody.innerHTML = "";
 
       if (data.data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--admin-muted); padding: 24px;">لا توجد أكواد ترويجية مطابقة.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--admin-muted); padding: 24px;">لا توجد أكواد ترويجية مطابقة.</td></tr>`;
       } else {
         data.data.forEach(p => {
           const tr = document.createElement("tr");
           const createdStr = new Date(p.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
-          const expiresStr = new Date(p.expires_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
           const redeemedStr = p.redeemed_at ? new Date(p.redeemed_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : '---';
 
           let actions = "";
@@ -368,11 +373,12 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           tr.innerHTML = `
-            <td><strong style="color: #72F3AA; font-family: monospace; font-size: 1.05rem;">${p.code}</strong></td>
-            <td><strong>${p.prize_label}</strong></td>
+            <td><strong style="color: #72F3AA; font-family: monospace; font-size: 1.05rem;">${escapeHtml(p.code)}</strong></td>
+            <td><strong>${escapeHtml(p.participant_name || 'غير محدد')}</strong></td>
+            <td><span dir="ltr" style="font-family: monospace; font-size: 0.85rem; color: #60A5FA;">${escapeHtml(p.participant_phone || '---')}</span></td>
+            <td><strong>${escapeHtml(p.prize_label)}</strong></td>
             <td style="font-size: 0.82rem;">${createdStr}</td>
-            <td style="font-size: 0.82rem;">${expiresStr}</td>
-            <td><span class="badge badge-${p.status.toLowerCase()}">${p.status}</span></td>
+            <td><span class="badge badge-${p.status.toLowerCase()}">${escapeHtml(p.status)}</span></td>
             <td style="font-size: 0.82rem;">${redeemedStr}</td>
             <td>${actions}</td>
           `;

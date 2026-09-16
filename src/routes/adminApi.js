@@ -222,19 +222,28 @@ router.get('/spins', (req, res) => {
 
   let query = `
     SELECT s.id, s.participant_id, s.created_at, pr.label as prize_label, pr.type as prize_type,
-           p.code as promo_code, p.status as promo_status
+           p.code as promo_code, p.status as promo_status,
+           COALESCE(pt.name, 'غير محدد') as participant_name,
+           COALESCE(pt.phone, '---') as participant_phone
     FROM spins s
+    LEFT JOIN participants pt ON s.participant_id = pt.id
     JOIN prizes pr ON s.prize_id = pr.id
     LEFT JOIN promo_codes p ON s.id = p.spin_id
   `;
-  let countQuery = 'SELECT COUNT(*) as count FROM spins s LEFT JOIN promo_codes p ON s.id = p.spin_id';
+  let countQuery = `
+    SELECT COUNT(*) as count 
+    FROM spins s 
+    LEFT JOIN participants pt ON s.participant_id = pt.id
+    LEFT JOIN promo_codes p ON s.id = p.spin_id
+    JOIN prizes pr ON s.prize_id = pr.id
+  `;
   const params = [];
 
   if (search) {
-    query += ` WHERE p.code LIKE ? OR s.participant_id LIKE ? OR pr.label LIKE ?`;
-    countQuery += ` WHERE p.code LIKE ? OR s.participant_id LIKE ? OR pr.label LIKE ?`;
+    query += ` WHERE p.code LIKE ? OR s.participant_id LIKE ? OR pr.label LIKE ? OR pt.name LIKE ? OR pt.phone LIKE ?`;
+    countQuery += ` WHERE p.code LIKE ? OR s.participant_id LIKE ? OR pr.label LIKE ? OR pt.name LIKE ? OR pt.phone LIKE ?`;
     const term = `%${search}%`;
-    params.push(term, term, term);
+    params.push(term, term, term, term, term);
   }
 
   query += ` ORDER BY s.created_at DESC LIMIT ? OFFSET ?`;
@@ -264,17 +273,21 @@ router.get('/promos', (req, res) => {
 
   let query = `
     SELECT p.id, p.code, p.status, p.created_at, p.expires_at, p.redeemed_at,
-           pr.label as prize_label, p.participant_id
+           pr.label as prize_label, p.participant_id,
+           COALESCE(pt.name, 'غير محدد') as participant_name,
+           COALESCE(pt.phone, '---') as participant_phone
     FROM promo_codes p
+    LEFT JOIN participants pt ON p.participant_id = pt.id
     JOIN prizes pr ON p.prize_id = pr.id
   `;
-  let countQuery = 'SELECT COUNT(*) as count FROM promo_codes p';
+  let countQuery = 'SELECT COUNT(*) as count FROM promo_codes p LEFT JOIN participants pt ON p.participant_id = pt.id';
   const whereClauses = [];
   const params = [];
 
   if (search) {
-    whereClauses.push('(p.code LIKE ? OR p.participant_id LIKE ?)');
-    params.push(`%${search}%`, `%${search}%`);
+    whereClauses.push('(p.code LIKE ? OR p.participant_id LIKE ? OR pt.name LIKE ? OR pt.phone LIKE ?)');
+    const term = `%${search}%`;
+    params.push(term, term, term, term);
   }
 
   if (statusFilter && ['ACTIVE', 'REDEEMED', 'EXPIRED', 'CANCELLED'].includes(statusFilter)) {

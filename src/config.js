@@ -35,4 +35,9 @@ module.exports = {
   SESSION_EXPIRY_MS: 12 * 60 * 60 * 1000, // 12 hours
   PROMO_EXPIRY_HOURS: 48, // 48 hours for promo codes
   CURRENT_TERMS_VERSION: '1.0',
+  SOCIAL_LINKS: {
+    whatsapp: process.env.SOCIAL_WHATSAPP || "https://wa.me/966580700242",
+    instagram: process.env.SOCIAL_INSTAGRAM || "https://instagram.com/Gowash.sa",
+    tiktok: process.env.SOCIAL_TIKTOK || "https://www.tiktok.com/@Gowash.sa"
+  }
 };

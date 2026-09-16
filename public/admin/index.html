@@ -57,7 +57,16 @@
   <!-- Main Area -->
   <div class="main-wrapper">
     <header class="topbar">
-      <h2 id="topbarTitle" class="page-title">نظرة عامة على الفعالية</h2>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button id="sidebarToggleBtn" class="btn-sidebar-toggle" aria-label="فتح القائمة">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <h2 id="topbarTitle" class="page-title">نظرة عامة على الفعالية</h2>
+      </div>
       <div class="topbar-actions">
         <button id="topbarKillSwitch" class="btn-kill-switch">
           🛑 إيقاف الحملة فوري (Kill Switch)
@@ -210,11 +219,12 @@
               <thead>
                 <tr>
                   <th>معرف اللفة</th>
-                  <th>معرف المشارك</th>
+                  <th>اسم العميل</th>
+                  <th>رقم الجوال</th>
                   <th>الجائزة</th>
                   <th>الكود الترويجي</th>
                   <th>حالة الكود</th>
-                  <th>الوقت (بتوقيت الرياض)</th>
+                  <th>الوقت</th>
                 </tr>
               </thead>
               <tbody id="spinsTableBody">
@@ -244,7 +254,7 @@
                 <option value="EXPIRED">منتهي (EXPIRED)</option>
                 <option value="CANCELLED">ملغي (CANCELLED)</option>
               </select>
-              <input type="text" id="promosSearchInput" class="search-input" placeholder="بحث بالكود...">
+              <input type="text" id="promosSearchInput" class="search-input" placeholder="بحث بالاسم، الجوال، أو الكود...">
             </div>
           </div>
 
@@ -253,12 +263,13 @@
               <thead>
                 <tr>
                   <th>الكود الترويجي</th>
+                  <th>اسم العميل</th>
+                  <th>رقم الجوال</th>
                   <th>الجائزة</th>
                   <th>تاريخ الإنشاء</th>
-                  <th>تاريخ الانتهاء</th>
                   <th>الحالة</th>
                   <th>تاريخ الصرف</th>
-                  <th>إجراءات</th>
+                  <th>الإجراءات</th>
                 </tr>
               </thead>
               <tbody id="promosTableBody">
