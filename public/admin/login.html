@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول | لوحة تحكم Go Wash</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #071320;
+      color: #FFFFFF;
+      font-family: 'Cairo', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: #0E2238;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 36px 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .brand-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #1D6FB8;
+    }
+    .brand-subtitle {
+      font-size: 0.9rem;
+      color: #94A3B8;
+      margin-top: 4px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #CBD5E1;
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      background: #071320;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: #FFFFFF;
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #1D6FB8;
+    }
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #1D6FB8 0%, #155894 100%);
+      color: #FFFFFF;
+      border: none;
+      padding: 13px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+    .btn-submit:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .error-box {
+      display: none;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #FCA5A5;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <div class="login-header">
+      <h1 class="brand-title">Go Wash</h1>
+      <p class="brand-subtitle">لوحة تحكم فعالية اليوم الوطني 96</p>
+    </div>
+
+    <div id="errorBox" class="error-box"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label class="form-label" for="username">اسم المستخدم أو البريد الإلكتروني</label>
+        <input type="text" id="username" class="form-input" required autocomplete="username" autofocus>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">كلمة المرور</label>
+        <input type="password" id="password" class="form-input" required autocomplete="current-password">
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn-submit">
+        تسجيل الدخول
+      </button>
+    </form>
+  </div>
+
+  <script src="/admin/js/login.js"></script>
+</body>
+</html>

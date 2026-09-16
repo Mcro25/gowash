@@ -1,0 +1,26 @@
+{
+  "name": "gowash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/full-flow.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mcro25/gowash.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mcro25/gowash/issues"
+  },
+  "homepage": "https://github.com/Mcro25/gowash#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1"
+  }
+}

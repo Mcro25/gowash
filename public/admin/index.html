@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة تحكم Go Wash | فعالية اليوم الوطني 96</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/css/admin.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-logo">Go Wash</span>
+      <span class="sidebar-badge">اليوم الوطني 96</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-tab="overview">
+        📊 نظرة عامة
+      </button>
+      <button class="nav-item" data-tab="campaign">
+        ⚙️ إدارة الحملة
+      </button>
+      <button class="nav-item" data-tab="prizes">
+        🎁 الجوائز والاحتمالات
+      </button>
+      <button class="nav-item" data-tab="spins">
+        🎡 سجل اللفات
+      </button>
+      <button class="nav-item" data-tab="promos">
+        🏷️ الأكواد الترويجية
+      </button>
+      <button class="nav-item" data-tab="security">
+        🛡️ شاشة الأمان
+      </button>
+      <button class="nav-item" data-tab="audit">
+        📜 سجل العمليات
+      </button>
+      <button class="nav-item" data-tab="settings">
+        🔒 الإعدادات
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <div>مرحباً،</div>
+        <div class="admin-name" id="adminNameDisplay">المدير</div>
+      </div>
+      <button id="logoutBtn" class="btn-logout">خروج</button>
+    </div>
+  </aside>
+
+  <!-- Main Area -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <h2 id="topbarTitle" class="page-title">نظرة عامة على الفعالية</h2>
+      <div class="topbar-actions">
+        <button id="topbarKillSwitch" class="btn-kill-switch">
+          🛑 إيقاف الحملة فوري (Kill Switch)
+        </button>
+      </div>
+    </header>
+
+    <main class="content-container">
+
+      <!-- 1. Overview Panel -->
+      <section id="panel-overview" class="tab-panel active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">إجمالي اللفات</div>
+            <div class="stat-value" id="statTotalSpins">0</div>
+            <div class="stat-footer">محاولات التدوير الناجحة</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">المشاركون الفريدون</div>
+            <div class="stat-value" id="statUniqueParticipants">0</div>
+            <div class="stat-footer">عملاء حقيقيون زاروا الفعالية</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">الجوائز الصادرة</div>
+            <div class="stat-value" id="statRewardsIssued">0</div>
+            <div class="stat-footer">أكواد ترويجية تم إنشاؤها</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">الأكواد النشطة</div>
+            <div class="stat-value" id="statActiveCodes" style="color: #34D399;">0</div>
+            <div class="stat-footer">جاهزة للاستخدام من العملاء</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">الأكواد المصروفة</div>
+            <div class="stat-value" id="statRedeemedCodes" style="color: #60A5FA;">0</div>
+            <div class="stat-footer">تم حجزها والاستفادة منها</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">الأكواد المنتهية</div>
+            <div class="stat-value" id="statExpiredCodes" style="color: #94A3B8;">0</div>
+            <div class="stat-footer">تجاوزت مهلة 48 ساعة</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">الطلبات المحجوبة</div>
+            <div class="stat-value" id="statBlockedRequests" style="color: #F87171;">0</div>
+            <div class="stat-footer">تجاوز المعدل أو سبام</div>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <h3 class="card-title">حالة الفعالية الحالية</h3>
+          <div id="overviewCampaignBadge" style="margin-bottom: 14px;"></div>
+          <p style="color: var(--admin-soft); font-size: 0.95rem;">
+            توقيت النظام المعتمد لجميع السجلات والتحققات: <strong>Asia/Riyadh (توقيت الرياض)</strong>
+          </p>
+        </div>
+      </section>
+
+      <!-- 2. Campaign Management Panel -->
+      <section id="panel-campaign" class="tab-panel">
+        <div class="panel-card">
+          <h3 class="card-title">التحكم بحالة الفعالية ومواعيدها</h3>
+          <form id="campaignSettingsForm">
+            <div class="form-group">
+              <label class="form-label">حالة الحملة</label>
+              <select id="campaignStatusSelect" class="form-select">
+                <option value="ACTIVE">نشطة (ACTIVE) - استقبال الطلبات متاح</option>
+                <option value="PAUSED">متوقفة مؤقتاً (PAUSED) - رفض التدوير</option>
+                <option value="ENDED">منتهية (ENDED) - إغلاق الحملة نهائياً</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">اسم الحملة</label>
+              <input type="text" id="campaignNameInput" class="form-input">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">تاريخ البدء (بتوقيت الرياض)</label>
+                <input type="datetime-local" id="campaignStartDateInput" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">تاريخ الانتهاء (بتوقيت الرياض)</label>
+                <input type="datetime-local" id="campaignEndDateInput" class="form-input">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">الحد الأقصى للتدوير لكل عميل</label>
+              <input type="number" id="campaignMaxSpinsInput" class="form-input" min="1" max="1" value="1" readonly>
+              <small style="color: var(--admin-muted);">محدد بـ 1 لفة لكل عميل ومطبق عبر قيود قاعدة البيانات الذرية.</small>
+            </div>
+
+            <button type="submit" id="saveCampaignBtn" class="btn-primary">
+              حفظ إعدادات الحملة
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- 3. Prizes & Probabilities Panel -->
+      <section id="panel-prizes" class="tab-panel">
+        <div class="panel-card">
+          <h3 class="card-title">
+            إدارة الجوائز ونسب الاحتمالات
+            <small style="font-size: 0.82rem; color: var(--admin-muted); font-weight: normal;">القطاعات على العجلة تبقى متساوية بصرياً دائماً</small>
+          </h3>
+
+          <div id="probMeter" class="prob-meter valid">
+            <span>مجموع الاحتمالات الحالي:</span>
+            <span id="probSumDisplay">100.00%</span>
+          </div>
+
+          <form id="prizesForm">
+            <div class="table-wrapper" style="margin-bottom: 20px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>معرف الجائزة</th>
+                    <th>اسم الجائزة</th>
+                    <th>الوصف التوضيحي</th>
+                    <th style="width: 130px;">الاحتمال (%)</th>
+                    <th style="width: 100px;">الحالة</th>
+                  </tr>
+                </thead>
+                <tbody id="prizesTableBody">
+                  <!-- Generated via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <button type="submit" id="savePrizesBtn" class="btn-primary">
+              حفظ نسب الجوائز
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- 4. Spin Records Panel -->
+      <section id="panel-spins" class="tab-panel">
+        <div class="panel-card">
+          <div class="table-controls">
+            <h3 class="card-title" style="margin-bottom: 0;">سجل تدوير العملاء</h3>
+            <input type="text" id="spinsSearchInput" class="search-input" placeholder="بحث بالمعرف، الكود، أو الجائزة...">
+          </div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>معرف اللفة</th>
+                  <th>معرف المشارك</th>
+                  <th>الجائزة</th>
+                  <th>الكود الترويجي</th>
+                  <th>حالة الكود</th>
+                  <th>الوقت (بتوقيت الرياض)</th>
+                </tr>
+              </thead>
+              <tbody id="spinsTableBody">
+                <!-- Generated via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-controls">
+            <button id="spinsPrevBtn" class="btn-page">الصفحة السابقة</button>
+            <span id="spinsPageInfo">صفحة 1 من 1</span>
+            <button id="spinsNextBtn" class="btn-page">الصفحة التالية</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Promo Codes Panel -->
+      <section id="panel-promos" class="tab-panel">
+        <div class="panel-card">
+          <div class="table-controls">
+            <h3 class="card-title" style="margin-bottom: 0;">الأكواد الترويجية الصادرة</h3>
+            <div style="display: flex; gap: 10px;">
+              <select id="promoStatusFilter" class="form-select" style="width: 140px; padding: 7px;">
+                <option value="">جميع الحالات</option>
+                <option value="ACTIVE">نشط (ACTIVE)</option>
+                <option value="REDEEMED">مصروف (REDEEMED)</option>
+                <option value="EXPIRED">منتهي (EXPIRED)</option>
+                <option value="CANCELLED">ملغي (CANCELLED)</option>
+              </select>
+              <input type="text" id="promosSearchInput" class="search-input" placeholder="بحث بالكود...">
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>الكود الترويجي</th>
+                  <th>الجائزة</th>
+                  <th>تاريخ الإنشاء</th>
+                  <th>تاريخ الانتهاء</th>
+                  <th>الحالة</th>
+                  <th>تاريخ الصرف</th>
+                  <th>إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="promosTableBody">
+                <!-- Generated via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-controls">
+            <button id="promosPrevBtn" class="btn-page">الصفحة السابقة</button>
+            <span id="promosPageInfo">صفحة 1 من 1</span>
+            <button id="promosNextBtn" class="btn-page">الصفحة التالية</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Security Logs Panel -->
+      <section id="panel-security" class="tab-panel">
+        <div class="panel-card">
+          <h3 class="card-title">شاشة الأمان والأحداث المشبوهة</h3>
+          <p style="color: var(--admin-muted); font-size: 0.88rem; margin-bottom: 16px;">
+            تنبيه: هذه مؤشرات أمنية استرشادية لمنع إساءة الاستخدام وهجمات الحرمان من الخدمة وليست حكماً قطعياً على العميل.
+          </p>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>الوقت</th>
+                  <th>نوع الحدث</th>
+                  <th>تجزئة IP</th>
+                  <th>معرف المشارك</th>
+                  <th>التفاصيل</th>
+                </tr>
+              </thead>
+              <tbody id="securityTableBody">
+                <!-- Generated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Audit Log Panel -->
+      <section id="panel-audit" class="tab-panel">
+        <div class="panel-card">
+          <h3 class="card-title">سجل العمليات الإدارية (Audit Trail)</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>الوقت</th>
+                  <th>المدير</th>
+                  <th>العملية</th>
+                  <th>الهدف</th>
+                  <th>النتيجة</th>
+                  <th>التفاصيل</th>
+                </tr>
+              </thead>
+              <tbody id="auditTableBody">
+                <!-- Generated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. Settings Panel -->
+      <section id="panel-settings" class="tab-panel">
+        <div class="panel-card" style="max-width: 540px;">
+          <h3 class="card-title">تغيير كلمة مرور لوحة التحكم</h3>
+          <form id="changePasswordForm">
+            <div class="form-group">
+              <label class="form-label">كلمة المرور الحالية</label>
+              <input type="password" id="currentPasswordInput" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">كلمة المرور الجديدة</label>
+              <input type="password" id="newPasswordInput" class="form-input" required minlength="8">
+            </div>
+            <button type="submit" id="savePasswordBtn" class="btn-primary">
+              تحديث كلمة المرور
+            </button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Global Toast Feedback -->
+  <div id="toastMsg" class="toast-msg"></div>
+
+  <script src="/admin/js/admin.js"></script>
+</body>
+</html>
