@@ -1,50 +1,56 @@
 /* ==========================================================================
-   Go Wash — Saudi National Day 96 Event Microsite
-   Elite Design System • Luxury Mobile First • High-DPI Experience
+   Go Wash — Saudi National Day 96 Campaign
+   Art Direction: Go Wash Brand Identity × Saudi National Day 96
+   Style: Contemporary Saudi Automotive Campaign • Precision • Editorial
    ========================================================================== */
 
 :root {
-  /* Brand Palette (Go Wash & National Day 96 Luxury Edition) */
-  --gw-blue-primary: #0077E6;
-  --gw-blue-vibrant: #0099FF;
-  --gw-blue-electric: #00C2FF;
-  --gw-blue-glow: rgba(0, 194, 255, 0.45);
-  
-  --gw-navy-deep: #030914;
-  --gw-navy-dark: #061224;
-  --gw-navy-card: #0A1C36;
-  --gw-navy-surface: #0E2649;
-  --gw-navy-border: rgba(0, 194, 255, 0.22);
+  /* ------------------------------------------------------------------------
+     1. Brand Color Hierarchy
+     Hero: Go Wash Blue | Breathable: White | Accent: Orange | Secondary: Saudi Green
+     ------------------------------------------------------------------------ */
+  --gw-blue-primary: #0066CC;
+  --gw-blue-deep: #004080;
+  --gw-blue-navy: #0A1E3F;
+  --gw-blue-vibrant: #0080FF;
+  --gw-blue-electric: #00B4D8;
+  --gw-blue-ice: #F0F7FF;
+  --gw-blue-subtle: #EBF4FF;
+  --gw-blue-tint: rgba(0, 102, 204, 0.06);
 
-  --gw-orange-primary: #FF6600;
-  --gw-orange-bright: #FF8533;
-  --gw-orange-deep: #D43800;
-  --gw-orange-glow: rgba(255, 102, 0, 0.55);
-
-  --nd-green-royal: #00733E;
-  --nd-green-bright: #10B981;
-  --nd-green-emerald: #059669;
-  --nd-green-glow: rgba(16, 185, 129, 0.45);
-
-  --nd-gold-light: #FFF2A1;
-  --nd-gold-accent: #FFD000;
-  --nd-gold-deep: #D97706;
-  --nd-gold-rich: #F59E0B;
-  --nd-gold-glow: rgba(255, 208, 0, 0.45);
-
+  /* Breathable White Space & Surfaces */
   --gw-white: #FFFFFF;
-  --gw-silver: #E2E8F0;
-  --gw-slate: #CBD5E1;
-  --gw-muted: #8E9FB5;
-  --gw-subtle: #475569;
+  --gw-bg: #F8FAFC;
+  --gw-surface: #FFFFFF;
+  --gw-surface-elevated: #FFFFFF;
+  --gw-surface-card: #FFFFFF;
+  
+  /* Orange Accent (Action, Pointer, Spin CTA, Focus) */
+  --gw-orange-primary: #FF6600;
+  --gw-orange-bright: #FF7A00;
+  --gw-orange-hover: #E65500;
+  --gw-orange-subtle: #FFF4ED;
+  --gw-orange-glow: rgba(255, 102, 0, 0.25);
 
-  /* Surfaces & Glassmorphism */
-  --glass-bg: rgba(10, 28, 54, 0.82);
-  --glass-bg-elevated: rgba(14, 38, 73, 0.92);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-light: rgba(255, 255, 255, 0.22);
-  --glass-border-glow: rgba(0, 194, 255, 0.4);
+  /* Saudi Green (Subtle, Intentional, Seasonal Secondary Accent ONLY) */
+  --nd-green-royal: #0D5C3A;
+  --nd-green-bright: #059669;
+  --nd-green-emerald: #10B981;
+  --nd-green-badge-bg: #ECFDF5;
+  --nd-green-border: rgba(13, 92, 58, 0.25);
 
+  /* Typography & Neutrals */
+  --text-primary: #0A192F;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --text-light: #94A3B8;
+
+  /* Borders & Dividers */
+  --border-subtle: #E2E8F0;
+  --border-medium: #CBD5E1;
+  --border-blue: rgba(0, 102, 204, 0.22);
+
+  /* Radii */
   --radius-xs: 6px;
   --radius-sm: 10px;
   --radius-md: 16px;
@@ -52,13 +58,12 @@
   --radius-xl: 32px;
   --radius-full: 9999px;
 
-  /* Advanced Shadows & Elevations */
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 10px 28px -4px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 20px 48px -8px rgba(0, 0, 0, 0.7);
-  --shadow-glow-cyan: 0 0 30px rgba(0, 194, 255, 0.3);
-  --shadow-glow-orange: 0 0 35px rgba(255, 102, 0, 0.4);
-  --shadow-glow-gold: 0 0 35px rgba(255, 208, 0, 0.35);
+  /* Soft Optical Diffused Shadows (Automotive Precision, No Neon) */
+  --shadow-xs: 0 1px 3px rgba(0, 40, 90, 0.05);
+  --shadow-sm: 0 4px 12px rgba(0, 40, 90, 0.06);
+  --shadow-md: 0 10px 28px -4px rgba(0, 40, 90, 0.09);
+  --shadow-lg: 0 20px 48px -8px rgba(0, 40, 90, 0.12);
+  --shadow-cta: 0 10px 26px -3px rgba(255, 102, 0, 0.4);
 }
 
 /* Reset & Ergonomics */
@@ -77,8 +82,8 @@ html {
 
 body.event-body {
   font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--gw-navy-deep);
-  color: var(--gw-white);
+  background-color: var(--gw-bg);
+  color: var(--text-primary);
   line-height: 1.5;
   min-height: 100vh;
   position: relative;
@@ -89,7 +94,8 @@ body.event-body {
 }
 
 /* --------------------------------------------------------------------------
-   Dynamic Event Background (Deep Sapphire Field + Ambient Light Mesh)
+   Dynamic Event Background: Architectural 96 Watermark + Aero Streamlines
+   Fresh, Breathable, High-Key Editorial Canvas
    -------------------------------------------------------------------------- */
 .event-bg {
   position: fixed;
@@ -97,72 +103,84 @@ body.event-body {
   z-index: 0;
   pointer-events: none;
   background: 
-    radial-gradient(circle at 50% 12%, rgba(0, 119, 230, 0.22) 0%, transparent 60%),
-    radial-gradient(circle at 10% 25%, rgba(0, 194, 255, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 90% 75%, rgba(255, 102, 0, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.07) 0%, transparent 55%),
-    linear-gradient(180deg, #061427 0%, #030914 100%);
+    radial-gradient(circle at 50% 0%, rgba(0, 102, 204, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 10% 20%, rgba(0, 180, 216, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 90% 40%, rgba(255, 102, 0, 0.03) 0%, transparent 50%),
+    linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
   overflow: hidden;
 }
 
+/* Signature Architectural 96: Sculptural Display Watermark */
 .bg-watermark-96 {
   position: absolute;
-  top: 4%;
+  top: 1%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: clamp(20rem, 55vw, 42rem);
+  font-size: clamp(22rem, 60vw, 44rem);
   font-weight: 900;
-  line-height: 0.9;
-  color: rgba(255, 255, 255, 0.022);
+  line-height: 0.85;
+  color: rgba(0, 102, 204, 0.032);
   user-select: none;
   letter-spacing: -0.06em;
   font-family: 'Cairo', sans-serif;
   z-index: 1;
-  text-shadow: 0 0 80px rgba(0, 194, 255, 0.05);
+  pointer-events: none;
+}
+
+/* Subtle Automotive Wind-Tunnel & Water Streamlines */
+.bg-aero-lines {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(ellipse 800px 350px at 50% 180px, rgba(0, 102, 204, 0.03) 0%, transparent 70%),
+    repeating-linear-gradient(90deg, transparent, transparent 120px, rgba(0, 102, 204, 0.015) 120px, rgba(0, 102, 204, 0.015) 121px);
+  z-index: 2;
+  pointer-events: none;
 }
 
 .bg-sheen {
   position: absolute;
-  top: -15%;
+  top: -10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 140vw;
-  height: 70vh;
-  background: radial-gradient(ellipse at center, rgba(0, 194, 255, 0.09) 0%, rgba(0, 119, 230, 0.03) 45%, transparent 70%);
+  width: 120vw;
+  height: 50vh;
+  background: radial-gradient(ellipse at center, rgba(0, 128, 255, 0.06) 0%, transparent 70%);
   z-index: 2;
-  filter: blur(40px);
+  filter: blur(50px);
 }
 
 /* --------------------------------------------------------------------------
-   Floating Audio Toggle (Frosted Glass Tactile Button)
+   Floating Audio Toggle (Precision Tactile Icon)
    -------------------------------------------------------------------------- */
 .floating-sound-btn {
   position: fixed;
   top: 16px;
   left: 16px;
   z-index: 95;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(10, 28, 54, 0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  color: #FFF;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.25);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .floating-sound-btn:hover {
-  background: rgba(0, 194, 255, 0.25);
-  border-color: var(--gw-blue-electric);
-  box-shadow: 0 8px 28px var(--gw-blue-glow);
-  transform: scale(1.08);
+  background: #FFFFFF;
+  border-color: var(--gw-blue-primary);
+  color: var(--gw-blue-primary);
+  box-shadow: var(--shadow-md);
+  transform: scale(1.06);
 }
 
 .floating-sound-btn:active {
@@ -170,8 +188,8 @@ body.event-body {
 }
 
 .floating-sound-btn.is-muted {
-  opacity: 0.55;
-  border-color: rgba(255, 255, 255, 0.1);
+  opacity: 0.5;
+  border-color: var(--border-subtle);
 }
 
 /* --------------------------------------------------------------------------
@@ -180,117 +198,131 @@ body.event-body {
 .campaign-alert-bar {
   position: relative;
   z-index: 80;
-  background: linear-gradient(90deg, #DC2626 0%, #991B1B 100%);
+  background: #DC2626;
   color: #FFF;
-  padding: 12px 18px;
+  padding: 11px 18px;
   font-weight: 800;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   text-align: center;
-  box-shadow: 0 4px 18px rgba(220, 38, 38, 0.4);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25);
 }
 
 .campaign-alert-bar.paused {
-  background: linear-gradient(90deg, #D97706 0%, #B45309 100%);
-  box-shadow: 0 4px 18px rgba(217, 119, 6, 0.4);
+  background: #D97706;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
 }
 
 /* --------------------------------------------------------------------------
-   Main Event Wrapper
+   Main Event Wrapper (Breathable Editorial Layout)
    -------------------------------------------------------------------------- */
 .event-wrapper {
   position: relative;
   z-index: 10;
   max-width: 540px;
   margin: 0 auto;
-  padding: 20px 16px 44px 16px;
+  padding: 24px 18px 48px 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 /* --------------------------------------------------------------------------
-   1. Opening Screen Hero
+   1. Editorial Campaign Hero
    -------------------------------------------------------------------------- */
 .event-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   width: 100%;
 }
 
 .event-brand-mark {
-  width: 165px;
-  margin-bottom: 12px;
+  width: 160px;
+  margin-bottom: 14px;
   display: flex;
   justify-content: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease;
 }
 
 .event-brand-mark:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 .brand-svg {
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 6px 16px rgba(0, 194, 255, 0.3));
+  filter: drop-shadow(0 4px 12px rgba(0, 102, 204, 0.12));
 }
 
-.event-identity-tag {
+/* Unified Campaign Signature Pill: Go Wash Blue × 96 × Saudi Green Detail */
+.campaign-signature-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
-  border: 1px solid rgba(255, 208, 0, 0.4);
+  background: var(--gw-white);
+  border: 1px solid rgba(0, 102, 204, 0.2);
   padding: 5px 16px;
   border-radius: var(--radius-full);
-  margin-bottom: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 40, 90, 0.05);
 }
 
-.tag-number {
+.pill-badge-96 {
   font-weight: 900;
-  font-size: 1.1rem;
-  color: var(--nd-gold-accent);
+  font-size: 1.05rem;
+  color: var(--gw-blue-primary);
   letter-spacing: 0.5px;
-  text-shadow: 0 0 12px var(--nd-gold-glow);
+  line-height: 1;
 }
 
-.tag-divider {
-  color: rgba(255, 255, 255, 0.35);
+.pill-divider {
+  color: var(--border-medium);
   font-size: 0.85rem;
 }
 
-.tag-name {
+.pill-title {
   font-weight: 800;
-  font-size: 0.85rem;
-  color: var(--gw-silver);
-  letter-spacing: 0.3px;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.2px;
+}
+
+.pill-green-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--nd-green-royal);
+  display: inline-block;
+  box-shadow: 0 0 0 2px rgba(13, 92, 58, 0.15);
 }
 
 .event-headline {
-  font-size: clamp(2.3rem, 7.5vw, 2.85rem);
+  font-size: clamp(2.4rem, 8vw, 2.95rem);
   font-weight: 900;
-  letter-spacing: -0.5px;
-  line-height: 1.18;
-  margin-bottom: 4px;
-  background: linear-gradient(180deg, #FFFFFF 30%, #CFE6FF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7));
+  letter-spacing: -0.6px;
+  line-height: 1.15;
+  margin-bottom: 6px;
+  color: var(--gw-blue-navy);
+}
+
+.event-subheadline {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  max-width: 380px;
+  line-height: 1.45;
 }
 
 /* --------------------------------------------------------------------------
-   2. Spin Wheel Arena (Centerpiece)
+   2. Automotive Precision Wheel Arena
    -------------------------------------------------------------------------- */
 .wheel-arena {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 6px;
+  margin-top: 10px;
 }
 
 .wheel-stage-container {
@@ -303,23 +335,23 @@ body.event-body {
   margin: 0 auto;
 }
 
-/* 3D Metallic Golden Pointer */
+/* Automotive Gauge Pointer */
 .wheel-pointer {
   position: absolute;
   top: -14px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 40;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.75));
-  transition: transform 0.09s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 6px 14px rgba(0, 40, 90, 0.25));
+  transition: transform 0.08s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: 50% 12px;
 }
 
 .wheel-pointer.is-ticking {
-  transform: translateX(-50%) rotate(-14deg) scale(1.12);
+  transform: translateX(-50%) rotate(-12deg) scale(1.08);
 }
 
-/* Outer LED Ring */
+/* Precision Dial Tick Ring (Automotive Micro-Graduations) */
 .wheel-led-ring {
   position: absolute;
   inset: -6px;
@@ -331,25 +363,25 @@ body.event-body {
 .led-dot {
   position: absolute;
   border-radius: 50%;
-  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Canvas Wrapper with Multi-Layer Bezel */
+/* Canvas Wrapper with Precision Concentric Gauge Bezel */
 .canvas-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   box-shadow: 
-    0 0 0 3px rgba(255, 208, 0, 0.3),
-    0 0 0 8px rgba(10, 28, 54, 0.9),
-    0 0 0 11px rgba(0, 194, 255, 0.25),
-    0 24px 50px rgba(0, 0, 0, 0.85),
-    inset 0 4px 15px rgba(0, 0, 0, 0.6);
+    0 0 0 2px rgba(0, 102, 204, 0.18),
+    0 0 0 7px #FFFFFF,
+    0 0 0 9px rgba(0, 102, 204, 0.08),
+    0 18px 45px rgba(0, 40, 90, 0.14),
+    inset 0 2px 10px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 40% 40%, #102746 0%, #061325 100%);
+  background: #FFFFFF;
   overflow: hidden;
 }
 
@@ -360,22 +392,21 @@ body.event-body {
   display: block;
 }
 
-/* Wheel Center Cap (Embossed Luxury Hub) */
+/* Wheel Center Cap (Automotive Hub with GW × 96) */
 .wheel-center-cap {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 88px;
-  height: 88px;
+  width: 86px;
+  height: 86px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #1F4275 0%, #0A1932 70%, #050E1D 100%);
-  border: 4px solid #FFD000;
+  background: radial-gradient(circle at 35% 35%, #0A1E3F 0%, #061325 100%);
+  border: 3px solid #FFFFFF;
   box-shadow: 
-    0 0 20px rgba(255, 208, 0, 0.55),
-    inset 0 2px 6px rgba(255, 255, 255, 0.5),
-    inset 0 -3px 8px rgba(0, 0, 0, 0.8),
-    0 10px 24px rgba(0, 0, 0, 0.8);
+    0 0 0 2px rgba(0, 102, 204, 0.3),
+    0 8px 20px rgba(0, 30, 70, 0.35),
+    inset 0 1px 3px rgba(255, 255, 255, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -385,12 +416,11 @@ body.event-body {
 }
 
 .cap-brand {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 900;
-  letter-spacing: 1px;
-  color: #FFF;
+  letter-spacing: 1.2px;
+  color: #FFFFFF;
   line-height: 1;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .cap-year {
@@ -398,69 +428,66 @@ body.event-body {
   font-weight: 900;
   color: var(--gw-orange-bright);
   line-height: 1.1;
-  text-shadow: 0 0 10px var(--gw-orange-glow);
+  margin-top: 1px;
 }
 
 /* --------------------------------------------------------------------------
-   Spin CTA & Actions (The Main Magnet)
+   Spin CTA & Action Area (Hero Action)
    -------------------------------------------------------------------------- */
 .wheel-action-area {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 22px;
+  margin-top: 24px;
 }
 
 .btn-spin-hero {
   position: relative;
   width: 100%;
   max-width: 350px;
-  padding: 17px 30px;
-  background: linear-gradient(135deg, #FF7A00 0%, #FF5500 50%, #D43800 100%);
+  padding: 16px 28px;
+  background: linear-gradient(135deg, #FF7A00 0%, #FF6600 50%, #E04800 100%);
   color: #FFFFFF;
   border: none;
   border-radius: var(--radius-full);
   font-family: inherit;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 900;
   letter-spacing: 0.4px;
   cursor: pointer;
   box-shadow: 
-    0 12px 32px -4px rgba(255, 102, 0, 0.6),
-    0 0 0 2px rgba(255, 255, 255, 0.3),
-    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    var(--shadow-cta),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   overflow: hidden;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, filter 0.2s ease;
 }
 
-/* Animated Light Sweep Shimmer */
+/* Subtle Automotive Light Sweep */
 .btn-spin-hero::after {
   content: "";
   position: absolute;
   top: 0;
   left: -120%;
-  width: 70%;
+  width: 60%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transform: skewX(-25deg);
-  animation: btnSweep 3.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  animation: btnSweep 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes btnSweep {
   0% { left: -120%; }
-  35%, 100% { left: 160%; }
+  30%, 100% { left: 160%; }
 }
 
 .btn-spin-hero:hover:not(:disabled) {
-  transform: translateY(-3px) scale(1.025);
-  box-shadow: 
-    0 16px 38px -4px rgba(255, 102, 0, 0.75),
-    0 0 0 3px rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 34px -3px rgba(255, 102, 0, 0.55);
 }
 
 .btn-spin-hero:active:not(:disabled) {
@@ -468,16 +495,16 @@ body.event-body {
 }
 
 .btn-spin-hero:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
-  filter: grayscale(0.3);
+  filter: grayscale(0.2);
   box-shadow: none;
 }
 
 .btn-spin-arrow {
-  font-size: 1.5rem;
-  line-height: 1;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.2s ease;
 }
 
@@ -488,20 +515,20 @@ body.event-body {
 .spin-sub-notice {
   margin-top: 14px;
   font-size: 0.86rem;
-  color: var(--gw-muted);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .notice-dot {
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 .btn-recover-link {
   background: none;
   border: none;
-  color: var(--gw-blue-electric);
+  color: var(--gw-blue-primary);
   font-family: inherit;
   font-size: 0.86rem;
   font-weight: 700;
@@ -509,63 +536,61 @@ body.event-body {
   text-underline-offset: 4px;
   cursor: pointer;
   padding: 0;
-  transition: color 0.2s ease, text-shadow 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .btn-recover-link:hover {
-  color: #FFF;
-  text-shadow: 0 0 10px var(--gw-blue-glow);
+  color: var(--gw-blue-deep);
 }
 
 .spin-status-banner {
   margin-top: 12px;
   font-size: 0.92rem;
   font-weight: 700;
-  color: var(--gw-silver);
+  color: var(--text-secondary);
   min-height: 24px;
   transition: all 0.2s ease;
 }
 
 .spin-status-banner.error {
-  color: #F87171;
-  text-shadow: 0 0 10px rgba(248, 113, 113, 0.3);
+  color: #DC2626;
 }
 
 /* --------------------------------------------------------------------------
-   3. Winner Persistent Ticket Section (VIP Perforated Voucher)
+   3. Campaign VIP Ticket (Returning Winner & Persistent Voucher)
+   Designed as an Elite Campaign Pass
    -------------------------------------------------------------------------- */
 .winner-ticket-section {
   width: 100%;
   margin-top: 16px;
-  animation: fadeInTicket 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInTicket 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeInTicket {
-  from { opacity: 0; transform: translateY(18px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .vip-ticket {
-  background: linear-gradient(145deg, rgba(16, 42, 78, 0.95), rgba(7, 20, 38, 0.98));
-  border: 1.5px solid rgba(0, 194, 255, 0.45);
+  background: var(--gw-white);
+  border: 1px solid var(--border-subtle);
+  border-top: 4px solid var(--gw-blue-primary);
   border-radius: var(--radius-lg);
-  box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.7),
-    0 0 30px rgba(0, 194, 255, 0.25),
-    inset 0 1px 2px rgba(255, 255, 255, 0.2);
-  padding: 24px 22px;
+  box-shadow: var(--shadow-lg);
+  padding: 26px 22px;
   position: relative;
   overflow: hidden;
+  text-align: right;
 }
 
-.vip-ticket::before {
-  content: "96";
+/* Watermark 96 inside ticket */
+.ticket-watermark-96 {
   position: absolute;
-  bottom: -35px;
-  left: -20px;
-  font-size: 10rem;
+  bottom: -30px;
+  left: -15px;
+  font-size: 9.5rem;
   font-weight: 900;
-  color: rgba(255, 255, 255, 0.025);
+  color: rgba(0, 102, 204, 0.03);
   pointer-events: none;
   line-height: 1;
   font-family: 'Cairo', sans-serif;
@@ -575,87 +600,94 @@ body.event-body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+  border-bottom: 1px dashed var(--border-subtle);
   padding-bottom: 14px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+.ticket-badge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .ticket-badge {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 800;
-  color: var(--nd-gold-accent);
-  text-shadow: 0 0 10px var(--nd-gold-glow);
+  color: var(--gw-blue-primary);
+}
+
+.ticket-saudi-cue {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--nd-green-royal);
+  display: inline-block;
 }
 
 .ticket-status-live {
   font-size: 0.78rem;
   font-weight: 800;
-  color: var(--nd-green-bright);
-  background: rgba(16, 185, 129, 0.18);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 4px 12px;
+  color: var(--nd-green-royal);
+  background: var(--nd-green-badge-bg);
+  border: 1px solid var(--nd-green-border);
+  padding: 3px 12px;
   border-radius: var(--radius-full);
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
 }
 
 .ticket-status-live.redeemed {
-  color: #60A5FA;
-  background: rgba(96, 165, 250, 0.18);
-  border-color: rgba(96, 165, 250, 0.4);
+  color: #1E40AF;
+  background: #EFF6FF;
+  border-color: #BFDBFE;
 }
 
 .ticket-status-live.expired {
-  color: #94A3B8;
-  background: rgba(148, 163, 184, 0.18);
-  border-color: rgba(148, 163, 184, 0.4);
+  color: #475569;
+  background: #F1F5F9;
+  border-color: #CBD5E1;
 }
 
 .ticket-status-live.cancelled {
-  color: #F87171;
-  background: rgba(248, 113, 113, 0.18);
-  border-color: rgba(248, 113, 113, 0.4);
+  color: #991B1B;
+  background: #FEF2F2;
+  border-color: #FECACA;
 }
 
 .ticket-kicker {
-  font-size: 0.88rem;
-  color: var(--gw-muted);
+  font-size: 0.86rem;
+  color: var(--text-muted);
   font-weight: 700;
 }
 
 .ticket-prize-name {
-  font-size: clamp(2rem, 6.5vw, 2.7rem);
+  font-size: clamp(2rem, 6.5vw, 2.6rem);
   font-weight: 900;
-  color: #FFFFFF;
+  color: var(--gw-blue-navy);
   line-height: 1.2;
   margin: 4px 0;
-  background: linear-gradient(180deg, #FFFFFF 40%, #FFE259 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 12px rgba(255, 226, 89, 0.4));
 }
 
 .ticket-prize-sub {
   font-size: 0.95rem;
-  color: var(--gw-silver);
+  color: var(--text-secondary);
   margin-bottom: 18px;
 }
 
-/* Luxury Promo Code Box */
+/* Campaign Promo Code Box */
 .ticket-code-card {
-  background: rgba(3, 10, 20, 0.7);
-  border: 1.5px dashed rgba(255, 208, 0, 0.4);
+  background: var(--gw-blue-ice);
+  border: 1.5px dashed rgba(0, 102, 204, 0.35);
   border-radius: var(--radius-md);
   padding: 14px 16px;
-  margin-bottom: 18px;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
 }
 
 .code-label {
   display: block;
   font-size: 0.72rem;
   font-weight: 900;
-  letter-spacing: 1.4px;
-  color: var(--gw-muted);
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
   margin-bottom: 6px;
 }
 
@@ -668,33 +700,32 @@ body.event-body {
 
 .code-value {
   font-family: 'SF Mono', 'Courier New', monospace;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 900;
   letter-spacing: 2px;
-  color: var(--nd-gold-accent);
+  color: var(--gw-blue-primary);
   user-select: all;
-  text-shadow: 0 0 12px var(--nd-gold-glow);
 }
 
 .btn-ticket-copy {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #FFF;
+  background: var(--gw-white);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
   border-radius: var(--radius-sm);
   padding: 9px 16px;
   font-family: inherit;
   font-size: 0.88rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s ease;
   white-space: nowrap;
+  box-shadow: var(--shadow-xs);
 }
 
 .btn-ticket-copy:hover {
-  background: var(--gw-blue-electric);
-  border-color: var(--gw-blue-electric);
-  color: #030914;
-  box-shadow: 0 0 16px var(--gw-blue-glow);
+  background: var(--gw-blue-primary);
+  border-color: var(--gw-blue-primary);
+  color: #FFFFFF;
 }
 
 .ticket-actions {
@@ -710,24 +741,22 @@ body.event-body {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: linear-gradient(135deg, #25D366 0%, #1EBE5D 100%);
+  background: #25D366;
   color: #FFFFFF;
   text-decoration: none;
   font-weight: 900;
-  font-size: 1.1rem;
-  padding: 15px 22px;
+  font-size: 1.05rem;
+  padding: 14px 22px;
   border-radius: var(--radius-full);
-  box-shadow: 
-    0 10px 24px -3px rgba(37, 211, 102, 0.5),
-    inset 0 1px 2px rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 20px -3px rgba(37, 211, 102, 0.4);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-whatsapp-ticket:hover,
 .btn-celebrate-whatsapp:hover {
-  background: linear-gradient(135deg, #28E06C 0%, #20BA5A 100%);
+  background: #20BA5A;
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px -3px rgba(37, 211, 102, 0.65);
+  box-shadow: 0 12px 24px -3px rgba(37, 211, 102, 0.5);
 }
 
 .btn-whatsapp-ticket:active,
@@ -744,12 +773,12 @@ body.event-body {
 
 .btn-ticket-share,
 .btn-celebrate-share {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #FFF;
+  background: var(--gw-white);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
   font-family: inherit;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   padding: 11px 16px;
   border-radius: var(--radius-full);
   cursor: pointer;
@@ -758,25 +787,25 @@ body.event-body {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  box-shadow: var(--shadow-xs);
 }
 
 .btn-ticket-share:hover,
 .btn-celebrate-share:hover {
-  background: rgba(0, 194, 255, 0.22);
-  border-color: var(--gw-blue-electric);
-  color: #FFF;
+  background: var(--gw-blue-subtle);
+  border-color: var(--gw-blue-primary);
+  color: var(--gw-blue-primary);
   transform: translateY(-1px);
-  box-shadow: 0 0 18px var(--gw-blue-glow);
 }
 
 .btn-ticket-how,
 .btn-celebrate-how {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--gw-silver);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
   font-family: inherit;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   padding: 11px 16px;
   border-radius: var(--radius-full);
   cursor: pointer;
@@ -789,9 +818,9 @@ body.event-body {
 
 .btn-ticket-how:hover,
 .btn-celebrate-how:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #FFF;
-  border-color: rgba(255, 255, 255, 0.4);
+  background: var(--gw-white);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
 }
 
 .ticket-status-notice {
@@ -805,21 +834,21 @@ body.event-body {
 }
 
 .ticket-status-notice.redeemed {
-  background: rgba(96, 165, 250, 0.14);
-  border-color: rgba(96, 165, 250, 0.35);
-  color: #93C5FD;
+  background: #EFF6FF;
+  border-color: #BFDBFE;
+  color: #1E40AF;
 }
 
 .ticket-status-notice.expired {
-  background: rgba(148, 163, 184, 0.14);
-  border-color: rgba(148, 163, 184, 0.35);
-  color: #CBD5E1;
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #475569;
 }
 
 .ticket-status-notice.cancelled {
-  background: rgba(248, 113, 113, 0.14);
-  border-color: rgba(248, 113, 113, 0.35);
-  color: #FCA5A5;
+  background: #FEF2F2;
+  border-color: #FECACA;
+  color: #991B1B;
 }
 
 .ticket-meta {
@@ -827,21 +856,21 @@ body.event-body {
   display: flex;
   justify-content: space-between;
   font-size: 0.82rem;
-  color: var(--gw-muted);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle);
   padding-top: 12px;
 }
 
 .ticket-meta strong {
-  color: var(--gw-silver);
+  color: var(--text-primary);
 }
 
 /* --------------------------------------------------------------------------
-   4. How to Use (Interactive Mini Timeline)
+   4. How to Use (Clean Minimal Steps)
    -------------------------------------------------------------------------- */
 .how-to-use-section {
   width: 100%;
-  margin-top: 28px;
+  margin-top: 32px;
 }
 
 .how-to-use-header {
@@ -850,11 +879,11 @@ body.event-body {
 
 .how-badge {
   display: inline-block;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 800;
-  color: var(--gw-silver);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-muted);
+  background: var(--gw-white);
+  border: 1px solid var(--border-subtle);
   padding: 4px 14px;
   border-radius: var(--radius-full);
 }
@@ -864,12 +893,11 @@ body.event-body {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: rgba(10, 28, 54, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--gw-white);
+  border: 1px solid var(--border-subtle);
   padding: 12px 18px;
   border-radius: var(--radius-full);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
 }
 
 .step-mini-item {
@@ -882,30 +910,30 @@ body.event-body {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--gw-blue-electric) 0%, var(--gw-blue-primary) 100%);
-  color: #030914;
+  background: var(--gw-blue-ice);
+  color: var(--gw-blue-primary);
   font-weight: 900;
   font-size: 0.82rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px var(--gw-blue-glow);
+  border: 1px solid rgba(0, 102, 204, 0.2);
 }
 
 .step-label {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--gw-silver);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
 .step-arrow {
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--text-light);
   font-size: 0.95rem;
 }
 
 /* --------------------------------------------------------------------------
-   5. Two Cars Secondary Offer (Luxury Gold Strip)
+   5. Two Cars Secondary Offer (Sleek Compact Strip)
    -------------------------------------------------------------------------- */
 .two-cars-strip {
   width: 100%;
@@ -913,8 +941,9 @@ body.event-body {
 }
 
 .offer-compact-box {
-  background: linear-gradient(135deg, rgba(255, 208, 0, 0.14) 0%, rgba(10, 28, 54, 0.9) 100%);
-  border: 1px solid rgba(255, 208, 0, 0.4);
+  background: var(--gw-white);
+  border: 1px solid var(--border-subtle);
+  border-right: 4px solid var(--gw-orange-primary);
   border-radius: var(--radius-md);
   padding: 16px 20px;
   display: flex;
@@ -922,55 +951,55 @@ body.event-body {
   justify-content: space-between;
   gap: 14px;
   text-align: right;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-sm);
 }
 
 .offer-tag {
   display: inline-block;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 800;
-  color: var(--nd-gold-accent);
-  margin-bottom: 3px;
-  text-shadow: 0 0 8px var(--nd-gold-glow);
+  color: var(--gw-orange-primary);
+  margin-bottom: 2px;
 }
 
 .offer-title {
-  font-size: 0.98rem;
+  font-size: 0.96rem;
   font-weight: 700;
-  color: #FFF;
+  color: var(--text-primary);
   line-height: 1.35;
 }
 
 .offer-title strong {
-  color: var(--nd-gold-accent);
-  font-size: 1.15rem;
+  color: var(--gw-orange-primary);
+  font-size: 1.1rem;
 }
 
 .btn-compact-offer {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #FFE259 0%, #FFA700 100%);
-  color: #030914;
+  gap: 6px;
+  background: var(--gw-blue-ice);
+  border: 1px solid rgba(0, 102, 204, 0.25);
+  color: var(--gw-blue-primary);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 900;
-  padding: 10px 18px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  padding: 9px 16px;
   border-radius: var(--radius-full);
   white-space: nowrap;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 6px 18px rgba(255, 208, 0, 0.4);
 }
 
 .btn-compact-offer:hover {
-  background: #FFF;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 208, 0, 0.6);
+  background: var(--gw-blue-primary);
+  color: #FFFFFF;
+  border-color: var(--gw-blue-primary);
+  transform: translateY(-1px);
 }
 
 .offer-nonstackable-hint {
   font-size: 0.78rem;
-  color: var(--gw-muted);
+  color: var(--text-muted);
   margin-top: 8px;
   text-align: center;
 }
@@ -980,7 +1009,7 @@ body.event-body {
    -------------------------------------------------------------------------- */
 .social-strip {
   width: 100%;
-  margin-top: 28px;
+  margin-top: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -988,9 +1017,9 @@ body.event-body {
 }
 
 .social-strip-label {
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  color: var(--gw-muted);
+  color: var(--text-muted);
   letter-spacing: 0.4px;
 }
 
@@ -1001,39 +1030,42 @@ body.event-body {
 }
 
 .social-icon-btn {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFF;
+  color: var(--text-secondary);
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--gw-white);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-xs);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .social-icon-btn.whatsapp:hover {
   background: #25D366;
   border-color: #25D366;
-  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
-  transform: translateY(-3px);
+  color: #FFF;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
+  transform: translateY(-2px);
 }
 
 .social-icon-btn.instagram:hover {
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
   border-color: transparent;
-  box-shadow: 0 8px 24px rgba(214, 36, 159, 0.5);
-  transform: translateY(-3px);
+  color: #FFF;
+  box-shadow: 0 6px 18px rgba(214, 36, 159, 0.4);
+  transform: translateY(-2px);
 }
 
 .social-icon-btn.tiktok:hover {
-  background: #000;
-  border-color: #00f2fe;
-  box-shadow: 0 0 16px rgba(0, 242, 254, 0.6);
-  transform: translateY(-3px);
+  background: #000000;
+  border-color: #000000;
+  color: #FFF;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
 /* --------------------------------------------------------------------------
@@ -1041,15 +1073,14 @@ body.event-body {
    -------------------------------------------------------------------------- */
 .event-footer {
   width: 100%;
-  margin-top: 32px;
+  margin-top: 36px;
   padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--text-light);
 }
 
 .footer-simple-content {
@@ -1059,7 +1090,7 @@ body.event-body {
 }
 
 .footer-dot {
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 /* --------------------------------------------------------------------------
@@ -1075,32 +1106,29 @@ body.event-body {
 }
 
 .modal-dialog::backdrop {
-  background: rgba(3, 9, 20, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(10, 25, 47, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .terms-modal-card,
 .modal-celebration-card,
 .recover-modal-card {
-  background: linear-gradient(160deg, #0C2344 0%, #06152B 100%);
-  border: 1.5px solid rgba(0, 194, 255, 0.4);
+  background: var(--gw-white);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 26px 22px;
-  color: #FFF;
-  box-shadow: 
-    0 24px 60px rgba(0, 0, 0, 0.85),
-    0 0 35px rgba(0, 194, 255, 0.25),
-    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-lg);
   position: relative;
   text-align: right;
-  animation: modalPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes modalPopIn {
   from {
     opacity: 0;
-    transform: scale(0.92) translateY(14px);
+    transform: scale(0.95) translateY(10px);
   }
   to {
     opacity: 1;
@@ -1112,13 +1140,13 @@ body.event-body {
   position: absolute;
   top: 16px;
   left: 16px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  width: 34px;
-  height: 34px;
+  background: var(--gw-bg);
+  border: 1px solid var(--border-subtle);
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  color: #FFF;
-  font-size: 1.15rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1127,8 +1155,8 @@ body.event-body {
 }
 
 .modal-close-icon:hover {
-  background: rgba(255, 255, 255, 0.22);
-  transform: rotate(90deg);
+  background: var(--border-subtle);
+  color: var(--text-primary);
 }
 
 .modal-event-head {
@@ -1138,26 +1166,25 @@ body.event-body {
 
 .modal-badge-nd {
   display: inline-block;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 800;
-  color: var(--nd-gold-accent);
-  background: rgba(255, 208, 0, 0.12);
-  border: 1px solid rgba(255, 208, 0, 0.35);
+  color: var(--gw-blue-primary);
+  background: var(--gw-blue-ice);
+  border: 1px solid rgba(0, 102, 204, 0.2);
   padding: 4px 14px;
   border-radius: var(--radius-full);
   margin-bottom: 8px;
-  box-shadow: 0 0 12px var(--nd-gold-glow);
 }
 
 .modal-title-bold {
-  font-size: 1.55rem;
+  font-size: 1.5rem;
   font-weight: 900;
-  color: #FFF;
+  color: var(--gw-blue-navy);
 }
 
 .modal-subtext {
   font-size: 0.88rem;
-  color: var(--gw-muted);
+  color: var(--text-muted);
   margin-top: 6px;
   line-height: 1.5;
 }
@@ -1178,50 +1205,50 @@ body.event-body {
 .form-label-event {
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--gw-silver);
+  color: var(--text-secondary);
 }
 
 .form-input-event {
   width: 100%;
-  background: rgba(3, 10, 20, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: var(--gw-white);
+  border: 1.5px solid var(--border-medium);
   border-radius: var(--radius-md);
-  padding: 13px 16px;
+  padding: 12px 16px;
   font-family: inherit;
   font-size: 1.05rem;
-  color: #FFF;
+  color: var(--text-primary);
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-input-event:focus {
-  border-color: var(--gw-blue-electric);
-  box-shadow: 0 0 0 4px rgba(0, 194, 255, 0.25);
+  border-color: var(--gw-blue-primary);
+  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.12);
 }
 
 .phone-box-event {
   display: flex;
   align-items: center;
-  background: rgba(3, 10, 20, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: var(--gw-white);
+  border: 1.5px solid var(--border-medium);
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .phone-box-event:focus-within {
-  border-color: var(--gw-blue-electric);
-  box-shadow: 0 0 0 4px rgba(0, 194, 255, 0.25);
+  border-color: var(--gw-blue-primary);
+  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.12);
 }
 
 .phone-flag {
   padding: 0 14px;
   font-size: 0.95rem;
   font-weight: 800;
-  color: var(--gw-silver);
-  background: rgba(255, 255, 255, 0.06);
-  border-right: 1px solid rgba(255, 255, 255, 0.15);
-  height: 50px;
+  color: var(--text-secondary);
+  background: var(--gw-bg);
+  border-right: 1px solid var(--border-subtle);
+  height: 48px;
   display: flex;
   align-items: center;
 }
@@ -1230,23 +1257,22 @@ body.event-body {
   border: none !important;
   box-shadow: none !important;
   border-radius: 0 !important;
-  height: 50px;
+  height: 48px;
   padding: 0 14px;
   letter-spacing: 1px;
 }
 
 .field-error {
   font-size: 0.82rem;
-  color: #F87171;
+  color: #DC2626;
   font-weight: 700;
   min-height: 18px;
 }
 
 /* Full Terms Box inside Modal */
-.terms-full-box,
-.terms-mini-box {
-  background: rgba(3, 10, 20, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+.terms-full-box {
+  background: var(--gw-bg);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 14px 16px;
   max-height: 240px;
@@ -1256,16 +1282,13 @@ body.event-body {
 .terms-version-heading {
   font-size: 0.86rem;
   font-weight: 800;
-  color: var(--nd-gold-accent);
+  color: var(--gw-blue-primary);
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .terms-official-list {
   font-size: 0.82rem;
-  color: var(--gw-silver);
+  color: var(--text-secondary);
   line-height: 1.65;
   padding-right: 18px;
   text-align: right;
@@ -1276,7 +1299,7 @@ body.event-body {
 }
 
 .terms-official-list strong {
-  color: #FFF;
+  color: var(--text-primary);
 }
 
 .modal-action-row {
@@ -1288,44 +1311,44 @@ body.event-body {
 .btn-modal-agree,
 .btn-modal-spin {
   flex: 2;
-  background: linear-gradient(135deg, #FF7A00 0%, #D43800 100%);
+  background: linear-gradient(135deg, #FF7A00 0%, #E04800 100%);
   color: #FFF;
   border: none;
   border-radius: var(--radius-full);
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 900;
-  padding: 14px 20px;
+  padding: 13px 20px;
   cursor: pointer;
-  box-shadow: 0 10px 24px -3px rgba(255, 102, 0, 0.55);
+  box-shadow: var(--shadow-cta);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-modal-agree:hover,
 .btn-modal-spin:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px -3px rgba(255, 102, 0, 0.7);
+  box-shadow: 0 12px 28px -3px rgba(255, 102, 0, 0.55);
 }
 
 .btn-modal-decline,
 .btn-modal-cancel {
   flex: 1;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--gw-silver);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--gw-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-medium);
   border-radius: var(--radius-full);
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  padding: 14px;
+  padding: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-modal-decline:hover,
 .btn-modal-cancel:hover {
-  background: rgba(255, 255, 255, 0.18);
-  color: #FFF;
+  background: var(--border-subtle);
+  color: var(--text-primary);
 }
 
 /* --------------------------------------------------------------------------
@@ -1341,55 +1364,55 @@ body.event-body {
 
 .celebration-badge {
   display: inline-block;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 800;
-  color: var(--nd-gold-accent);
-  background: rgba(255, 208, 0, 0.15);
-  border: 1px solid rgba(255, 208, 0, 0.4);
+  color: var(--gw-blue-primary);
+  background: var(--gw-blue-ice);
+  border: 1px solid rgba(0, 102, 204, 0.2);
   padding: 4px 16px;
   border-radius: var(--radius-full);
-  box-shadow: 0 0 14px var(--nd-gold-glow);
 }
 
 .celebration-headline {
-  font-size: 2.35rem;
+  font-size: 2.25rem;
   font-weight: 900;
-  color: #FFF;
+  color: var(--gw-blue-navy);
   margin-top: 6px;
   letter-spacing: -0.5px;
 }
 
 .celebration-prize-hero {
-  background: radial-gradient(circle at center, rgba(0, 194, 255, 0.25) 0%, rgba(10, 28, 54, 0) 75%);
+  background: var(--gw-blue-ice);
+  border: 1px solid rgba(0, 102, 204, 0.15);
+  border-radius: var(--radius-md);
   padding: 18px 12px;
   margin-bottom: 16px;
 }
 
 .prize-percent-huge {
-  font-size: clamp(3.4rem, 13vw, 4.8rem);
+  font-size: clamp(3.2rem, 12vw, 4.4rem);
   font-weight: 900;
   line-height: 1;
-  color: var(--nd-gold-accent);
-  text-shadow: 0 0 35px rgba(255, 208, 0, 0.65);
+  color: var(--gw-blue-primary);
   font-family: 'Cairo', sans-serif;
 }
 
 .prize-title-custom {
-  font-size: 1.65rem;
+  font-size: 1.6rem;
   font-weight: 900;
-  color: #FFF;
+  color: var(--gw-blue-navy);
   line-height: 1.25;
 }
 
 .prize-sub-custom {
-  font-size: 0.98rem;
-  color: var(--gw-silver);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
   margin-top: 6px;
 }
 
 .winning-ticket-card {
-  background: rgba(3, 10, 20, 0.7);
-  border: 1.5px dashed rgba(255, 208, 0, 0.45);
+  background: var(--gw-bg);
+  border: 1.5px dashed rgba(0, 102, 204, 0.35);
   border-radius: var(--radius-md);
   padding: 14px 16px;
   margin-bottom: 18px;
@@ -1399,8 +1422,8 @@ body.event-body {
   display: block;
   font-size: 0.72rem;
   font-weight: 900;
-  letter-spacing: 1.4px;
-  color: var(--gw-muted);
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
   margin-bottom: 6px;
 }
 
@@ -1413,17 +1436,16 @@ body.event-body {
 
 .ticket-code-big {
   font-family: 'SF Mono', 'Courier New', monospace;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 900;
   letter-spacing: 2px;
-  color: var(--nd-gold-accent);
-  text-shadow: 0 0 12px var(--nd-gold-glow);
+  color: var(--gw-blue-primary);
 }
 
 .btn-copy-ticket {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #FFF;
+  background: var(--gw-white);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
   border-radius: var(--radius-sm);
   padding: 9px 16px;
   font-family: inherit;
@@ -1435,9 +1457,9 @@ body.event-body {
 }
 
 .btn-copy-ticket:hover {
-  background: var(--gw-blue-electric);
-  border-color: var(--gw-blue-electric);
-  color: #030914;
+  background: var(--gw-blue-primary);
+  border-color: var(--gw-blue-primary);
+  color: #FFFFFF;
 }
 
 .celebration-actions {
@@ -1448,7 +1470,7 @@ body.event-body {
 
 .celebration-footer-note {
   font-size: 0.8rem;
-  color: var(--gw-muted);
+  color: var(--text-muted);
   margin-top: 16px;
 }
 
@@ -1471,13 +1493,13 @@ body.event-body {
   bottom: 28px;
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: rgba(7, 22, 44, 0.96);
-  border: 1.5px solid var(--gw-blue-electric);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px var(--gw-blue-glow);
+  background: var(--gw-blue-navy);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
   color: #FFFFFF;
-  padding: 13px 26px;
+  padding: 12px 24px;
   border-radius: var(--radius-full);
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   font-weight: 800;
   z-index: 99999;
   pointer-events: none;
@@ -1485,9 +1507,8 @@ body.event-body {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-align: center;
-  backdrop-filter: blur(14px);
 }
 
 .app-toast.is-visible {
@@ -1517,27 +1538,26 @@ body.is-returning-customer .winner-ticket-section {
 
 .prize-qr-box {
   background: #FFFFFF;
-  padding: 10px;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px var(--gw-blue-glow);
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--border-subtle);
 }
 
 .prize-qr-box img {
-  width: 140px;
-  height: 140px;
+  width: 130px;
+  height: 130px;
   display: block;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 .prize-qr-hint {
-  font-size: 0.8rem;
-  color: var(--gw-silver);
+  font-size: 0.78rem;
+  color: var(--text-muted);
   margin-top: 8px;
-  opacity: 0.95;
   text-align: center;
 }
 
@@ -1546,16 +1566,20 @@ body.is-returning-customer .winner-ticket-section {
    -------------------------------------------------------------------------- */
 @media (max-width: 480px) {
   .event-wrapper {
-    padding: 14px 14px 32px 14px;
+    padding: 16px 14px 36px 14px;
   }
 
   .event-brand-mark {
-    width: 140px;
-    margin-bottom: 8px;
+    width: 135px;
+    margin-bottom: 10px;
   }
 
   .event-headline {
     font-size: 2.25rem;
+  }
+
+  .event-subheadline {
+    font-size: 0.88rem;
   }
 
   .wheel-stage-container {
@@ -1570,7 +1594,7 @@ body.is-returning-customer .winner-ticket-section {
 
   .code-value,
   .ticket-code-big {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
 
   .offer-compact-box {

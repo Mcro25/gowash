@@ -13,13 +13,14 @@
 </head>
 <body class="event-body">
 
-  <!-- خلفية الفعالية الديناميكية مع رقم 96 الضخم -->
+  <!-- خلفية الفعالية المعمارية: مساحات تنفس بيضاء مع رقم 96 الأيقوني وخطوط انسيابية -->
   <div class="event-bg" aria-hidden="true">
     <div class="bg-watermark-96">96</div>
+    <div class="bg-aero-lines"></div>
     <div class="bg-sheen"></div>
   </div>
 
-  <!-- زر التحكم بالصوت (Minimalist Floating Icon) -->
+  <!-- زر التحكم بالصوت (Minimalist Audio Icon) -->
   <button type="button" id="soundToggleBtn" class="floating-sound-btn" aria-label="تشغيل أو كتم الصوت" title="صوت العجلة">
     <span id="soundIcon">🔊</span>
   </button>
@@ -30,14 +31,14 @@
   <!-- تجربة الفعالية الرئيسية (Single Focused Event Page) -->
   <main class="event-wrapper">
 
-    <!-- 1. افتتاحية الفعالية (Opening Screen Hero) -->
+    <!-- 1. افتتاحية الفعالية (Editorial Campaign Hero) -->
     <header class="event-header">
       <div class="event-brand-mark">
         <svg class="brand-svg" viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Go Wash">
           <defs>
             <linearGradient id="gwBlueEv" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#00C2FF"/>
-              <stop offset="100%" stop-color="#0066CC"/>
+              <stop offset="0%" stop-color="#0080FF"/>
+              <stop offset="100%" stop-color="#0052A3"/>
             </linearGradient>
             <linearGradient id="gwOrangeEv" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#FF7A00"/>
@@ -59,61 +60,63 @@
             <line x1="54" y1="73" x2="69" y2="73" stroke="url(#gwOrangeEv)" stroke-width="3.5" stroke-linecap="round"/>
           </g>
           <!-- WASH -->
-          <path d="M214 34L228 98H241L253 52L265 98H278L292 34H276L269 77L258 34H248L237 77L230 34H214Z" fill="#FFFFFF"/>
-          <path d="M322 34L303 98H319L324 82H346L351 98H367L347 34H322ZM328 68L335 46L342 68H328Z" fill="#FFFFFF"/>
-          <path d="M408 48C403 44 396 42 388 42C381 42 377 45 377 49C377 53 381 55 389 57L397 59C409 62 416 68 416 78C416 90 404 98 388 98C378 98 369 95 363 89L370 76C375 81 381 84 388 84C395 84 400 81 400 76C400 72 396 70 389 68L381 66C369 63 362 57 362 48C362 36 374 28 388 28C397 28 404 31 410 35L408 48Z" fill="#FFFFFF"/>
-          <path d="M424 34V98H440V70H462V98H478V34H462V56H440V34H424Z" fill="#FFFFFF"/>
-          <text x="346" y="130" fill="#38BDF8" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" letter-spacing="1" text-anchor="middle">جو واش</text>
+          <path d="M214 34L228 98H241L253 52L265 98H278L292 34H276L269 77L258 34H248L237 77L230 34H214Z" fill="#0052A3"/>
+          <path d="M322 34L303 98H319L324 82H346L351 98H367L347 34H322ZM328 68L335 46L342 68H328Z" fill="#0052A3"/>
+          <path d="M408 48C403 44 396 42 388 42C381 42 377 45 377 49C377 53 381 55 389 57L397 59C409 62 416 68 416 78C416 90 404 98 388 98C378 98 369 95 363 89L370 76C375 81 381 84 388 84C395 84 400 81 400 76C400 72 396 70 389 68L381 66C369 63 362 57 362 48C362 36 374 28 388 28C397 28 404 31 410 35L408 48Z" fill="#0052A3"/>
+          <path d="M424 34V98H440V70H462V98H478V34H462V56H440V34H424Z" fill="#0052A3"/>
+          <text x="346" y="130" fill="#0077E6" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" letter-spacing="1" text-anchor="middle">جو واش</text>
         </svg>
       </div>
 
-      <div class="event-identity-tag">
-        <span class="tag-number">96</span>
-        <span class="tag-divider">|</span>
-        <span class="tag-name">اليوم الوطني السعودي</span>
+      <!-- Campaign Signature Lockup: Go Wash × 96 × اليوم الوطني السعودي -->
+      <div class="campaign-signature-pill">
+        <span class="pill-badge-96">96</span>
+        <span class="pill-divider" aria-hidden="true">|</span>
+        <span class="pill-title">اليوم الوطني السعودي</span>
+        <span class="pill-green-dot" title="Saudi National Day 96"></span>
       </div>
 
       <h1 class="event-headline">لف واربح</h1>
+      <p class="event-subheadline">فعالية تفاعلية حصرية لخدمات العناية المتنقلة الفاخرة بالسيارات</p>
     </header>
 
-    <!-- 2. ساحة العجلة التفاعلية (Spin Wheel Arena) -->
+    <!-- 2. ساحة العجلة التفاعلية (Automotive Precision Wheel Arena) -->
     <section class="wheel-arena" id="wheelArena">
 
       <div class="wheel-stage-container">
         
-        <!-- مؤشر التوقف الذهبي الفاخر ثلاثي الأبعاد -->
+        <!-- مؤشر العداد الميكانيكي الدقيق (Automotive Gauge Pointer) -->
         <div class="wheel-pointer" id="wheelPointer" aria-hidden="true">
-          <svg viewBox="0 0 48 58" width="48" height="58" fill="none">
+          <svg viewBox="0 0 44 56" width="44" height="56" fill="none">
             <defs>
-              <filter id="pointerShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.6"/>
+              <filter id="pointerPrecisionShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#003366" flood-opacity="0.3"/>
               </filter>
-              <linearGradient id="goldPointerGrad" x1="0" y1="0" x2="48" y2="58" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#FFF5C0"/>
-                <stop offset="35%" stop-color="#FFD000"/>
-                <stop offset="70%" stop-color="#B8860B"/>
-                <stop offset="100%" stop-color="#785500"/>
+              <linearGradient id="needleBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0077E6"/>
+                <stop offset="100%" stop-color="#004080"/>
               </linearGradient>
-              <linearGradient id="jewelGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#00E5FF"/>
-                <stop offset="100%" stop-color="#0055B3"/>
+              <linearGradient id="needleOrangeTip" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#FF7A00"/>
+                <stop offset="100%" stop-color="#E04800"/>
               </linearGradient>
             </defs>
-            <!-- Needle Body -->
-            <path d="M24 56L6 14C3 8 7 1 14 1H34C41 1 45 8 42 14L24 56Z" fill="url(#goldPointerGrad)" filter="url(#pointerShadow)"/>
-            <path d="M24 50L10 14H38L24 50Z" fill="#FFF" opacity="0.25"/>
-            <!-- Bevel Highlight -->
-            <line x1="24" y1="5" x2="24" y2="48" stroke="#FFF" stroke-width="1.5" opacity="0.6"/>
-            <!-- Center Jewel Accent -->
-            <circle cx="24" cy="15" r="7" fill="url(#jewelGrad)" stroke="#FFEAA7" stroke-width="1.8"/>
-            <circle cx="22" cy="13" r="2.2" fill="#FFF" opacity="0.8"/>
+            <!-- Needle Chassis -->
+            <path d="M22 54L8 14C6 8 10 2 16 2H28C34 2 38 8 36 14L22 54Z" fill="url(#needleBodyGrad)" filter="url(#pointerPrecisionShadow)"/>
+            <!-- Active Orange Arrow Tip -->
+            <path d="M22 54L15 28H29L22 54Z" fill="url(#needleOrangeTip)"/>
+            <!-- Micro Saudi Green Line (Subtle Seasonal Accent) -->
+            <line x1="22" y1="8" x2="22" y2="24" stroke="#0D5C3A" stroke-width="2" stroke-linecap="round"/>
+            <!-- Gauge Pivot Bearing -->
+            <circle cx="22" cy="12" r="5" fill="#FFFFFF"/>
+            <circle cx="22" cy="12" r="2.2" fill="#004080"/>
           </svg>
         </div>
 
-        <!-- حلقة الـ LED النيونية -->
+        <!-- حلقة المؤشرات الدقيقة للعداد (Precision Dial Tick Ring) -->
         <div class="wheel-led-ring" id="wheelLedRing"></div>
 
-        <!-- كانفاس العجلة عالي الدقة -->
+        <!-- كانفاس العجلة عالي الدقة (High-DPI Automotive Dial Canvas) -->
         <div class="canvas-wrapper">
           <canvas id="wheelCanvas" width="460" height="460"></canvas>
           <div class="wheel-center-cap">
@@ -127,7 +130,11 @@
       <div class="wheel-action-area" id="wheelActionArea">
         <button type="button" id="spinBtn" class="btn-spin-hero">
           <span class="btn-spin-text" id="spinBtnLabel">لف واربح</span>
-          <span class="btn-spin-arrow">🎡</span>
+          <span class="btn-spin-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"/>
+            </svg>
+          </span>
         </button>
 
         <div class="spin-sub-notice">
@@ -143,17 +150,20 @@
       </div>
     </section>
 
-    <!-- 3. بطاقة الجائزة المحفوظة الدائمة (Persistent Winner Ticket / Returning Customer) -->
-    <!-- تظهر فوراً إذا كان المستخدم فائزاً وتمنع أي تدوير مكرر Server-side -->
+    <!-- 3. تذكرة الجائزة المحفوظة الدائمة (Campaign VIP Ticket / Returning Customer) -->
     <section class="winner-ticket-section" id="winnerPersistentCard" style="display: none;">
       <div class="vip-ticket">
+        <div class="ticket-watermark-96" aria-hidden="true">96</div>
         <div class="ticket-header">
-          <span class="ticket-badge" id="ticketBadgeText">🇸🇦 أنت شاركت بالفعل</span>
+          <div class="ticket-badge-wrap">
+            <span class="ticket-badge" id="ticketBadgeText">تذكرة الفائز · اليوم الوطني 96</span>
+            <span class="ticket-saudi-cue"></span>
+          </div>
           <span class="ticket-status-live" id="ticketStatusBadge">مفعل وجاهز للاستخدام</span>
         </div>
 
         <div class="ticket-main">
-          <span class="ticket-kicker" id="ticketKickerText">جائزتك السابقة مع Go Wash:</span>
+          <span class="ticket-kicker" id="ticketKickerText">جائزتك مع Go Wash:</span>
           <h2 id="savedPrizeTitle" class="ticket-prize-name">خصم 20%</h2>
           <p id="savedPrizeSubtext" class="ticket-prize-sub">خصم Go Wash على جميع باقات الغسيل المتنقل</p>
 
@@ -171,7 +181,7 @@
               <div class="prize-qr-box">
                 <img id="savedQrCodeImg" src="" alt="QR Code للجائزة" width="130" height="130" />
               </div>
-              <span class="prize-qr-hint">امسح الـ QR لدى موظف Go Wash للتحقق الفوري</span>
+              <span class="prize-qr-hint">امسح الـ QR لدى فني Go Wash للتحقق الفوري</span>
             </div>
           </div>
 
@@ -184,10 +194,10 @@
             </a>
             <div class="ticket-sub-actions">
               <button type="button" id="savedShareBtn" class="btn-ticket-share">
-                <span>🎁 مشاركة الجائزة</span>
+                <span>مشاركة الجائزة</span>
               </button>
               <button type="button" id="savedHowToUseBtn" class="btn-ticket-how">
-                <span>📖 طريقة الاستخدام</span>
+                <span>طريقة الاستخدام</span>
               </button>
             </div>
           </div>
@@ -202,7 +212,7 @@
       </div>
     </section>
 
-    <!-- 4. طريقة الاستخدام (How to Use) - فائقة الاختصار -->
+    <!-- 4. طريقة الاستخدام (How to Use) - فائقة النظافة والاختصار -->
     <section class="how-to-use-section" id="howToUseSection">
       <div class="how-to-use-header">
         <span class="how-badge">طريقة الاستخدام</span>
@@ -212,12 +222,12 @@
           <span class="step-num">1</span>
           <span class="step-label">انسخ كودك الخاص</span>
         </div>
-        <span class="step-arrow">←</span>
+        <span class="step-arrow" aria-hidden="true">←</span>
         <div class="step-mini-item">
           <span class="step-num">2</span>
           <span class="step-label">أرسله عبر الواتساب</span>
         </div>
-        <span class="step-arrow">←</span>
+        <span class="step-arrow" aria-hidden="true">←</span>
         <div class="step-mini-item">
           <span class="step-num">3</span>
           <span class="step-label">احصل على الخصم فوراً</span>
@@ -225,7 +235,7 @@
       </div>
     </section>
 
-    <!-- 5. عرض السيارتين (Two Cars Secondary Offer) - مقتضب وأنيق -->
+    <!-- 5. عرض السيارتين (Two Cars Secondary Offer) - مقتضب وراقٍ -->
     <section class="two-cars-strip">
       <div class="offer-compact-box">
         <div class="offer-compact-head">
@@ -285,7 +295,7 @@
       <!-- الخطوة 1: الشروط والأحكام الرسمية مع زري موافق / غير موافق -->
       <div id="termsStep1" class="terms-step-panel">
         <div class="modal-event-head">
-          <span class="modal-badge-nd">🇸🇦 سحب اليوم الوطني 96</span>
+          <span class="modal-badge-nd">سحب اليوم الوطني 96</span>
           <h3 id="termsHeading" class="modal-title-bold">الشروط والأحكام</h3>
           <p class="modal-subtext">يرجى قراءة الشروط والأحكام والموافقة عليها قبل لف العجلة للمشاركة في الفعالية:</p>
         </div>
@@ -316,7 +326,7 @@
       <!-- الخطوة 2: بيانات استلام الجائزة (تظهر فور الضغط على موافق) -->
       <div id="termsStep2" class="terms-step-panel" style="display: none;">
         <div class="modal-event-head">
-          <span class="modal-badge-nd">🇸🇦 سحب اليوم الوطني 96</span>
+          <span class="modal-badge-nd">سحب اليوم الوطني 96</span>
           <h3 class="modal-title-bold">بيانات استلام الجائزة</h3>
           <p class="modal-subtext">أدخل اسمك ورقم جوالك لربط كود الخصم الحصري بك شخصياً ومنع نقله:</p>
         </div>
@@ -333,7 +343,7 @@
           <div class="form-group-event">
             <label for="participantPhone" class="form-label-event">رقم الجوال السعودي</label>
             <div class="phone-box-event" dir="ltr">
-              <span class="phone-flag">🇸🇦 +966</span>
+              <span class="phone-flag">+966</span>
               <input type="tel" id="participantPhone" class="form-input-event phone-inner" placeholder="05xxxxxxxx" maxlength="10" required autocomplete="tel" dir="ltr" inputmode="numeric">
             </div>
             <span class="field-error" id="phoneErrorMsg"></span>
@@ -341,7 +351,7 @@
 
           <div class="modal-action-row">
             <button type="button" id="startSpinSubmitBtn" class="btn-modal-spin">
-              <span>ابدأ السحب 🎡</span>
+              <span>ابدأ السحب</span>
             </button>
             <button type="button" id="backToTermsBtn" class="btn-modal-cancel">
               <span>رجوع للشروط</span>
@@ -359,7 +369,7 @@
       <button id="modalCloseBtn" class="modal-close-icon" aria-label="إغلاق">✕</button>
 
       <div class="celebration-hero">
-        <span class="celebration-badge">🇸🇦 مبروك أنت الفائز!</span>
+        <span class="celebration-badge">تهانينا! الفائز بالفعالية</span>
         <h2 id="modalWinTitle" class="celebration-headline">مبروك</h2>
       </div>
 
@@ -397,10 +407,10 @@
         </a>
         <div class="celebration-sub-actions">
           <button type="button" id="shareResultBtn" class="btn-celebrate-share">
-            <span>🎁 مشاركة الجائزة</span>
+            <span>مشاركة الجائزة</span>
           </button>
           <button type="button" id="modalHowToUseBtn" class="btn-celebrate-how">
-            <span>📖 طريقة الاستخدام</span>
+            <span>طريقة الاستخدام</span>
           </button>
         </div>
       </div>

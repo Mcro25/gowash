@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/Mcro25/gowash/issues"
   },
-  "homepage": "https://github.com/Mcro25/gowash#readme",
+  "homepage": "https://mcro25.github.io/gowash",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",

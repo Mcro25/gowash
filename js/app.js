@@ -562,7 +562,7 @@ document.addEventListener("DOMContentLoaded", () => {
     bookingCtaBtn.href = bookingUrl;
 
     // QR Code Display in VIP Ticket & Winner Modal
-    const qrSrc = promo.qrDataUrl || (promo.qrToken ? `/api/qr/${promo.qrToken}` : '');
+    const qrSrc = promo.qrDataUrl || (promo.qrToken ? `${API_BASE_URL}/api/qr/${promo.qrToken}` : '');
     const savedQrWrapper = document.getElementById("savedQrWrapper");
     const savedQrCodeImg = document.getElementById("savedQrCodeImg");
     if (savedQrWrapper && savedQrCodeImg && qrSrc) {

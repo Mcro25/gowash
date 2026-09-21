@@ -4,6 +4,16 @@
 
 ---
 
+## 🔗 الروابط المباشرة (Live Links)
+
+- **رابط الواجهة الرئيسية (GitHub Pages)**: [https://mcro25.github.io/gowash/](https://mcro25.github.io/gowash/)
+- **رابط التحقق من الجوائز (QR / Code Verification)**: [https://mcro25.github.io/gowash/verify.html](https://mcro25.github.io/gowash/verify.html)
+- **مستودع الكود (GitHub Repository)**: [https://github.com/Mcro25/gowash](https://github.com/Mcro25/gowash)
+- **خادم الباك إند (Railway Backend)**: [https://gowash-production.up.railway.app](https://gowash-production.up.railway.app)
+- **لوحة التحكم الإدارية (Admin Dashboard)**: [https://gowash-production.up.railway.app/admin](https://gowash-production.up.railway.app/admin)
+
+---
+
 ## 🌟 المعمارية والبنية العامة
 
 ```text
