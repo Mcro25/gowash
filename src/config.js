@@ -26,7 +26,10 @@ loadEnv();
 module.exports = {
   PORT: parseInt(process.env.PORT || '3000', 10),
   NODE_ENV: process.env.NODE_ENV || 'development',
+  DATABASE_URL: process.env.DATABASE_URL || '',
+  CORS_ORIGIN: process.env.CORS_ALLOWED_ORIGINS || process.env.CORS_ALLOWED_ORIGIN || process.env.CORS_ORIGIN || 'https://mcro25.github.io',
   SESSION_SECRET: process.env.SESSION_SECRET || 'gowash_nd96_default_secret_2026',
+  ADMIN_SESSION_SECRET: process.env.ADMIN_SESSION_SECRET || process.env.SESSION_SECRET || 'gowash_nd96_admin_secret_2026',
   CSRF_SECRET: process.env.CSRF_SECRET || 'gowash_nd96_default_csrf_2026',
   ADMIN_INITIAL_USERNAME: process.env.ADMIN_INITIAL_USERNAME || 'admin',
   ADMIN_INITIAL_EMAIL: process.env.ADMIN_INITIAL_EMAIL || 'admin@gowash.sa',
@@ -34,7 +37,7 @@ module.exports = {
   CAMPAIGN_TIMEZONE: process.env.CAMPAIGN_TIMEZONE || 'Asia/Riyadh',
   SESSION_EXPIRY_MS: 12 * 60 * 60 * 1000, // 12 hours
   PROMO_EXPIRY_HOURS: 48, // 48 hours for promo codes
-  CURRENT_TERMS_VERSION: '1.0',
+  CURRENT_TERMS_VERSION: '1.1',
   SOCIAL_LINKS: {
     whatsapp: process.env.SOCIAL_WHATSAPP || "https://wa.me/966580700242",
     instagram: process.env.SOCIAL_INSTAGRAM || "https://instagram.com/Gowash.sa",

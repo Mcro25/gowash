@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const tabTitles = {
     overview: "نظرة عامة على الفعالية",
+    "quick-redeem": "التحقق والاسترداد السريع للجوائز",
     campaign: "إدارة إعدادات ومواعيد الحملة",
     prizes: "إدارة الجوائز ونسب الاحتمالات",
     spins: "سجل تدوير العملاء والنتائج",
@@ -98,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadCurrentTab() {
     switch (currentTab) {
       case "overview": loadOverview(); break;
+      case "quick-redeem": focusQuickRedeem(); break;
       case "campaign": loadCampaign(); break;
       case "prizes": loadPrizes(); break;
       case "spins": loadSpins(spinsPage); break;
@@ -145,62 +147,83 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!input || !btn || !resultBox) return;
 
-    async function doLookup() {
-      const term = input.value.trim();
+    window.currentQuickLookupCode = null;
+
+    async function doLookup(termOverride) {
+      const term = (typeof termOverride === "string" && termOverride) ? termOverride : input.value.trim();
       if (!term) {
-        showToast("يرجى إدخال كود الخصم أو رقم الجوال", "error");
+        showToast("يرجى إدخال كود الخصم أو رقم الجوال للتحقق", "error");
         return;
       }
       btn.disabled = true;
-      btn.textContent = "جاري الفحص...";
+      btn.textContent = "جاري التحقق...";
       resultBox.style.display = "block";
-      resultBox.innerHTML = `<div style="color: var(--admin-soft); padding: 10px;">جاري فحص قاعدة البيانات...</div>`;
+      resultBox.innerHTML = `<div style="color: var(--admin-soft); padding: 10px;">جاري فحص وتأكيد بيانات الكود...</div>`;
 
       try {
         const res = await fetchWithCsrf(`/api/admin/promos/lookup?term=${encodeURIComponent(term)}`);
         const data = await res.json();
         btn.disabled = false;
-        btn.textContent = "🔍 فحص الكود";
+        btn.textContent = "تحقق";
 
         if (!res.ok || !data.success || !data.promo) {
           resultBox.innerHTML = `
             <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #FCA5A5; padding: 14px 18px; border-radius: var(--radius-md);">
-              ❌ ${escapeHtml(data.error || "لم يتم العثور على الكود")}
+              ❌ ${escapeHtml(data.error || "لم يتم العثور على أي كود مطابق")}
             </div>
           `;
           return;
         }
 
         const p = data.promo;
-        const statusBadge = p.status === 'ACTIVE'
-          ? `<span class="badge badge-active">نشط وجاهز للاستخدام</span>`
-          : (p.status === 'REDEEMED' ? `<span class="badge badge-redeemed">تم الاستخدام مسبقاً</span>` : `<span class="badge badge-cancelled">${escapeHtml(p.status)}</span>`);
+        window.currentQuickLookupCode = p.code;
+
+        const createdStr = new Date(p.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
+        const expiresStr = p.expires_at ? new Date(p.expires_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : "غير محدد";
+        const redeemedStr = p.redeemed_at ? new Date(p.redeemed_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : "--- (لم يُسترد بعد)";
+
+        let statusBadge = "";
+        if (p.status === 'ACTIVE') {
+          statusBadge = `<span class="badge badge-active" style="font-size: 0.95rem; padding: 6px 14px;">نشط (ACTIVE)</span>`;
+        } else if (p.status === 'REDEEMED') {
+          statusBadge = `<span class="badge badge-redeemed" style="font-size: 0.95rem; padding: 6px 14px;">مُسترد (REDEEMED)</span>`;
+        } else if (p.status === 'CANCELLED') {
+          statusBadge = `<span class="badge badge-cancelled" style="font-size: 0.95rem; padding: 6px 14px;">ملغي (CANCELLED)</span>`;
+        } else {
+          statusBadge = `<span class="badge badge-expired" style="font-size: 0.95rem; padding: 6px 14px;">منتهي الصلاحية (EXPIRED)</span>`;
+        }
 
         resultBox.innerHTML = `
-          <div style="background: rgba(14, 34, 56, 0.95); border: 1px solid rgba(29, 111, 184, 0.4); border-radius: var(--radius-md); padding: 18px; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-              <span style="font-family: monospace; font-size: 1.25rem; font-weight: 900; color: #FFF; letter-spacing: 1px;">${escapeHtml(p.code)}</span>
-              ${statusBadge}
+          <div style="background: rgba(14, 34, 56, 0.95); border: 1px solid rgba(29, 111, 184, 0.4); border-radius: var(--radius-md); padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">الكود الترويجي</span>
+                <span style="font-family: monospace; font-size: 1.45rem; font-weight: 900; color: #72F3AA; letter-spacing: 1px;">${escapeHtml(p.code)}</span>
+              </div>
+              <div>${statusBadge}</div>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 16px; font-size: 0.88rem;">
-              <div>🎁 الجائزة: <strong style="color: #FCD34D;">${escapeHtml(p.prize_label)} (${escapeHtml(p.prize_subtext || '')})</strong></div>
-              <div>👤 العميل: <strong>${escapeHtml(p.participant_name)}</strong></div>
-              <div dir="ltr" style="text-align: right;">📱 الجوال: <strong>${escapeHtml(p.participant_phone)}</strong></div>
-              <div>⏳ الصلاحية: <span>${escapeHtml(new Date(p.expires_at).toLocaleString('ar-SA'))}</span></div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; font-size: 0.9rem;">
+              <div>👤 <strong>المشارك:</strong> <span>${escapeHtml(p.participant_name || 'غير محدد')}</span> <span dir="ltr" style="font-family: monospace; color: #60A5FA;">(${escapeHtml(p.participant_phone || '---')})</span></div>
+              <div>🎁 <strong>الجائزة:</strong> <strong style="color: #FCD34D;">${escapeHtml(p.prize_label)}</strong> <span style="font-size: 0.82rem; color: var(--admin-soft);">${escapeHtml(p.prize_subtext || '')}</span></div>
+              <div>📅 <strong>تاريخ اللفة:</strong> <span>${createdStr}</span></div>
+              <div>⏳ <strong>تاريخ الانتهاء:</strong> <span>${expiresStr}</span></div>
+              <div>✅ <strong>تاريخ الاسترداد:</strong> <span style="color: ${p.redeemed_at ? '#10B981' : 'var(--admin-muted)'}; font-weight: ${p.redeemed_at ? 'bold' : 'normal'};">${redeemedStr}</span></div>
             </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
               ${p.status === 'ACTIVE' ? `
-                <button type="button" class="btn-primary" style="background: #10B981; font-size: 0.88rem; padding: 6px 16px;" onclick="window.quickRedeem('${escapeHtml(p.code)}')">
-                  ✅ صرف الكود الآن (Redeem)
+                <button type="button" class="btn-primary" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); font-size: 0.95rem; padding: 8px 22px; font-weight: 800;" onclick="window.redeemCode('${escapeHtml(p.code)}', '${escapeHtml(p.participant_name || '')}')">
+                  استرداد الجائزة ✅
                 </button>
               ` : ''}
               ${p.status === 'REDEEMED' ? `
-                <button type="button" class="btn-action-sm" style="background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid #F59E0B; padding: 6px 14px; font-size: 0.85rem;" onclick="window.quickUnredeem('${escapeHtml(p.code)}')">
-                  ↩️ إلغاء حالة الاستخدام وإعادته نشطاً
+                <button type="button" class="btn-action-sm" style="background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid #F59E0B; padding: 7px 16px; font-size: 0.88rem;" onclick="window.unredeemCode('${escapeHtml(p.code)}')">
+                  ↩️ إلغاء الاسترداد وإعادة كنشط
                 </button>
               ` : ''}
               ${p.status !== 'CANCELLED' ? `
-                <button type="button" class="btn-action-sm cancel" style="padding: 6px 14px; font-size: 0.85rem;" onclick="window.quickCancel('${escapeHtml(p.code)}')">
+                <button type="button" class="btn-action-sm cancel" style="padding: 7px 16px; font-size: 0.88rem;" onclick="window.cancelCode('${escapeHtml(p.code)}')">
                   🚫 إلغاء الكود
                 </button>
               ` : ''}
@@ -209,71 +232,302 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       } catch (err) {
         btn.disabled = false;
-        btn.textContent = "🔍 فحص الكود";
+        btn.textContent = "تحقق";
         resultBox.innerHTML = `<div style="color: #F87171;">حدث خطأ في الاتصال بالخادم.</div>`;
       }
     }
 
-    btn.addEventListener("click", doLookup);
+    btn.addEventListener("click", () => doLookup());
     input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") doLookup();
+      if (e.key === "Enter") {
+        e.preventDefault();
+        doLookup();
+      }
     });
 
-    window.quickRedeem = async (code) => {
-      if (!confirm(`هل أنت متأكد من صرف الكود ${code}؟`)) return;
+    window.doQuickLookup = (term) => doLookup(term);
+  }
+
+  // -------------------------------------------------------------
+  // Dedicated Quick Verification & Instant Redemption Tab
+  // -------------------------------------------------------------
+  function initQuickRedeemTab() {
+    const input = document.getElementById("quickRedeemInput");
+    const verifyBtn = document.getElementById("quickRedeemBtn");
+    const clearBtn = document.getElementById("quickRedeemClearBtn");
+    const fileInput = document.getElementById("quickRedeemFileInput");
+    const resultBox = document.getElementById("quickRedeemResultBox");
+
+    const modal = document.getElementById("quickRedeemConfirmModal");
+    const confirmPrize = document.getElementById("quickConfirmPrize");
+    const confirmCode = document.getElementById("quickConfirmCode");
+    const confirmCancelBtn = document.getElementById("quickConfirmCancelBtn");
+    const confirmSubmitBtn = document.getElementById("quickConfirmSubmitBtn");
+
+    if (!input || !verifyBtn || !resultBox) return;
+
+    let activePromoData = null;
+
+    input.addEventListener("input", () => {
+      if (clearBtn) clearBtn.style.display = input.value.trim() ? "inline-flex" : "none";
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        input.value = "";
+        clearBtn.style.display = "none";
+        resultBox.style.display = "none";
+        activePromoData = null;
+        input.focus();
+      });
+    }
+
+    async function executeVerification(termOverride) {
+      const term = (typeof termOverride === "string" && termOverride) ? termOverride.trim() : input.value.trim();
+      if (!term) {
+        showToast("يرجى إدخال كود الخصم أو مسح رمز QR", "error");
+        input.focus();
+        return;
+      }
+
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = "جاري التحقق...";
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `
+        <div style="background: rgba(8, 22, 36, 0.8); border: 1px solid var(--admin-border); border-radius: var(--radius-md); padding: 30px; text-align: center; color: var(--admin-soft);">
+          <div style="font-size: 1.5rem; margin-bottom: 8px;">⏳</div>
+          <div style="font-weight: 700;">جاري مطابقة وفحص الكود لحظياً مع قاعدة البيانات...</div>
+        </div>
+      `;
+
       try {
-        const res = await fetchWithCsrf(`/api/admin/promos/${code}/redeem`, { method: "POST" });
+        const res = await fetchWithCsrf(`/api/admin/verify/${encodeURIComponent(term)}`);
         const data = await res.json();
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = "تحقق من الكود 🔍";
+
         if (!res.ok || !data.success) {
-          showToast(data.error || "فشل صرف الكود", "error");
+          activePromoData = null;
+          resultBox.innerHTML = `
+            <div style="background: rgba(239, 68, 68, 0.15); border: 2px solid #EF4444; color: #FCA5A5; padding: 22px; border-radius: var(--radius-md); text-align: center;">
+              <div style="font-size: 1.8rem; margin-bottom: 6px;">❌</div>
+              <div style="font-size: 1.1rem; font-weight: 900;">${escapeHtml(data.error || "الكود المدخل غير صالح أو غير موجود")}</div>
+              <div style="font-size: 0.85rem; color: var(--admin-muted); margin-top: 6px;">تأكد من كتابة الكود بشكل سليم أو مسح رمز الـ QR الصحيح.</div>
+            </div>
+          `;
           return;
         }
-        showToast(`تم صرف الكود ${code} بنجاح!`);
-        doLookup();
-        loadOverview();
-      } catch (e) {
-        showToast("خطأ أثناء صرف الكود", "error");
-      }
-    };
 
-    window.quickUnredeem = async (code) => {
-      if (!confirm(`إعادة الكود ${code} للحالة النشطة؟`)) return;
-      try {
-        const res = await fetchWithCsrf(`/api/admin/promos/${code}/unredeem`, { method: "POST" });
-        const data = await res.json();
-        if (!res.ok || !data.success) {
-          showToast(data.error || "فشل العملية", "error");
-          return;
-        }
-        showToast(`تمت إعادة الكود ${code} كنشط.`);
-        doLookup();
-        loadOverview();
-      } catch (e) {
-        showToast("خطأ أثناء إعادة تنشيط الكود", "error");
+        activePromoData = data;
+        renderQuickResultCard(data);
+      } catch (err) {
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = "تحقق من الكود 🔍";
+        resultBox.innerHTML = `
+          <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #EF4444; color: #FCA5A5; padding: 18px; border-radius: var(--radius-md); text-align: center;">
+            ⚠️ تعذر الاتصال بالخادم، يرجى المحاولة مجدداً.
+          </div>
+        `;
       }
-    };
+    }
 
-    window.quickCancel = async (code) => {
-      const reason = prompt("سبب إلغاء الكود:");
-      if (reason === null) return;
-      try {
-        const res = await fetchWithCsrf(`/api/admin/promos/${code}/cancel`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ reason: reason || "إلغاء يدوي" })
+    function renderQuickResultCard(data) {
+      const status = data.status || 'EXPIRED';
+      const statusClass = `status-${status.toLowerCase()}`;
+
+      let statusColor = '#10B981';
+      let statusBg = 'rgba(16, 185, 129, 0.15)';
+      let statusLabel = 'نشط وجاهز للاستخدام (ACTIVE)';
+      if (status === 'REDEEMED') {
+        statusColor = '#3B82F6';
+        statusBg = 'rgba(59, 130, 246, 0.15)';
+        statusLabel = 'تم استخدام هذه الجائزة مسبقاً (REDEEMED)';
+      } else if (status === 'EXPIRED') {
+        statusColor = '#94A3B8';
+        statusBg = 'rgba(148, 163, 184, 0.15)';
+        statusLabel = 'انتهت صلاحية هذه الجائزة (EXPIRED)';
+      } else if (status === 'CANCELLED') {
+        statusColor = '#EF4444';
+        statusBg = 'rgba(239, 68, 68, 0.15)';
+        statusLabel = 'هذه الجائزة ملغاة (CANCELLED)';
+      }
+
+      const createdStr = data.dates?.createdAt || '---';
+      const expiresStr = data.dates?.expiresAt || '---';
+      const redeemedStr = data.dates?.redeemedAt || null;
+      const redeemedByStr = data.dates?.redeemedBy || null;
+
+      const participantName = data.participant?.name || 'عميل Go Wash';
+      const participantPhone = data.participant?.phone || '';
+
+      let actionAreaHtml = '';
+      if (status === 'ACTIVE') {
+        actionAreaHtml = `
+          <div style="margin-top: 20px;">
+            <button type="button" id="triggerRedeemBtn" class="quick-redeem-btn-huge">
+              ✅ استرداد الجائزة
+            </button>
+          </div>
+        `;
+      } else if (status === 'REDEEMED') {
+        actionAreaHtml = `
+          <div style="margin-top: 18px; padding: 14px 18px; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: var(--radius-sm); color: #93C5FD; font-size: 0.95rem;">
+            ℹ️ <strong>تم الصرف مسبقاً:</strong> صُرفت بتاريخ <strong>${escapeHtml(redeemedStr || 'مسبقاً')}</strong> ${redeemedByStr ? `بواسطة: <strong>${escapeHtml(redeemedByStr)}</strong>` : ''}.
+          </div>
+        `;
+      } else if (status === 'EXPIRED') {
+        actionAreaHtml = `
+          <div style="margin-top: 18px; padding: 14px 18px; background: rgba(148, 163, 184, 0.12); border: 1px solid rgba(148, 163, 184, 0.35); border-radius: var(--radius-sm); color: #CBD5E1; font-size: 0.95rem;">
+            ⏳ <strong>منتهية الصلاحية:</strong> انتهت صلاحية هذا الكود بتاريخ <strong>${escapeHtml(expiresStr)}</strong> ولا يمكن صرفه.
+          </div>
+        `;
+      } else if (status === 'CANCELLED') {
+        actionAreaHtml = `
+          <div style="margin-top: 18px; padding: 14px 18px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: var(--radius-sm); color: #FCA5A5; font-size: 0.95rem;">
+            🚫 <strong>جائزة ملغاة:</strong> تم إلغاء هذه الجائزة من قبل الإدارة ولا يمكن استردادها.
+          </div>
+        `;
+      }
+
+      resultBox.innerHTML = `
+        <div class="quick-result-card ${statusClass}">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">الكود الترويجي</span>
+              <span style="font-family: monospace; font-size: 1.6rem; font-weight: 900; color: #72F3AA; letter-spacing: 1px;">
+                ${escapeHtml(data.code)}
+              </span>
+            </div>
+            <div style="display: inline-block; padding: 6px 16px; border-radius: 9999px; background: ${statusBg}; color: ${statusColor}; font-weight: 900; font-size: 0.92rem; border: 1px solid ${statusColor};">
+              ${escapeHtml(statusLabel)}
+            </div>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px;">
+            <div style="font-size: 1.3rem; font-weight: 900; color: #FCD34D; margin-bottom: 4px;">
+              🎁 ${escapeHtml(data.prize?.label || 'جائزة Go Wash')}
+            </div>
+            <div style="font-size: 0.9rem; color: var(--admin-soft);">
+              ${escapeHtml(data.prize?.subtext || 'خصم اليوم الوطني 96 من Go Wash')}
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; font-size: 0.88rem; color: #E2E8F0;">
+            <div>👤 <strong>المستفيد:</strong> <span>${escapeHtml(participantName)}</span></div>
+            ${participantPhone ? `<div>📱 <strong>الجوال:</strong> <span dir="ltr" style="font-family: monospace; color: #60A5FA;">${escapeHtml(participantPhone)}</span></div>` : ''}
+            <div>📅 <strong>تاريخ الإنشاء:</strong> <span>${escapeHtml(createdStr)}</span></div>
+            <div>⏳ <strong>تاريخ الانتهاء:</strong> <span>${escapeHtml(expiresStr)}</span></div>
+            ${redeemedStr ? `<div style="grid-column: 1 / -1; color: #60A5FA;">✅ <strong>تاريخ الاسترداد:</strong> <span>${escapeHtml(redeemedStr)}</span> ${redeemedByStr ? `(بواسطة: ${escapeHtml(redeemedByStr)})` : ''}</div>` : ''}
+          </div>
+
+          ${actionAreaHtml}
+        </div>
+      `;
+
+      // Attach redeem button click handler
+      const triggerBtn = document.getElementById("triggerRedeemBtn");
+      if (triggerBtn) {
+        triggerBtn.addEventListener("click", () => {
+          confirmPrize.textContent = data.prize?.label || '';
+          confirmCode.textContent = data.code;
+          if (modal) {
+            modal.showModal();
+          }
         });
-        const data = await res.json();
-        if (!res.ok || !data.success) {
-          showToast(data.error || "فشل إلغاء الكود", "error");
-          return;
-        }
-        showToast(`تم إلغاء الكود ${code}.`);
-        doLookup();
-        loadOverview();
-      } catch (e) {
-        showToast("خطأ أثناء إلغاء الكود", "error");
       }
+    }
+
+    // Modal Action Handlers
+    if (confirmCancelBtn && modal) {
+      confirmCancelBtn.addEventListener("click", () => {
+        modal.close();
+      });
+    }
+
+    if (confirmSubmitBtn && modal) {
+      confirmSubmitBtn.addEventListener("click", async () => {
+        if (!activePromoData) return;
+        confirmSubmitBtn.disabled = true;
+        confirmSubmitBtn.textContent = "جاري التأكيد...";
+
+        try {
+          const res = await fetchWithCsrf(`/api/admin/promos/${encodeURIComponent(activePromoData.code)}/redeem`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+          });
+          const data = await res.json();
+          confirmSubmitBtn.disabled = false;
+          confirmSubmitBtn.textContent = "تأكيد الاسترداد ✅";
+          modal.close();
+
+          if (!res.ok || !data.success) {
+            showToast(data.error || "فشل استرداد الجائزة", "error");
+            return;
+          }
+
+          showToast("✅ تم استرداد وصرف الجائزة بنجاح!", "success");
+
+          // Instant re-verify to show updated status
+          await executeVerification(activePromoData.code);
+
+          // Update Overview if tab is visited later
+          loadOverview();
+        } catch (err) {
+          confirmSubmitBtn.disabled = false;
+          confirmSubmitBtn.textContent = "تأكيد الاسترداد ✅";
+          modal.close();
+          showToast("حدث خطأ أثناء استرداد الجائزة", "error");
+        }
+      });
+    }
+
+    // Input keyboard trigger
+    verifyBtn.addEventListener("click", () => executeVerification());
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        executeVerification();
+      }
+    });
+
+    // Barcode / Camera File Input Support
+    if (fileInput) {
+      fileInput.addEventListener("change", async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if ('BarcodeDetector' in window) {
+          try {
+            const detector = new BarcodeDetector({ formats: ['qr_code'] });
+            const bitmap = await createImageBitmap(file);
+            const barcodes = await detector.detect(bitmap);
+            if (barcodes && barcodes.length > 0) {
+              const code = barcodes[0].rawValue;
+              input.value = code;
+              if (clearBtn) clearBtn.style.display = "inline-flex";
+              executeVerification(code);
+              return;
+            }
+          } catch (err) {
+            console.warn("BarcodeDetector error:", err);
+          }
+        }
+        showToast("يرجى إدخال كود الخصم الظاهر في البطاقة أو كتابته يدوياً", "info");
+      });
+    }
+
+    window.verifyAdminPromo = (code) => {
+      input.value = code;
+      if (clearBtn) clearBtn.style.display = "inline-flex";
+      executeVerification(code);
     };
+  }
+
+  function focusQuickRedeem() {
+    const input = document.getElementById("quickRedeemInput");
+    if (input) {
+      setTimeout(() => input.focus(), 150);
+    }
   }
 
   // 2. Campaign Settings
@@ -460,22 +714,23 @@ document.addEventListener("DOMContentLoaded", () => {
       tbody.innerHTML = "";
 
       if (data.data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--admin-muted); padding: 24px;">لا توجد سجلات تدوير مطابقة.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--admin-muted); padding: 24px;">لا توجد سجلات تدوير مطابقة.</td></tr>`;
       } else {
         data.data.forEach(s => {
           const tr = document.createElement("tr");
           const dateStr = new Date(s.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
+          const redeemedStr = s.redeemed_at ? new Date(s.redeemed_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : '<span style="color: var(--admin-muted); font-size: 0.8rem;">---</span>';
 
           let actions = "";
           if (s.promo_code && s.promo_status === 'ACTIVE') {
-            actions = `<button class="btn-action-sm redeem" onclick="window.redeemCode('${escapeHtml(s.promo_code)}')">تحديد كمُستخدَم ✅</button>`;
+            actions = `<button class="btn-action-sm redeem" onclick="window.redeemCode('${escapeHtml(s.promo_code)}', '${escapeHtml(s.participant_name || '')}')">استرداد الجائزة ✅</button>`;
           } else if (s.promo_code && s.promo_status === 'REDEEMED') {
             actions = `<button class="btn-action-sm" style="background: rgba(29, 111, 184, 0.15); color: #60A5FA; border-color: rgba(29, 111, 184, 0.3);" onclick="window.unredeemCode('${escapeHtml(s.promo_code)}')">إعادة كنشط 🔄</button>`;
           } else {
             actions = `<span style="color: var(--admin-muted); font-size: 0.8rem;">---</span>`;
           }
 
-          const statusDisplay = s.promo_status === 'REDEEMED' ? 'مُستخدَم' : (s.promo_status === 'ACTIVE' ? 'نشط' : (s.promo_status || 'ACTIVE'));
+          const statusDisplay = s.promo_status === 'REDEEMED' ? 'مُسترد' : (s.promo_status === 'ACTIVE' ? 'نشط' : (s.promo_status || 'نشط'));
 
           tr.innerHTML = `
             <td style="font-family: monospace; font-size: 0.8rem;">${escapeHtml(s.id.substring(0, 8))}...</td>
@@ -485,6 +740,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <td><strong style="color: #72F3AA; font-family: monospace;">${escapeHtml(s.promo_code || '---')}</strong></td>
             <td><span class="badge badge-${(s.promo_status || 'active').toLowerCase()}">${statusDisplay}</span></td>
             <td style="font-size: 0.84rem;">${dateStr}</td>
+            <td style="font-size: 0.84rem;">${redeemedStr}</td>
             <td>${actions}</td>
           `;
           tbody.appendChild(tr);
@@ -523,28 +779,38 @@ document.addEventListener("DOMContentLoaded", () => {
         data.data.forEach(p => {
           const tr = document.createElement("tr");
           const createdStr = new Date(p.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
-          const redeemedStr = p.redeemed_at ? new Date(p.redeemed_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : '---';
+          const redeemedStr = p.redeemed_at ? new Date(p.redeemed_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : '<span style="color: var(--admin-muted); font-size: 0.8rem;">---</span>';
 
-          let actions = "";
-          if (p.status === 'ACTIVE') {
-            actions = `
-              <button class="btn-action-sm redeem" onclick="window.redeemCode('${escapeHtml(p.code)}')">تحديد كمُستخدَم ✅</button>
-              <button class="btn-action-sm cancel" onclick="window.cancelCode('${escapeHtml(p.code)}')">إلغاء</button>
-            `;
-          } else if (p.status === 'REDEEMED') {
-            actions = `
-              <button class="btn-action-sm" style="background: rgba(29, 111, 184, 0.15); color: #60A5FA; border-color: rgba(29, 111, 184, 0.3);" onclick="window.unredeemCode('${escapeHtml(p.code)}')">إعادة كنشط 🔄</button>
-              <button class="btn-action-sm cancel" onclick="window.cancelCode('${escapeHtml(p.code)}')">إلغاء</button>
-            `;
-          } else if (p.status === 'CANCELLED') {
-            actions = `
-              <button class="btn-action-sm" style="background: rgba(16, 185, 129, 0.15); color: #34D399; border-color: rgba(16, 185, 129, 0.3);" onclick="window.unredeemCode('${escapeHtml(p.code)}')">إعادة تفعيل 🔄</button>
-            `;
-          } else {
-            actions = `<span style="color: var(--admin-muted); font-size: 0.8rem;">منتهي الصلاحية</span>`;
-          }
+          const statusDisplay = p.status === 'REDEEMED' ? 'مُسترد' : (p.status === 'ACTIVE' ? 'نشط' : (p.status === 'CANCELLED' ? 'ملغي' : 'منتهي'));
 
-          const statusDisplay = p.status === 'REDEEMED' ? 'مُستخدَم' : (p.status === 'ACTIVE' ? 'نشط' : (p.status === 'CANCELLED' ? 'ملغي' : 'منتهي'));
+          let actions = `
+            <div class="promo-action-dropdown">
+              <button type="button" class="btn-action-dots" aria-label="خيارات الكود" onclick="window.togglePromoDropdown(event, '${escapeHtml(p.code)}')">⋮</button>
+              <div class="promo-dropdown-menu" id="dropdown-${escapeHtml(p.code)}">
+                <button type="button" class="promo-dropdown-item" onclick="window.viewPromoDetails('${escapeHtml(p.code)}')">
+                  👁️ عرض (View)
+                </button>
+                <button type="button" class="promo-dropdown-item" onclick="window.verifyAdminPromo('${escapeHtml(p.code)}')">
+                  ⚡ تحقق (Verify)
+                </button>
+                ${p.status === 'ACTIVE' ? `
+                  <button type="button" class="promo-dropdown-item danger" onclick="window.openCancelModal('${escapeHtml(p.code)}')">
+                    🚫 شطب Promo Code
+                  </button>
+                ` : ''}
+                ${p.status === 'ACTIVE' ? `
+                  <button type="button" class="promo-dropdown-item" style="color: #34D399;" onclick="window.redeemCode('${escapeHtml(p.code)}', '${escapeHtml(p.participant_name || '')}')">
+                    ✅ استرداد الجائزة
+                  </button>
+                ` : ''}
+                ${p.status === 'REDEEMED' ? `
+                  <button type="button" class="promo-dropdown-item" style="color: #60A5FA;" onclick="window.unredeemCode('${escapeHtml(p.code)}')">
+                    🔄 إعادة كنشط
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
 
           tr.innerHTML = `
             <td><strong style="color: #72F3AA; font-family: monospace; font-size: 1.05rem;">${escapeHtml(p.code)}</strong></td>
@@ -569,20 +835,97 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  window.redeemCode = async function(code) {
-    if (!confirm(`هل تريد تأكيد تحديد واستخدام الكود ${code} للعميل؟`)) return;
+  window.togglePromoDropdown = function(e, code) {
+    e.stopPropagation();
+    document.querySelectorAll('.promo-dropdown-menu.show').forEach(el => {
+      if (el.id !== `dropdown-${code}`) el.classList.remove('show');
+    });
+    const menu = document.getElementById(`dropdown-${code}`);
+    if (menu) menu.classList.toggle('show');
+  };
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.promo-dropdown-menu.show').forEach(el => el.classList.remove('show'));
+  });
+
+  window.viewPromoDetails = function(code) {
+    if (window.doQuickLookup) {
+      window.doQuickLookup(code);
+      const overviewTab = document.querySelector('[data-tab="overview"]');
+      if (overviewTab) overviewTab.click();
+      const input = document.getElementById("quickLookupInput");
+      if (input) input.value = code;
+    }
+  };
+
+  let promoCodeToCancel = null;
+  window.openCancelModal = function(code) {
+    promoCodeToCancel = code;
+    const modal = document.getElementById("cancelConfirmModal");
+    const codeEl = document.getElementById("cancelModalCode");
+    if (codeEl) codeEl.textContent = code;
+    if (modal) modal.showModal();
+  };
+
+  document.getElementById("cancelModalDismissBtn")?.addEventListener("click", () => {
+    const modal = document.getElementById("cancelConfirmModal");
+    if (modal) modal.close();
+    promoCodeToCancel = null;
+  });
+
+  document.getElementById("cancelModalConfirmBtn")?.addEventListener("click", async () => {
+    if (!promoCodeToCancel) return;
+    const code = promoCodeToCancel;
+    const modal = document.getElementById("cancelConfirmModal");
+    try {
+      const res = await fetchWithCsrf(`/api/admin/promos/${code}/cancel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason: "Admin cancellation via confirmation modal" })
+      });
+      const data = await res.json();
+      if (modal) modal.close();
+      promoCodeToCancel = null;
+
+      if (!res.ok || !data.success) {
+        showToast(data.error || "فشل شطب الكود الترويجي", "error");
+        return;
+      }
+
+      showToast(`تم شطب الكود ${code} بنجاح! 🚫`, "error");
+      loadPromos(promosPage);
+      if (document.getElementById("spinsTableBody")) loadSpins(spinsPage);
+      loadOverview();
+      if (window.currentQuickLookupCode === code && window.doQuickLookup) {
+        window.doQuickLookup(code);
+      }
+    } catch (err) {
+      if (modal) modal.close();
+      promoCodeToCancel = null;
+      showToast("حدث خطأ أثناء الاتصال بالخادم", "error");
+    }
+  });
+
+  window.cancelCode = window.openCancelModal;
+
+  window.redeemCode = async function(code, participantName) {
+    const confirmMsg = participantName
+      ? `هل أنت متأكد من استرداد الجائزة للكود ${code} العائد للمشارك ${participantName}؟`
+      : `هل أنت متأكد من استرداد الجائزة للكود ${code}؟`;
+    if (!confirm(confirmMsg)) return;
+
     try {
       const res = await fetchWithCsrf(`/api/admin/promos/${code}/redeem`, { method: "POST" });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        showToast(data.error || "فشل تحديد الكود كمُستخدَم", "error");
+        showToast(data.error || "فشل استرداد الجائزة", "error");
         return;
       }
-      showToast(`تم تحديد الكود ${code} كمُستخدَم بنجاح! ✅`);
+      showToast(`تم استرداد الجائزة للكود ${code} بنجاح! ✅`);
       loadPromos(promosPage);
       if (document.getElementById("spinsTableBody")) loadSpins(spinsPage);
       loadOverview();
-      if (window.currentQuickLookupCode === code) {
+      if (window.currentQuickLookupCode === code && window.doQuickLookup) {
         window.doQuickLookup(code);
       }
     } catch (err) {
@@ -591,7 +934,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.unredeemCode = async function(code) {
-    if (!confirm(`هل تريد إلغاء حالة الاستخدام وإعادة تفعيل الكود ${code} كنشط؟`)) return;
+    if (!confirm(`هل تريد إلغاء حالة الاسترداد وإعادة تفعيل الكود ${code} كنشط؟`)) return;
     try {
       const res = await fetchWithCsrf(`/api/admin/promos/${code}/unredeem`, { method: "POST" });
       const data = await res.json();
@@ -603,28 +946,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loadPromos(promosPage);
       if (document.getElementById("spinsTableBody")) loadSpins(spinsPage);
       loadOverview();
-      if (window.currentQuickLookupCode === code) {
-        window.doQuickLookup(code);
-      }
-    } catch (err) {
-      showToast("حدث خطأ في الاتصال", "error");
-    }
-  };
-
-  window.cancelCode = async function(code) {
-    if (!confirm(`هل تريد بالتأكيد إلغاء الكود ${code}؟ لن يتمكن العميل من استخدامه.`)) return;
-    try {
-      const res = await fetchWithCsrf(`/api/admin/promos/${code}/cancel`, { method: "POST" });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        showToast(data.error || "فشل إلغاء الكود", "error");
-        return;
-      }
-      showToast(`تم إلغاء الكود ${code}.`);
-      loadPromos(promosPage);
-      if (document.getElementById("spinsTableBody")) loadSpins(spinsPage);
-      loadOverview();
-      if (window.currentQuickLookupCode === code) {
+      if (window.currentQuickLookupCode === code && window.doQuickLookup) {
         window.doQuickLookup(code);
       }
     } catch (err) {
@@ -636,123 +958,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("promoStatusFilter")?.addEventListener("change", () => loadPromos(1));
   document.getElementById("promosPrevBtn")?.addEventListener("click", () => { if (promosPage > 1) loadPromos(promosPage - 1); });
   document.getElementById("promosNextBtn")?.addEventListener("click", () => { loadPromos(promosPage + 1); });
-
-  // Quick Promo Lookup & Mark Used Handler
-  window.currentQuickLookupCode = null;
-
-  window.doQuickLookup = async function(termOverride) {
-    const input = document.getElementById("quickLookupInput");
-    const term = termOverride || input?.value.trim();
-    const resultBox = document.getElementById("quickLookupResult");
-    if (!resultBox) return;
-
-    if (!term) {
-      showToast("يرجى إدخال كود الخصم أو رقم الجوال للبحث", "warning");
-      return;
-    }
-
-    try {
-      const res = await fetchWithCsrf(`/api/admin/promos/lookup?term=${encodeURIComponent(term)}`);
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        resultBox.style.display = "block";
-        resultBox.innerHTML = `
-          <div style="padding: 14px 18px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; color: #FCA5A5;">
-            ⚠️ ${escapeHtml(data.error || 'لم يتم العثور على أي كود مطابق.')}
-          </div>
-        `;
-        return;
-      }
-
-      const p = data.promo;
-      window.currentQuickLookupCode = p.code;
-
-      const createdStr = new Date(p.created_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" });
-      const redeemedStr = p.redeemed_at ? new Date(p.redeemed_at).toLocaleString("ar-SA", { timeZone: "Asia/Riyadh" }) : null;
-
-      let statusBadge = "";
-      let actionBtn = "";
-
-      if (p.status === 'ACTIVE') {
-        statusBadge = `<span class="badge badge-active" style="font-size: 0.95rem; padding: 6px 14px;">جاهز للاستخدام (نشط)</span>`;
-        actionBtn = `
-          <button class="btn-primary" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); padding: 10px 22px; font-weight: 800; font-size: 1rem; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);" onclick="window.redeemCode('${escapeHtml(p.code)}')">
-            تحديد الكود كمُستخدَم الآن (صرف) ✅
-          </button>
-          <button class="btn-action-sm cancel" style="padding: 9px 18px;" onclick="window.cancelCode('${escapeHtml(p.code)}')">
-            إلغاء الكود
-          </button>
-        `;
-      } else if (p.status === 'REDEEMED') {
-        statusBadge = `<span class="badge badge-redeemed" style="font-size: 0.95rem; padding: 6px 14px;">مُستخدَم (${redeemedStr})</span>`;
-        actionBtn = `
-          <div style="color: #60A5FA; font-size: 0.95rem; width: 100%; margin-bottom: 6px;">
-            ℹ️ تم تسجيل استخدام هذا الكود في: <strong>${redeemedStr}</strong>
-          </div>
-          <button class="btn-action-sm" style="background: rgba(29, 111, 184, 0.2); color: #60A5FA; border-color: rgba(29, 111, 184, 0.4); padding: 8px 16px;" onclick="window.unredeemCode('${escapeHtml(p.code)}')">
-            إلغاء الاستخدام وإعادة كنشط 🔄
-          </button>
-        `;
-      } else if (p.status === 'CANCELLED') {
-        statusBadge = `<span class="badge badge-cancelled" style="font-size: 0.95rem; padding: 6px 14px;">ملغي</span>`;
-        actionBtn = `
-          <button class="btn-action-sm" style="background: rgba(16, 185, 129, 0.2); color: #34D399; padding: 8px 16px;" onclick="window.unredeemCode('${escapeHtml(p.code)}')">
-            إعادة تفعيل الكود كنشط 🔄
-          </button>
-        `;
-      } else {
-        statusBadge = `<span class="badge badge-expired" style="font-size: 0.95rem; padding: 6px 14px;">منتهي الصلاحية</span>`;
-      }
-
-      resultBox.style.display = "block";
-      resultBox.innerHTML = `
-        <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; padding: 18px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 12px;">
-            <div>
-              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">الكود الترويجي</span>
-              <strong style="font-family: monospace; font-size: 1.45rem; color: #72F3AA; letter-spacing: 1px;">${escapeHtml(p.code)}</strong>
-            </div>
-            <div>${statusBadge}</div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 18px;">
-            <div>
-              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">اسم العميل</span>
-              <strong style="font-size: 1rem; color: #FFFFFF;">${escapeHtml(p.participant_name)}</strong>
-            </div>
-            <div>
-              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">رقم الجوال</span>
-              <strong dir="ltr" style="font-size: 1rem; font-family: monospace; color: #60A5FA;">${escapeHtml(p.participant_phone)}</strong>
-            </div>
-            <div>
-              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">الجائزة المستحقة</span>
-              <strong style="font-size: 1rem; color: #FFD700;">${escapeHtml(p.prize_label)}</strong>
-            </div>
-            <div>
-              <span style="font-size: 0.8rem; color: var(--admin-muted); display: block;">تاريخ الإنشاء</span>
-              <span style="font-size: 0.85rem; color: var(--admin-soft);">${createdStr}</span>
-            </div>
-          </div>
-
-          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
-            ${actionBtn}
-          </div>
-        </div>
-      `;
-    } catch (err) {
-      console.error("Lookup error:", err);
-      showToast("حدث خطأ في الاتصال بالخادم", "error");
-    }
-  };
-
-  document.getElementById("quickLookupBtn")?.addEventListener("click", () => window.doQuickLookup());
-  document.getElementById("quickLookupInput")?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      window.doQuickLookup();
-    }
-  });
 
   // 6. Security Logs Loader
   async function loadSecurity() {
@@ -854,4 +1059,5 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize
   checkAuth();
   initQuickLookup();
+  initQuickRedeemTab();
 });

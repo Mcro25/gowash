@@ -2,775 +2,436 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Go Wash | فعالية اليوم الوطني السعودي 96 الحصرية</title>
-  <meta name="description" content="فعالية حصرية لليوم الوطني السعودي 96 مع مغسلة Go Wash المتنقلة. سجل اسمك وجوالك، لف عجلة الحظ، واربح عروض وخصومات وترقية باقة Signature." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Go Wash — National Day 96 Spin Event | لف واربح</title>
+  <meta name="description" content="فعالية اليوم الوطني السعودي 96 التفاعلية مع Go Wash. لف العجلة واربح خصومات وترقيات فورية لباقة Signature الفاخرة." />
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
+<body class="event-body">
 
-  <!-- شريط المناسبة الوطنية المتوهج -->
-  <div class="exclusive-strip">
-    <div class="strip-content">
-      <span class="strip-flag">🇸🇦</span>
-      <span class="strip-text">فعالية حصرية بمناسبة اليوم الوطني السعودي 96 — العروض سارية طوال فترة الاحتفالات الرسمية</span>
-      <span class="strip-badge">احتفال 96</span>
-    </div>
+  <!-- خلفية الفعالية الديناميكية مع رقم 96 الضخم -->
+  <div class="event-bg" aria-hidden="true">
+    <div class="bg-watermark-96">96</div>
+    <div class="bg-sheen"></div>
   </div>
 
-  <!-- شريط العد التنازلي ونبض الفعالية المباشر -->
-  <div class="live-activity-bar">
-    <div class="container live-activity-container">
-      <div class="countdown-widget">
-        <span class="countdown-label">⏳ ينتهي العرض الاحتفالي خلال:</span>
-        <div class="countdown-units" id="countdownTimer" aria-label="الوقت المتبقي لانتهاء الفعالية">
-          <div class="time-box"><span id="cdDays">02</span><small>يوم</small></div>
-          <span class="colon">:</span>
-          <div class="time-box"><span id="cdHours">14</span><small>ساعة</small></div>
-          <span class="colon">:</span>
-          <div class="time-box"><span id="cdMins">35</span><small>دقيقة</small></div>
-          <span class="colon">:</span>
-          <div class="time-box"><span id="cdSecs">18</span><small>ثانية</small></div>
-        </div>
-      </div>
-      <div class="live-feed-ticker" id="liveFeedTicker" aria-live="polite">
-        <span class="live-dot-pulse"></span>
-        <span class="feed-text" id="feedText">🔥 فاز قبل قليل: فهد من الرياض بخصم 20%</span>
-      </div>
-    </div>
-  </div>
+  <!-- زر التحكم بالصوت (Minimalist Floating Icon) -->
+  <button type="button" id="soundToggleBtn" class="floating-sound-btn" aria-label="تشغيل أو كتم الصوت" title="صوت العجلة">
+    <span id="soundIcon">🔊</span>
+  </button>
 
-  <!-- تنبيه حالة الحملة (إذا كانت متوقفة مؤقتاً أو منتهية) -->
-  <div id="campaignAlert" class="campaign-alert-bar"></div>
+  <!-- تنبيه حالة الفعالية (إذا كانت متوقفة أو منتهية) -->
+  <div id="campaignAlert" class="campaign-alert-bar" style="display: none;"></div>
 
-  <!-- الهيدر الفاخر -->
-  <header class="header">
-    <div class="container header-container">
-      <div class="brand-group">
-        <a href="/" class="brand-logo" aria-label="Go Wash جو واش">
-          <svg class="logo-svg" viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- تجربة الفعالية الرئيسية (Single Focused Event Page) -->
+  <main class="event-wrapper">
+
+    <!-- 1. افتتاحية الفعالية (Opening Screen Hero) -->
+    <header class="event-header">
+      <div class="event-brand-mark">
+        <svg class="brand-svg" viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Go Wash">
+          <defs>
+            <linearGradient id="gwBlueEv" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00C2FF"/>
+              <stop offset="100%" stop-color="#0066CC"/>
+            </linearGradient>
+            <linearGradient id="gwOrangeEv" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FF7A00"/>
+              <stop offset="100%" stop-color="#E04800"/>
+            </linearGradient>
+          </defs>
+          <!-- G -->
+          <path d="M80 38C73 33 63 30 51 30C31 30 16 45 16 67C16 89 31 104 51 104C63 104 73 99 79 91V76H51V62H95V97C84 110 69 117 51 117C21 117 0 95 0 67C0 39 21 17 51 17C69 17 84 24 95 36L80 38Z" fill="url(#gwBlueEv)"/>
+          <!-- O (Drop + Rim) -->
+          <g transform="translate(104, 13)">
+            <path d="M48 2C48 2 10 46 10 74C10 97 27 114 48 114C69 114 86 97 86 74C86 46 48 2 48 2Z" fill="url(#gwBlueEv)"/>
+            <path d="M12 72C12 95 28 111 48 111C68 111 84 95 84 72" stroke="url(#gwOrangeEv)" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="48" cy="73" r="26" fill="#FFFFFF"/>
+            <circle cx="48" cy="73" r="21" stroke="url(#gwOrangeEv)" stroke-width="4" fill="none"/>
+            <circle cx="48" cy="73" r="6" fill="url(#gwOrangeEv)"/>
+            <line x1="48" y1="52" x2="48" y2="67" stroke="url(#gwOrangeEv)" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="48" y1="79" x2="48" y2="94" stroke="url(#gwOrangeEv)" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="27" y1="73" x2="42" y2="73" stroke="url(#gwOrangeEv)" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="54" y1="73" x2="69" y2="73" stroke="url(#gwOrangeEv)" stroke-width="3.5" stroke-linecap="round"/>
+          </g>
+          <!-- WASH -->
+          <path d="M214 34L228 98H241L253 52L265 98H278L292 34H276L269 77L258 34H248L237 77L230 34H214Z" fill="#FFFFFF"/>
+          <path d="M322 34L303 98H319L324 82H346L351 98H367L347 34H322ZM328 68L335 46L342 68H328Z" fill="#FFFFFF"/>
+          <path d="M408 48C403 44 396 42 388 42C381 42 377 45 377 49C377 53 381 55 389 57L397 59C409 62 416 68 416 78C416 90 404 98 388 98C378 98 369 95 363 89L370 76C375 81 381 84 388 84C395 84 400 81 400 76C400 72 396 70 389 68L381 66C369 63 362 57 362 48C362 36 374 28 388 28C397 28 404 31 410 35L408 48Z" fill="#FFFFFF"/>
+          <path d="M424 34V98H440V70H462V98H478V34H462V56H440V34H424Z" fill="#FFFFFF"/>
+          <text x="346" y="130" fill="#38BDF8" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" letter-spacing="1" text-anchor="middle">جو واش</text>
+        </svg>
+      </div>
+
+      <div class="event-identity-tag">
+        <span class="tag-number">96</span>
+        <span class="tag-divider">|</span>
+        <span class="tag-name">اليوم الوطني السعودي</span>
+      </div>
+
+      <h1 class="event-headline">لف واربح</h1>
+    </header>
+
+    <!-- 2. ساحة العجلة التفاعلية (Spin Wheel Arena) -->
+    <section class="wheel-arena" id="wheelArena">
+
+      <div class="wheel-stage-container">
+        
+        <!-- مؤشر التوقف الذهبي الفاخر ثلاثي الأبعاد -->
+        <div class="wheel-pointer" id="wheelPointer" aria-hidden="true">
+          <svg viewBox="0 0 48 58" width="48" height="58" fill="none">
             <defs>
-              <linearGradient id="gwBluePublic" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#00A3FF"/>
-                <stop offset="100%" stop-color="#0066CC"/>
+              <filter id="pointerShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.6"/>
+              </filter>
+              <linearGradient id="goldPointerGrad" x1="0" y1="0" x2="48" y2="58" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FFF5C0"/>
+                <stop offset="35%" stop-color="#FFD000"/>
+                <stop offset="70%" stop-color="#B8860B"/>
+                <stop offset="100%" stop-color="#785500"/>
               </linearGradient>
-              <linearGradient id="gwOrangePublic" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FF6B00"/>
-                <stop offset="100%" stop-color="#E04800"/>
+              <linearGradient id="jewelGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00E5FF"/>
+                <stop offset="100%" stop-color="#0055B3"/>
               </linearGradient>
             </defs>
-
-            <!-- G -->
-            <path d="M80 38C73 33 63 30 51 30C31 30 16 45 16 67C16 89 31 104 51 104C63 104 73 99 79 91V76H51V62H95V97C84 110 69 117 51 117C21 117 0 95 0 67C0 39 21 17 51 17C69 17 84 24 95 36L80 38Z" fill="url(#gwBluePublic)"/>
-            
-            <!-- O (Water Drop + Wheel Rim Icon) -->
-            <g transform="translate(104, 13)">
-              <!-- Outer Water Drop Silhouette -->
-              <path d="M48 2C48 2 10 46 10 74C10 97 27 114 48 114C69 114 86 97 86 74C86 46 48 2 48 2Z" fill="url(#gwBluePublic)"/>
-              <!-- Lower Orange Tire Arc -->
-              <path d="M12 72C12 95 28 111 48 111C68 111 84 95 84 72" stroke="url(#gwOrangePublic)" stroke-width="12" stroke-linecap="round"/>
-              <!-- Rim Inner Hub Circle -->
-              <circle cx="48" cy="73" r="26" fill="#FFFFFF"/>
-              <circle cx="48" cy="73" r="21" stroke="url(#gwOrangePublic)" stroke-width="4" fill="none"/>
-              <circle cx="48" cy="73" r="6" fill="url(#gwOrangePublic)"/>
-              <!-- Rim Spokes -->
-              <line x1="48" y1="52" x2="48" y2="67" stroke="url(#gwOrangePublic)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="48" y1="79" x2="48" y2="94" stroke="url(#gwOrangePublic)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="27" y1="73" x2="42" y2="73" stroke="url(#gwOrangePublic)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="54" y1="73" x2="69" y2="73" stroke="url(#gwOrangePublic)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="33" y1="58" x2="44" y2="69" stroke="url(#gwOrangePublic)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="52" y1="77" x2="63" y2="88" stroke="url(#gwOrangePublic)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="33" y1="88" x2="44" y2="77" stroke="url(#gwOrangePublic)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="52" y1="69" x2="63" y2="58" stroke="url(#gwOrangePublic)" stroke-width="3.5" stroke-linecap="round"/>
-            </g>
-
-            <!-- WASH Letters (High-Contrast White) -->
-            <!-- W -->
-            <path d="M214 34L228 98H241L253 52L265 98H278L292 34H276L269 77L258 34H248L237 77L230 34H214Z" fill="#FFFFFF"/>
-            <!-- A -->
-            <path d="M322 34L303 98H319L324 82H346L351 98H367L347 34H322ZM328 68L335 46L342 68H328Z" fill="#FFFFFF"/>
-            <!-- S -->
-            <path d="M408 48C403 44 396 42 388 42C381 42 377 45 377 49C377 53 381 55 389 57L397 59C409 62 416 68 416 78C416 90 404 98 388 98C378 98 369 95 363 89L370 76C375 81 381 84 388 84C395 84 400 81 400 76C400 72 396 70 389 68L381 66C369 63 362 57 362 48C362 36 374 28 388 28C397 28 404 31 410 35L408 48Z" fill="#FFFFFF"/>
-            <!-- H -->
-            <path d="M424 34V98H440V70H462V98H478V34H462V56H440V34H424Z" fill="#FFFFFF"/>
-
-            <!-- Arabic: جو واش (Centered beautifully below WASH) -->
-            <text x="346" y="130" fill="#38BDF8" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" letter-spacing="1" text-anchor="middle">جو واش</text>
+            <!-- Needle Body -->
+            <path d="M24 56L6 14C3 8 7 1 14 1H34C41 1 45 8 42 14L24 56Z" fill="url(#goldPointerGrad)" filter="url(#pointerShadow)"/>
+            <path d="M24 50L10 14H38L24 50Z" fill="#FFF" opacity="0.25"/>
+            <!-- Bevel Highlight -->
+            <line x1="24" y1="5" x2="24" y2="48" stroke="#FFF" stroke-width="1.5" opacity="0.6"/>
+            <!-- Center Jewel Accent -->
+            <circle cx="24" cy="15" r="7" fill="url(#jewelGrad)" stroke="#FFEAA7" stroke-width="1.8"/>
+            <circle cx="22" cy="13" r="2.2" fill="#FFF" opacity="0.8"/>
           </svg>
-        </a>
-      </div>
-
-      <nav class="header-nav-group">
-        <!-- روابط سريعة لمنصات التواصل -->
-        <div class="header-social-pills" aria-label="قنوات التواصل السريعة">
-          <a id="headerSocialWhatsapp" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="social-pill whatsapp" aria-label="واتساب Go Wash" title="WhatsApp 0580700242">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-            </svg>
-          </a>
-          <a id="headerSocialInstagram" href="https://instagram.com/Gowash.sa" target="_blank" rel="noopener noreferrer" class="social-pill instagram" aria-label="انستغرام Go Wash" title="Instagram @Gowash.sa">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-          </a>
-          <a id="headerSocialTiktok" href="https://www.tiktok.com/@Gowash.sa" target="_blank" rel="noopener noreferrer" class="social-pill tiktok" aria-label="تيك توك Go Wash" title="TikTok @Gowash.sa">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-              <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.74 1.35-.07 2.57-.96 2.98-2.25.17-.53.22-1.09.21-1.65.03-4.85-.01-9.7.02-14.55z"/>
-            </svg>
-          </a>
         </div>
 
-        <!-- زر كتم / تشغيل المؤثرات الصوتية -->
-        <button type="button" id="soundToggleBtn" class="btn-sound-toggle" aria-label="تشغيل أو كتم الصوت" title="تشغيل / كتم الصوت">
-          <span id="soundIcon">🔊</span>
-          <span class="sound-text">صوت العجلة</span>
+        <!-- حلقة الـ LED النيونية -->
+        <div class="wheel-led-ring" id="wheelLedRing"></div>
+
+        <!-- كانفاس العجلة عالي الدقة -->
+        <div class="canvas-wrapper">
+          <canvas id="wheelCanvas" width="460" height="460"></canvas>
+          <div class="wheel-center-cap">
+            <span class="cap-brand">GO WASH</span>
+            <span class="cap-year">96</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- زر اللف الأساسي (The Central CTA) -->
+      <div class="wheel-action-area" id="wheelActionArea">
+        <button type="button" id="spinBtn" class="btn-spin-hero">
+          <span class="btn-spin-text" id="spinBtnLabel">لف واربح</span>
+          <span class="btn-spin-arrow">🎡</span>
         </button>
 
-        <a href="#offers-section" class="btn-nav-offer">
-          <span>عرض السيارتين 25%</span>
-        </a>
-
-        <!-- الرابط المنفصل للوحة الإدارة -->
-        <a href="/admin" class="btn-admin-link" title="الدخول إلى لوحة إدارة الفعالية" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          </svg>
-          <span>لوحة الإدارة</span>
-        </a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <!-- قسم البطل (Hero Section) -->
-    <section class="hero-section">
-      <div class="hero-bg-glow"></div>
-      <div class="container hero-container">
-        <h1 class="hero-title">
-          لف عجلة الحظ مع <span class="text-gowash-blue">Go Wash</span><br>
-          واكسب في <span class="text-gradient-gold">اليوم الوطني 96</span>
-        </h1>
-
-        <p class="hero-subtitle">
-          خصومات فورية حصرية وترقيات فاخرة لباقة <strong>Signature</strong> المتنقلة!
-          سجّل اسمك ورقم جوالك الآن، لف العجلة واحصل على كود خصم فوري مخصص لك فقط.
-        </p>
-
-        <!-- ميزات الفعالية السريعة -->
-        <div class="hero-features-row">
-          <div class="feature-item">
-            <span class="feature-icon">✨</span>
-            <span>كود خصم فوري وفريد</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-icon">🚙</span>
-            <span>نجيك وين ما كنت بالمملكة</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-icon">🎁</span>
-            <span>ترقية باقة Signature الكبرى</span>
-          </div>
+        <div class="spin-sub-notice">
+          <span>فرصة واحدة لكل رقم جوال</span>
+          <span class="notice-dot">·</span>
+          <button type="button" class="btn-recover-link" id="openRecoverModalBtn">
+            شاركت مسبقاً؟ استرجع كودك
+          </button>
         </div>
 
-        <div class="hero-cta-group">
-          <a href="#spin-arena" class="btn btn-hero" id="heroScrollBtn">
-            <span>ابدأ السحب الآن</span>
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 5v14M19 12l-7 7-7-7"/>
-            </svg>
-          </a>
-          <a href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="btn btn-hero-whatsapp">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-            </svg>
-            <span>استفسر عبر الواتساب</span>
-          </a>
-        </div>
+        <!-- تنبيه الحالة اللحظية -->
+        <div id="spinStatusMsg" class="spin-status-banner"></div>
       </div>
     </section>
 
-    <!-- ميدان التدوير وتسجيل البيانات (Interactive Spin Arena) -->
-    <section class="spin-arena-section" id="spin-arena">
-      <div class="container">
-        
-        <div class="arena-header text-center">
-          <span class="arena-kicker">سحب اليوم الوطني 96 المباشر</span>
-          <h2 class="arena-title">عجلة جوائز <span class="text-gowash-blue">Go Wash</span></h2>
-          <p class="arena-desc">أدخل اسمك ورقم جوالك ثم لف العجلة لتكتشف هديتك الفورية وتستلم كود الخصم الحصري</p>
+    <!-- 3. بطاقة الجائزة المحفوظة الدائمة (Persistent Winner Ticket / Returning Customer) -->
+    <!-- تظهر فوراً إذا كان المستخدم فائزاً وتمنع أي تدوير مكرر Server-side -->
+    <section class="winner-ticket-section" id="winnerPersistentCard" style="display: none;">
+      <div class="vip-ticket">
+        <div class="ticket-header">
+          <span class="ticket-badge" id="ticketBadgeText">🇸🇦 أنت شاركت بالفعل</span>
+          <span class="ticket-status-live" id="ticketStatusBadge">مفعل وجاهز للاستخدام</span>
         </div>
 
-        <div class="arena-layout">
-          
-          <!-- الجانب الأول: عجلة الحظ ثلاثية الأبعاد -->
-          <div class="wheel-column">
-            <div class="wheel-stage">
-              <!-- مؤشر التوقف الذهبي الفاخر -->
-              <div class="wheel-pointer" id="wheelPointer" aria-hidden="true">
-                <svg viewBox="0 0 44 54" width="44" height="54" fill="none">
-                  <path d="M22 54L4 12C2 7 6 0 12 0H32C38 0 42 7 40 12L22 54Z" fill="url(#goldPointerGrad)"/>
-                  <path d="M22 46L8 12H36L22 46Z" fill="#FFF" opacity="0.3"/>
-                  <circle cx="22" cy="14" r="5" fill="#FFF"/>
-                  <defs>
-                    <linearGradient id="goldPointerGrad" x1="0" y1="0" x2="44" y2="54" gradientUnits="userSpaceOnUse">
-                      <stop stop-color="#FFE259"/>
-                      <stop offset="1" stop-color="#FFA751"/>
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
+        <div class="ticket-main">
+          <span class="ticket-kicker" id="ticketKickerText">جائزتك السابقة مع Go Wash:</span>
+          <h2 id="savedPrizeTitle" class="ticket-prize-name">خصم 20%</h2>
+          <p id="savedPrizeSubtext" class="ticket-prize-sub">خصم Go Wash على جميع باقات الغسيل المتنقل</p>
 
-              <!-- حلقة الـ LED النيونية المحيطة -->
-              <div class="wheel-led-ring" id="wheelLedRing"></div>
-
-              <!-- كانفاس العجلة بدقة فائقة -->
-              <div class="canvas-wrapper">
-                <canvas id="wheelCanvas" width="460" height="460"></canvas>
-                <!-- المركز المضيء بشعار Go Wash -->
-                <div class="wheel-center-cap">
-                  <span class="cap-text">GO WASH</span>
-                  <span class="cap-sub">96</span>
-                </div>
-              </div>
+          <div class="ticket-code-card">
+            <span class="code-label">PROMO CODE · رمزك الخاص</span>
+            <div class="code-value-row">
+              <span id="savedPromoCode" class="code-value" dir="ltr">GW96-XXXX-XXXX</span>
+              <button type="button" id="copySavedCodeBtn" class="btn-ticket-copy">
+                <span id="copySavedCodeText">نسخ الكود</span>
+              </button>
             </div>
 
-            <div class="wheel-footnote text-center">
-              <span class="footnote-lock">🔒 نظام سحب إلكتروني مشفر ومحمي سيرفر-سايد بالكامل</span>
+            <!-- QR Code for the Prize -->
+            <div class="prize-qr-wrapper" id="savedQrWrapper" style="display: none;">
+              <div class="prize-qr-box">
+                <img id="savedQrCodeImg" src="" alt="QR Code للجائزة" width="130" height="130" />
+              </div>
+              <span class="prize-qr-hint">امسح الـ QR لدى موظف Go Wash للتحقق الفوري</span>
             </div>
           </div>
 
-          <!-- الجانب الثاني: بطاقة البيانات والتحكم / أو بطاقة الجائزة الدائمة -->
-          <div class="control-column">
-            
-            <!-- الحالة الأولى: نموذج التسجيل قبل التدوير (Registration Form) -->
-            <div class="control-card" id="registrationCard">
-              <div class="card-head">
-                <div class="badge-step">الخطوة الإلزامية</div>
-                <h3 class="card-title">بيانات الاستفادة من الخصم</h3>
-                <p class="card-subtitle">البيانات مطلوبة لربط كود الخصم باسمك ورقم جوالك لمنع التكرار وحفظ حقك.</p>
-              </div>
-
-              <form id="spinForm" novalidate onsubmit="return false;">
-                
-                <!-- حقل الاسم -->
-                <div class="form-field-group">
-                  <label for="participantName" class="field-label">الاسم الكريم <span class="req-star">*</span></label>
-                  <div class="input-with-icon">
-                    <span class="input-icon">
-                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
-                      </svg>
-                    </span>
-                    <input type="text" id="participantName" class="form-input-luxury" placeholder="مثال: محمد السعيد" maxlength="70" required autocomplete="name">
-                  </div>
-                  <span class="field-error-msg" id="nameErrorMsg"></span>
-                </div>
-
-                <!-- حقل رقم الجوال السعودي -->
-                <div class="form-field-group">
-                  <label for="participantPhone" class="field-label">رقم الجوال السعودي <span class="req-star">*</span></label>
-                  <div class="phone-input-row" dir="ltr">
-                    <div class="saudi-flag-prefix">
-                      <span class="flag">🇸🇦</span>
-                      <span class="prefix">+966</span>
-                    </div>
-                    <input type="tel" id="participantPhone" class="form-input-luxury phone-input" placeholder="05xxxxxxxx" maxlength="10" required autocomplete="tel" dir="ltr">
-                  </div>
-                  <small class="field-hint">أدخل رقم جوالك يبدأ بـ 05 (10 أرقام) مثال: 0580700242</small>
-                  <span class="field-error-msg" id="phoneErrorMsg"></span>
-                </div>
-
-                <!-- الموافقة على الشروط والأحكام -->
-                <div class="terms-checkbox-group">
-                  <label class="custom-checkbox-label">
-                    <input type="checkbox" id="termsCheckInput" class="custom-checkbox-input">
-                    <span class="checkbox-box"></span>
-                    <span class="checkbox-text">
-                      أوافق على <button type="button" class="btn-link-terms" id="openTermsModalLink">الشروط والأحكام الخاصة بفعالية اليوم الوطني 96</button>
-                    </span>
-                  </label>
-                  <span class="field-error-msg" id="termsErrorMsg"></span>
-                </div>
-
-                <!-- زر التدوير الرئيسي -->
-                <button type="button" id="spinBtn" class="btn-spin-action">
-                  <span class="btn-spin-glow"></span>
-                  <span class="btn-spin-content">
-                    <span class="spin-icon">🎡</span>
-                    <span class="spin-label" id="spinBtnLabel">لف العجلة الآن</span>
-                  </span>
-                </button>
-
-                <!-- تنبيهات الحالة والخطأ -->
-                <div id="spinStatusMsg" class="spin-status-banner"></div>
-
-                <!-- رابط استرجاع الجائزة إذا كان فائزاً مسبقاً -->
-                <div class="restore-prize-box text-center">
-                  <span>شاركت مسبقاً وتبحث عن كودك؟</span>
-                  <button type="button" class="btn-text-link" id="openRecoverModalBtn">
-                    استرجع كود الخصم برقم جوالك
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            <!-- الحالة الثانية: بطاقة الجائزة الدائمة (Vip Winner Voucher Card) -->
-            <!-- تظهر فور الفوز أو إذا كان المستخدم فائزاً مسبقاً، ولا تختفي أبداً عند الخروج أو التحديث -->
-            <div class="winner-persistent-card" id="winnerPersistentCard" style="display: none;">
-              <div class="card-ribbon">
-                <span>🇸🇦 جائزتك المحفوظة لليوم الوطني 96</span>
-              </div>
-
-              <div class="winner-card-body">
-                <div class="winner-congrats-header">
-                  <span class="confetti-badge">🎉 مبروك الفوز!</span>
-                  <h3 id="savedPrizeTitle" class="saved-prize-title">باقة GoWash Signature الفاخرة</h3>
-                  <p id="savedPrizeSubtext" class="saved-prize-subtext">ترقية مجانية: ادفع قيمة الغسيل العادي واحصل على الباقة الفاخرة</p>
-                </div>
-
-                <div class="participant-meta-tag">
-                  <span>المستفيد: <strong id="savedParticipantName">---</strong></span>
-                  <span dir="ltr">الجوال: <strong id="savedParticipantPhone">---</strong></span>
-                </div>
-
-                <!-- صندوق الكود الترويجي الفريد وغير المكرر -->
-                <div class="voucher-ticket-box">
-                  <div class="ticket-cutout left"></div>
-                  <div class="ticket-cutout right"></div>
-                  <span class="voucher-label">كود الخصم الحصري (غير مكرر ومخصص لك):</span>
-                  <div class="voucher-code-display-row">
-                    <span id="savedPromoCode" class="voucher-code-text" dir="ltr">GW96-XXXX-XXXX</span>
-                    <button type="button" id="copySavedCodeBtn" class="btn-copy-code" aria-label="نسخ الكود الترويجي">
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                      </svg>
-                      <span id="copySavedCodeText">نسخ</span>
-                    </button>
-                  </div>
-                  <div class="voucher-expiry-notice">
-                    <span class="clock-icon">⏳</span>
-                    <span>صلاحية الكود سارية طوال فعاليات اليوم الوطني (أو 48 ساعة من الإصدار)</span>
-                  </div>
-                </div>
-
-                <!-- أزرار الإجراءات السريعة -->
-                <div class="voucher-actions">
-                  <a id="savedBookingBtn" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp-direct">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                    </svg>
-                    <span>احجز الآن بالخصم عبر الواتساب</span>
-                  </a>
-
-                  <button type="button" id="savedShareBtn" class="btn btn-outline-share">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                      <circle cx="18" cy="5" r="3"></circle>
-                      <circle cx="6" cy="12" r="3"></circle>
-                      <circle cx="18" cy="19" r="3"></circle>
-                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                    </svg>
-                    <span>شارك فوزك</span>
-                  </button>
-                </div>
-
-                <!-- تعليمات الاستخدام السريعة -->
-                <div class="usage-steps-mini">
-                  <div class="mini-step">
-                    <span class="num">1</span>
-                    <span>انسخ الكود</span>
-                  </div>
-                  <div class="mini-step">
-                    <span class="num">2</span>
-                    <span>تواصل معنا بالواتساب</span>
-                  </div>
-                  <div class="mini-step">
-                    <span class="num">3</span>
-                    <span>نجيك ونغسل سيارتك بالخصم</span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- قسم مميزات وخدمات Go Wash المتنقلة -->
-    <section class="features-section" id="features-section">
-      <div class="container">
-        <div class="section-header text-center">
-          <span class="section-kicker">جودة واحترافية لا تُضاهى</span>
-          <h2 class="section-title">لماذا <span class="text-gowash-blue">Go Wash</span> هي اختيارك الأول بالمملكة؟</h2>
-          <p class="section-subtitle">نقدم أرقى معايير العناية والتلميع المتنقل للسيارات أينما كنت بالمملكة</p>
-        </div>
-
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-card-icon">🚗</div>
-            <h3 class="feature-card-title">أسطول متنقل متكامل</h3>
-            <p class="feature-card-desc">سيارات مجهزة بأحدث مضخات الضغط الإيطالية وخزانات مياه عذبة مفلترة لا تترك أي ترسبات كلسية على الزجاج أو الهيكل.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-card-icon">✨</div>
-            <h3 class="feature-card-title">مواد نانو آمنة 100%</h3>
-            <p class="feature-card-desc">شامبو عضوي متعادل الحموضة ومناشف مايكروفايبر فائقة النعومة تحافظ على لمعان دهان سيارتك وتمنع ظهور الدوائر والخدوش.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-card-icon">⏱️</div>
-            <h3 class="feature-card-title">دقة متناهية بالمواعيد</h3>
-            <p class="feature-card-desc">فريق مدرب ومحترف يصل في الموعد المحدد تماماً عند بيتك أو مكتبك، لنوفر وقتك دون أي انتظار في طوابير المغاسل.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-card-icon">💳</div>
-            <h3 class="feature-card-title">دفع مرن وضمان رضا كامل</h3>
-            <p class="feature-card-desc">سداد سهل وفوري عبر مدى، أبل باي، أو بطاقات الائتمان بعد معاينتك للنظافة الفائقة ورضاك التام عن النتيجة.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- عرض غسيل سيارتين 25% (Non-Stackable Offer Section) -->
-    <section class="offers-section" id="offers-section">
-      <div class="container">
-        <div class="offer-vip-card">
-          <div class="offer-badge-row">
-            <span class="offer-highlight-pill">🇸🇦 باقة اليوم الوطني العائلية</span>
-            <span class="badge-non-stackable">عرض مستقل غير قابل للدمج</span>
-          </div>
-
-          <div class="offer-body-grid">
-            <div class="offer-info-col">
-              <h2 class="offer-headline">غسيل سيارتين في نفس الموقع</h2>
-              <div class="discount-callout">
-                <span class="discount-value">خصم 25%</span>
-                <span class="discount-sub">مباشر على الفاتورة الإجمالية</span>
-              </div>
-              <p class="offer-description">
-                اطلب خدمة Go Wash المتنقلة لغسيل سيارتين لك ولعائلتك أو أصدقائك في نفس الموقع (المنزل أو العمل) واحصل فوراً على خصم 25% شامل باقات النظافة والتلميع المعتمدة.
-              </p>
-
-              <!-- حاسبة الوفر التفاعلية لعرض السيارتين -->
-              <div class="savings-calc-box">
-                <div class="calc-header">
-                  <span class="calc-icon">🧮</span>
-                  <strong class="calc-title">حاسبة وفر اليوم الوطني للسيارتين (خصم 25% فوري)</strong>
-                </div>
-                <p class="calc-desc">اختر باقة الغسيل لكل سيارة واكتشف كم ستوفر فوراً مع Go Wash:</p>
-                <div class="calc-selectors-row">
-                  <div class="calc-selector-group">
-                    <label for="car1Package">باقة السيارة الأولى:</label>
-                    <select id="car1Package" class="calc-select">
-                      <option value="70">باقة واش الأساسية (70 ر.س)</option>
-                      <option value="95" selected>باقة واش بلس المتميزة (95 ر.س)</option>
-                      <option value="140">باقة Signature الفاخرة (140 ر.س)</option>
-                    </select>
-                  </div>
-                  <div class="calc-selector-group">
-                    <label for="car2Package">باقة السيارة الثانية:</label>
-                    <select id="car2Package" class="calc-select">
-                      <option value="70">باقة واش الأساسية (70 ر.س)</option>
-                      <option value="95" selected>باقة واش بلس المتميزة (95 ر.س)</option>
-                      <option value="140">باقة Signature الفاخرة (140 ر.س)</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="calc-results-bar">
-                  <div class="result-item">
-                    <span>الإجمالي قبل الخصم:</span>
-                    <strong id="calcOriginalPrice">190 ر.س</strong>
-                  </div>
-                  <div class="result-item discount">
-                    <span>وفرت باليوم الوطني (25%):</span>
-                    <strong id="calcDiscountAmount">47.50 ر.س</strong>
-                  </div>
-                  <div class="result-item final">
-                    <span>المبلغ النهائي المطلوب:</span>
-                    <strong id="calcFinalPrice">142.50 ر.س</strong>
-                  </div>
-                </div>
-              </div>
-
-              <div class="offer-terms-note">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                <span>ملاحظة مهمة: هذا العرض مخصص لغسيل سيارتين في موقع واحد، وهو مستقل تماماً ولا يقبل الجمع مع أكواد عجلة الحظ (Spin Wheel) أو أي عروض ترويجية أخرى.</span>
-              </div>
-            </div>
-
-            <div class="offer-action-col">
-              <div class="action-card-inner">
-                <div class="price-hint">احجز الآن بخصم اليوم الوطني 96</div>
-                <a id="twoCarsBookingBtn" href="https://wa.me/966580700242?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20Go%20Wash%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%A7%D8%AF%D8%A9%20%D9%85%D9%86%20%D8%B9%D8%B1%D8%B6%20%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%AA%D9%8A%D9%86%2025%25%20%D9%81%D9%8A%20%D9%86%D9%81%D8%B3%20%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9." target="_blank" rel="noopener noreferrer" class="btn btn-booking-gold">
-                  <span>احجز عرض السيارتين بالواتساب</span>
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                  </svg>
-                </a>
-                <span class="direct-phone-label" dir="ltr">WhatsApp: 0580700242</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- قسم حسابات التواصل الاجتماعي الرسمية (Social Media Section) -->
-    <section class="social-section" id="social-section">
-      <div class="container">
-        <div class="social-card-luxury">
-          <div class="social-header text-center">
-            <span class="social-kicker">مغسلتك المتنقلة معك دائماً</span>
-            <h3 class="social-title">تابع <span class="text-gowash-blue">Go Wash</span> على المنصات الرسمية</h3>
-            <p class="social-desc">تواصل معنا مباشرة وتابع تغطيات اليوم الوطني 96 والعروض الحصرية</p>
-          </div>
-
-          <div class="social-cards-row" role="navigation" aria-label="حسابات Go Wash الرسمية">
-            
-            <!-- WhatsApp -->
-            <a id="socialWhatsapp" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="social-hub-card whatsapp-hub" aria-label="واتساب Go Wash 0580700242">
-              <div class="hub-icon-wrapper">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
-                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                </svg>
-              </div>
-              <div class="hub-info">
-                <span class="hub-platform">WhatsApp</span>
-                <span class="hub-account" dir="ltr">0580700242</span>
-                <span class="hub-action">محادثة مباشرة ↗</span>
-              </div>
-            </a>
-
-            <!-- Instagram -->
-            <a id="socialInstagram" href="https://instagram.com/Gowash.sa" target="_blank" rel="noopener noreferrer" class="social-hub-card instagram-hub" aria-label="انستغرام Go Wash Gowash.sa">
-              <div class="hub-icon-wrapper">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-              </div>
-              <div class="hub-info">
-                <span class="hub-platform">Instagram</span>
-                <span class="hub-account" dir="ltr">@Gowash.sa</span>
-                <span class="hub-action">متابعة الحساب ↗</span>
-              </div>
-            </a>
-
-            <!-- TikTok -->
-            <a id="socialTiktok" href="https://www.tiktok.com/@Gowash.sa" target="_blank" rel="noopener noreferrer" class="social-hub-card tiktok-hub" aria-label="تيك توك Go Wash Gowash.sa">
-              <div class="hub-icon-wrapper">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
-                  <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.74 1.35-.07 2.57-.96 2.98-2.25.17-.53.22-1.09.21-1.65.03-4.85-.01-9.7.02-14.55z"/>
-                </svg>
-              </div>
-              <div class="hub-info">
-                <span class="hub-platform">TikTok</span>
-                <span class="hub-account" dir="ltr">@Gowash.sa</span>
-                <span class="hub-action">متابعة الفيديوهات ↗</span>
-              </div>
-            </a>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- قسم الشروط والأحكام العامة -->
-    <section class="terms-summary-section">
-      <div class="container">
-        <div class="terms-summary-card">
-          <h4 class="terms-summary-title">الشروط والأحكام الأساسية للفعالية</h4>
-          <ul class="terms-summary-list">
-            <li>الفعالية حصرية بمناسبة اليوم الوطني السعودي 96 وسارية حتى نهاية فترة الاحتفالات.</li>
-            <li>المشاركة محددة بمرة واحدة فقط لكل رقم جوال مسجل.</li>
-            <li>يتم إصدار كود الخصم بشكل فوري ومشفر وغير قابل للتكرار.</li>
-            <li>كود الخصم صالح للاستخدام الشخصي ولمرة واحدة فقط، ولا يمكن استبداله بقيمة نقدية.</li>
-            <li>عرض السيارتين بخصم 25% مستقل تماماً ولا يقبل الدمج مع أي كود صادر من عجلة الحظ.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- الفوتر الرسمي -->
-  <footer class="footer">
-    <div class="container footer-container">
-      <div class="footer-top-row">
-        <div class="footer-brand-info">
-          <strong class="footer-brand-title">Go Wash — جو واش</strong>
-          <p class="footer-brand-desc">خدمة غسيل وتلميع السيارات المتنقلة الأولى.</p>
-        </div>
-
-        <div class="footer-social-column">
-          <span class="social-col-label">قنوات التواصل المباشرة:</span>
-          <div class="footer-social-links" aria-label="روابط التواصل في الفوتر">
-            <a id="footerSocialWhatsapp" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="footer-icon-btn" aria-label="WhatsApp 0580700242" title="WhatsApp 0580700242">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <div class="ticket-actions">
+            <a id="savedBookingBtn" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-ticket">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
               </svg>
+              <span>احجز الآن بالخصم عبر الواتساب</span>
             </a>
-            <a id="footerSocialInstagram" href="https://instagram.com/Gowash.sa" target="_blank" rel="noopener noreferrer" class="footer-icon-btn" aria-label="Instagram Gowash.sa" title="Instagram @Gowash.sa">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-              </svg>
-            </a>
-            <a id="footerSocialTiktok" href="https://www.tiktok.com/@Gowash.sa" target="_blank" rel="noopener noreferrer" class="footer-icon-btn" aria-label="TikTok Gowash.sa" title="TikTok @Gowash.sa">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.74 1.35-.07 2.57-.96 2.98-2.25.17-.53.22-1.09.21-1.65.03-4.85-.01-9.7.02-14.55z"/>
-              </svg>
-            </a>
+            <div class="ticket-sub-actions">
+              <button type="button" id="savedShareBtn" class="btn-ticket-share">
+                <span>🎁 مشاركة الجائزة</span>
+              </button>
+              <button type="button" id="savedHowToUseBtn" class="btn-ticket-how">
+                <span>📖 طريقة الاستخدام</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="ticketRedeemedNotice" class="ticket-status-notice" style="display: none;"></div>
+
+          <div class="ticket-meta">
+            <span>المستفيد: <strong id="savedParticipantName">---</strong></span>
+            <span dir="ltr">الجوال: <strong id="savedParticipantPhone">---</strong></span>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="footer-bottom-row">
-        <p class="copyright-text">
-          © 2026 Go Wash جو واش. جميع الحقوق محفوظة.
-        </p>
-        <div class="footer-admin-link-wrapper">
-          <a href="/admin" class="footer-admin-btn" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+    <!-- 4. طريقة الاستخدام (How to Use) - فائقة الاختصار -->
+    <section class="how-to-use-section" id="howToUseSection">
+      <div class="how-to-use-header">
+        <span class="how-badge">طريقة الاستخدام</span>
+      </div>
+      <div class="steps-mini-row">
+        <div class="step-mini-item">
+          <span class="step-num">1</span>
+          <span class="step-label">انسخ كودك الخاص</span>
+        </div>
+        <span class="step-arrow">←</span>
+        <div class="step-mini-item">
+          <span class="step-num">2</span>
+          <span class="step-label">أرسله عبر الواتساب</span>
+        </div>
+        <span class="step-arrow">←</span>
+        <div class="step-mini-item">
+          <span class="step-num">3</span>
+          <span class="step-label">احصل على الخصم فوراً</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. عرض السيارتين (Two Cars Secondary Offer) - مقتضب وأنيق -->
+    <section class="two-cars-strip">
+      <div class="offer-compact-box">
+        <div class="offer-compact-head">
+          <span class="offer-tag">عرض اليوم الوطني 96</span>
+          <h3 class="offer-title">سيارتان في نفس الموقع — <strong>خصم 25%</strong></h3>
+        </div>
+        <div class="offer-compact-action">
+          <a id="twoCarsBookingBtn" href="https://wa.me/966580700242?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20Go%20Wash%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%A7%D8%AF%D8%A9%20%D9%85%D9%86%20%D8%B9%D8%B1%D8%B6%20%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%AA%D9%8A%D9%86%2025%25%20%D9%81%D9%8A%20%D9%86%D9%81%D8%B3%20%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9." target="_blank" rel="noopener noreferrer" class="btn-compact-offer">
+            <span>احجز السيارتين</span>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
             </svg>
-            <span>لوحة التحكم وإدارة الفعالية (Admin)</span>
           </a>
         </div>
       </div>
-    </div>
-  </footer>
+      <p class="offer-nonstackable-hint">غير قابل للجمع مع جائزة Spin Wheel</p>
+    </section>
 
-  <!-- نافذة الاحتفال بالفوز المنبثقة (Winner Celebration Modal) -->
-  <dialog id="winnerModal" class="modal-dialog" role="dialog" aria-labelledby="modalHeading" aria-modal="true">
-    <div class="modal-box-festive">
-      <button id="modalCloseBtn" class="modal-close-btn" aria-label="إغلاق النافذة">
-        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-
-      <div class="modal-festive-header text-center">
-        <span class="celebration-ribbon">🇸🇦 مبروك فوزك في اليوم الوطني 96!</span>
-        <h3 id="modalHeading" class="modal-festive-title">هدية حصرية من Go Wash</h3>
+    <!-- 6. قنوات التواصل (Social Links Only) -->
+    <section class="social-strip">
+      <span class="social-strip-label">تابع Go Wash</span>
+      <div class="social-icons-row">
+        <a id="socialWhatsapp" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="social-icon-btn whatsapp" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+        </a>
+        <a id="socialInstagram" href="https://instagram.com/Gowash.sa" target="_blank" rel="noopener noreferrer" class="social-icon-btn instagram" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+        <a id="socialTiktok" href="https://www.tiktok.com/@Gowash.sa" target="_blank" rel="noopener noreferrer" class="social-icon-btn tiktok" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.74 1.35-.07 2.57-.96 2.98-2.25.17-.53.22-1.09.21-1.65.03-4.85-.01-9.7.02-14.55z"/>
+          </svg>
+        </a>
       </div>
+    </section>
 
-      <div class="modal-prize-card" id="modalPrizeCard"></div>
+    <!-- 7. فوتر شبه معدوم (Minimal Footer) -->
+    <footer class="event-footer">
+      <div class="footer-simple-content">
+        <span>Go Wash · National Day 96</span>
+        <span class="footer-dot">·</span>
+        <span>WhatsApp · Instagram · TikTok</span>
+      </div>
+    </footer>
 
-      <div class="modal-voucher-ticket">
-        <span class="ticket-sub">كود الخصم الحصري (محفوظ ولن يختفي):</span>
-        <div class="ticket-code-row">
-          <span id="promoCodeDisplay" class="ticket-code-val" dir="ltr">--------</span>
-          <button id="copyCodeBtn" class="btn-copy-ticket" aria-label="نسخ الكود">
-            <span id="copyBtnText">نسخ الكود</span>
+  </main>
+
+  <!-- نافذة الشروط والأحكام وتأكيد البيانات (Terms & Spin Entry Modal) -->
+  <dialog id="termsModal" class="modal-dialog" role="dialog" aria-labelledby="termsHeading" aria-modal="true">
+    <div class="terms-modal-card">
+      <button type="button" id="termsCloseIcon" class="modal-close-icon" aria-label="إغلاق">✕</button>
+
+      <!-- الخطوة 1: الشروط والأحكام الرسمية مع زري موافق / غير موافق -->
+      <div id="termsStep1" class="terms-step-panel">
+        <div class="modal-event-head">
+          <span class="modal-badge-nd">🇸🇦 سحب اليوم الوطني 96</span>
+          <h3 id="termsHeading" class="modal-title-bold">الشروط والأحكام</h3>
+          <p class="modal-subtext">يرجى قراءة الشروط والأحكام والموافقة عليها قبل لف العجلة للمشاركة في الفعالية:</p>
+        </div>
+
+        <div class="terms-full-box">
+          <div class="terms-version-heading">الشروط والأحكام الرسمية (الإصدار 1.1)</div>
+          <ul class="terms-official-list">
+            <li><strong>فرصة تدوير واحدة:</strong> لكل مشارك (رقم جوال) فرصة سحب وتدوير واحدة فقط طوال فترة الفعالية.</li>
+            <li><strong>شخصي وغير قابل للنقل:</strong> جميع الأكواد الترويجية مخصصة للمشارك الذي حصل عليها شخصياً، ولا يجوز نقلها أو بيعها أو استخدامها من قِبل شخص آخر.</li>
+            <li><strong>استخدام لمرة واحدة:</strong> كل كود خصم صالح للاستخدام مرة واحدة فقط، ويصبح غير صالح بعد إتمام عملية الاسترداد.</li>
+            <li><strong>التحقق عند الاسترداد:</strong> يحق لإدارة Go Wash التحقق من هوية صاحب الجائزة ومطابقة رقم الجوال المسجل قبل تطبيق الخصم.</li>
+            <li><strong>منع التحايل:</strong> لا يجوز استخدام وسائل غير مشروعة أو أرقام وهمية أو التحايل على نظام الفعالية.</li>
+            <li><strong>عدم الجمع بين العروض:</strong> جوائز عجلة الحظ غير قابلة للدمج مع عرض السيارتين (25%) أو أي عروض ترويجية أخرى.</li>
+            <li><strong>نطاق الخدمة:</strong> تطبق مواعيد تقديم خدمة الغسيل المتنقل وفق النطاق التشغيلي وأوقات عمل أسطول Go Wash بالمملكة.</li>
+          </ul>
+        </div>
+
+        <div class="modal-action-row">
+          <button type="button" id="acceptTermsBtn" class="btn-modal-agree">
+            <span>موافق</span>
+          </button>
+          <button type="button" id="declineTermsBtn" class="btn-modal-decline">
+            <span>غير موافق</span>
           </button>
         </div>
       </div>
 
-      <div class="modal-cta-actions">
-        <a id="bookingCtaBtn" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="btn btn-booking-prime">
-          احجز موعدك الآن بالواتساب
-        </a>
-        <button id="shareResultBtn" class="btn btn-share-prime">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="18" cy="5" r="3"/>
-            <circle cx="6" cy="12" r="3"/>
-            <circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-          </svg>
-          <span>شارك فوزك مع أصحابك</span>
-        </button>
+      <!-- الخطوة 2: بيانات استلام الجائزة (تظهر فور الضغط على موافق) -->
+      <div id="termsStep2" class="terms-step-panel" style="display: none;">
+        <div class="modal-event-head">
+          <span class="modal-badge-nd">🇸🇦 سحب اليوم الوطني 96</span>
+          <h3 class="modal-title-bold">بيانات استلام الجائزة</h3>
+          <p class="modal-subtext">أدخل اسمك ورقم جوالك لربط كود الخصم الحصري بك شخصياً ومنع نقله:</p>
+        </div>
+
+        <form id="spinForm" novalidate onsubmit="return false;" class="modal-entry-form">
+          <!-- الاسم -->
+          <div class="form-group-event">
+            <label for="participantName" class="form-label-event">الاسم الكريم</label>
+            <input type="text" id="participantName" class="form-input-event" placeholder="مثال: فهد المطيري" maxlength="70" required autocomplete="name">
+            <span class="field-error" id="nameErrorMsg"></span>
+          </div>
+
+          <!-- الجوال -->
+          <div class="form-group-event">
+            <label for="participantPhone" class="form-label-event">رقم الجوال السعودي</label>
+            <div class="phone-box-event" dir="ltr">
+              <span class="phone-flag">🇸🇦 +966</span>
+              <input type="tel" id="participantPhone" class="form-input-event phone-inner" placeholder="05xxxxxxxx" maxlength="10" required autocomplete="tel" dir="ltr" inputmode="numeric">
+            </div>
+            <span class="field-error" id="phoneErrorMsg"></span>
+          </div>
+
+          <div class="modal-action-row">
+            <button type="button" id="startSpinSubmitBtn" class="btn-modal-spin">
+              <span>ابدأ السحب 🎡</span>
+            </button>
+            <button type="button" id="backToTermsBtn" class="btn-modal-cancel">
+              <span>رجوع للشروط</span>
+            </button>
+          </div>
+        </form>
       </div>
 
-      <div class="modal-persistent-hint text-center">
-        <span>✨ جائزتك محفوظة بأمان وستبقى ظاهرة لك في الصفحة عند العودة في أي وقت.</span>
-      </div>
     </div>
   </dialog>
 
-  <!-- نافذة الشروط والأحكام المنبثقة (Terms & Conditions Modal) -->
-  <dialog id="termsModal" class="modal-dialog" role="dialog" aria-labelledby="termsHeading" aria-modal="true">
-    <div class="terms-modal-box">
-      <div class="modal-header text-center">
-        <span class="modal-kicker">🇸🇦 فعالية Go Wash | اليوم الوطني السعودي 96</span>
-        <h3 id="termsHeading" class="modal-title">الشروط والأحكام الرسمية</h3>
+  <!-- نافذة الاحتفال بالفوز اللحظي (Event Moment Winner Modal) -->
+  <dialog id="winnerModal" class="modal-dialog" role="dialog" aria-labelledby="modalWinTitle" aria-modal="true">
+    <div class="modal-celebration-card">
+      <button id="modalCloseBtn" class="modal-close-icon" aria-label="إغلاق">✕</button>
+
+      <div class="celebration-hero">
+        <span class="celebration-badge">🇸🇦 مبروك أنت الفائز!</span>
+        <h2 id="modalWinTitle" class="celebration-headline">مبروك</h2>
       </div>
 
-      <p class="terms-intro-text text-center">
-        يرجى قراءة الشروط والأحكام الخاصة بفعالية اليوم الوطني 96 والموافقة عليها.
-      </p>
-
-      <div class="terms-scroll-area">
-        <ol class="terms-scroll-list">
-          <li>المشاركة في الفعالية متاحة حصرياً خلال فترة الحملة المعلنة بمناسبة اليوم الوطني السعودي 96.</li>
-          <li>يجب إدخال اسم حقيقي ورقم جوال سعودي صحيح يبدأ بـ 05 ويتكون من 10 أرقام.</li>
-          <li>لكل مشارك (رقم جوال) فرصة سحب وتدوير واحدة فقط طوال فترة الفعالية، وتمنع المحاولات المكررة.</li>
-          <li>يتم تحديد الجائزة وتوليد الكود الترويجي إلكترونياً من خوادم النظام المشفرة وبشكل فوري وآمن.</li>
-          <li>أكواد الخصم فريدة وغير قابلة للتكرار وصالحة للاستخدام الشخصي ولمرة واحدة فقط.</li>
-          <li>الحد الأقصى للخصم الناتج عن عجلة الحظ هو 20%، والجائزة الكبرى هي ترقية باقة GoWash Signature الفاخرة بقيمة الغسيل العادي.</li>
-          <li>عرض غسيل سيارتين في نفس الموقع يمنح خصم 25% وهو عرض مستقل تماماً ولا يمكن دمجه مع أكواد عجلة الحظ أو أي عروض أخرى.</li>
-          <li>تخضع مواعيد تقديم خدمة الغسيل المتنقل لنطاق التغطية التشغيلية وأوقات عمل أسطول Go Wash بالمملكة.</li>
-          <li>تحتفظ إدارة Go Wash بحق التحقق من صحة الأكواد والبيانات المسجلة عند تأكيد الحجز.</li>
-        </ol>
+      <!-- إعلان الجائزة بـ Typography جريئة وضخمة -->
+      <div class="celebration-prize-hero" id="modalPrizeCard">
+        <!-- يتم ملؤها ديناميكياً -->
       </div>
 
-      <div class="terms-modal-actions">
-        <button type="button" id="acceptTermsBtn" class="btn btn-accept-terms">
-          أوافق على الشروط والأحكام
-        </button>
-        <button type="button" id="declineTermsBtn" class="btn btn-decline-terms">
-          إلغاء
-        </button>
+      <!-- تذكرة كود الخصم -->
+      <div class="winning-ticket-card">
+        <span class="ticket-sub-label">PROMO CODE · رمزك الخاص</span>
+        <div class="ticket-code-flex">
+          <span id="promoCodeDisplay" class="ticket-code-big" dir="ltr">GW96-XXXX-XXXX</span>
+          <button type="button" id="copyCodeBtn" class="btn-copy-ticket">
+            <span id="copyBtnText">نسخ الكود</span>
+          </button>
+        </div>
+
+        <!-- QR Code for the Prize -->
+        <div class="prize-qr-wrapper" id="modalQrWrapper" style="display: none;">
+          <div class="prize-qr-box">
+            <img id="winnerQrCodeImg" src="" alt="QR Code للجائزة" width="140" height="140" />
+          </div>
+          <span class="prize-qr-hint">امسح الـ QR لدى موظف Go Wash للتحقق والاسترداد الفوري</span>
+        </div>
       </div>
+
+      <!-- أزرار الإجراء الفورية -->
+      <div class="celebration-actions">
+        <a id="bookingCtaBtn" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="btn-celebrate-whatsapp">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          <span>استخدم الكود عبر الواتساب</span>
+        </a>
+        <div class="celebration-sub-actions">
+          <button type="button" id="shareResultBtn" class="btn-celebrate-share">
+            <span>🎁 مشاركة الجائزة</span>
+          </button>
+          <button type="button" id="modalHowToUseBtn" class="btn-celebrate-how">
+            <span>📖 طريقة الاستخدام</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="celebration-footer-note">جائزتك وكودك محفوظان في السيرفر ولن يضيعا أبداً حتى عند تحديث الصفحة أو إغلاقها.</p>
     </div>
   </dialog>
 
   <!-- نافذة استرجاع الجائزة برقم الجوال (Recover Prize Modal) -->
-  <dialog id="recoverModal" class="modal-dialog" role="dialog" aria-labelledby="recoverHeading" aria-modal="true">
-    <div class="modal-box-recover">
-      <button id="recoverCloseBtn" class="modal-close-btn" aria-label="إغلاق">
-        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
+  <dialog id="recoverModal" class="modal-dialog" role="dialog" aria-labelledby="recoverTitle" aria-modal="true">
+    <div class="recover-modal-card">
+      <button id="recoverCloseBtn" class="modal-close-icon" aria-label="إغلاق">✕</button>
 
-      <div class="text-center">
-        <span class="modal-kicker">استرجاع الجائزة</span>
-        <h3 id="recoverHeading" class="modal-title">استرجع كود الخصم الخاص بك</h3>
-        <p class="modal-desc">أدخل رقم الجوال الذي شاركت به سابقاً لعرض جائزتك وكود الخصم فوراً.</p>
+      <div class="modal-event-head">
+        <span class="modal-badge-nd">استرجاع الكود</span>
+        <h3 id="recoverTitle" class="modal-title-bold">استرجع جائزتك</h3>
+        <p class="modal-subtext">أدخل رقم جوالك الذي شاركت به لعرض كود الخصم فوراً.</p>
       </div>
 
-      <form id="recoverForm" onsubmit="return false;">
-        <div class="form-field-group">
-          <label for="recoverPhoneInput" class="field-label">رقم الجوال المسجل</label>
-          <div class="phone-input-row" dir="ltr">
-            <div class="saudi-flag-prefix">
-              <span class="flag">🇸🇦</span>
-              <span class="prefix">+966</span>
-            </div>
-            <input type="tel" id="recoverPhoneInput" class="form-input-luxury phone-input" placeholder="05xxxxxxxx" maxlength="10" required dir="ltr">
+      <form id="recoverForm" onsubmit="return false;" class="modal-entry-form">
+        <div class="form-group-event">
+          <label for="recoverPhoneInput" class="form-label-event">رقم الجوال المسجل</label>
+          <div class="phone-box-event" dir="ltr">
+            <span class="phone-flag">🇸🇦 +966</span>
+            <input type="tel" id="recoverPhoneInput" class="form-input-event phone-inner" placeholder="05xxxxxxxx" maxlength="10" required dir="ltr">
           </div>
-          <span class="field-error-msg" id="recoverErrorMsg"></span>
+          <span class="field-error" id="recoverErrorMsg"></span>
         </div>
 
-        <button type="button" id="submitRecoverBtn" class="btn btn-spin-action" style="margin-top: 10px;">
-          <span class="btn-spin-content">
-            <span>البحث عن جائزتي</span>
-          </span>
+        <button type="button" id="submitRecoverBtn" class="btn-modal-spin">
+          <span>البحث عن جائزتي</span>
         </button>
       </form>
     </div>
@@ -779,6 +440,13 @@
   <!-- كانفاس الاحتفال بالقصاصات الملونة (Confetti Canvas) -->
   <canvas id="confettiCanvas" class="confetti-canvas-overlay" aria-hidden="true"></canvas>
 
-  <script src="/js/app.js"></script>
+  <!-- رسالة التنبيه العائمة الموحدة (Toast) -->
+  <div id="appToast" class="app-toast" role="alert" aria-live="polite"></div>
+
+  <!-- رابط الـ Backend العام (Public API Endpoint) للاستضافة على GitHub Pages -->
+  <script>
+    window.GOWASH_API_URL = window.GOWASH_API_URL || (window.location.hostname.includes('github.io') ? "https://gowash-production.up.railway.app" : "");
+  </script>
+  <script src="./js/app.js"></script>
 </body>
 </html>

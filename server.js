@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const config = require('./src/config');
@@ -10,8 +11,37 @@ const adminApiRoutes = require('./src/routes/adminApi');
 
 const app = express();
 
-// Trust proxy for IP rate-limiting behind reverse proxy / hosting platforms
+// Trust proxy for IP rate-limiting behind reverse proxy / Railway hosting platforms
 app.set('trust proxy', 1);
+
+// Configure CORS specifically for GitHub Pages & configured origin - NEVER allow wildcard '*'
+const rawOrigins = [
+  'https://mcro25.github.io',
+  ...(config.CORS_ORIGIN ? config.CORS_ORIGIN.split(',').map(o => o.trim()) : [])
+];
+const allowedOrigins = [...new Set(rawOrigins)];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    if (config.NODE_ENV !== 'production') {
+      if (/^http:\/\/localhost(:\d+)?$/.test(origin) || /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin)) {
+        return callback(null, true);
+      }
+    }
+    return callback(new Error('Not allowed by CORS policy'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Idempotency-Key', 'X-Participant-Id', 'X-CSRF-Token', 'Authorization'],
+  exposedHeaders: ['X-Participant-Id', 'X-CSRF-Token']
+};
+
+app.use(cors(corsOptions));
+
+// Preflight handler
+app.options(/.*/, cors(corsOptions));
 
 // Core Middlewares
 app.use(securityHeaders);
@@ -36,6 +66,11 @@ app.get('/admin', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin', 'index.html'));
 });
 
+// Public verification landing page for QR code scans
+app.get(['/verify', '/verify/:token'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'verify.html'));
+});
+
 // Serve static assets
 app.use(express.static(path.join(__dirname, 'public'), {
   maxAge: config.NODE_ENV === 'production' ? '1h' : '0',
@@ -49,6 +84,13 @@ app.use('/api', (req, res) => {
 
 // Centralized error handling
 app.use((err, req, res, next) => {
+  if (err && err.message === 'Not allowed by CORS policy') {
+    return res.status(403).json({
+      success: false,
+      error: 'غير مصرح بالوصول من هذا المصدر (CORS policy violation).'
+    });
+  }
+
   console.error('[Server Error]', err);
   if (res.headersSent) {
     return next(err);
@@ -70,6 +112,7 @@ if (require.main === module) {
     console.log(`Customer Page: http://localhost:${config.PORT}/`);
     console.log(`Admin Dashboard: http://localhost:${config.PORT}/admin`);
     console.log(`Environment: ${config.NODE_ENV}`);
+    console.log(`Database Engine: ${config.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
     console.log(`=========================================`);
   });
 }

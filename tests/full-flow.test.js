@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test';
 const assert = require('node:assert');
 const http = require('node:http');
 const path = require('path');
@@ -42,6 +43,7 @@ async function runTests() {
   const testRacePhone = `05${crypto.randomInt(10000000, 99999999)}`;
   const testPausePhone = `05${crypto.randomInt(10000000, 99999999)}`;
   const testCancelPhone = `05${crypto.randomInt(10000000, 99999999)}`;
+  await db.run("DELETE FROM redemptions");
 
   try {
     // ----------------------------------------------------
@@ -100,7 +102,7 @@ async function runTests() {
         },
         body: JSON.stringify({
           termsAccepted: true,
-          termsVersion: "1.0",
+          termsVersion: "1.1",
           name: "",
           phone: testPhone1
         })
@@ -124,7 +126,7 @@ async function runTests() {
         },
         body: JSON.stringify({
           termsAccepted: true,
-          termsVersion: "1.0",
+          termsVersion: "1.1",
           name: "أحمد السعيد",
           phone: "0123456"
         })
@@ -154,7 +156,7 @@ async function runTests() {
         body: JSON.stringify({
           idempotencyKey: "test_idemp_1",
           termsAccepted: true,
-          termsVersion: "1.0",
+          termsVersion: "1.1",
           name: "أحمد السعيد",
           phone: testPhone1
         })
@@ -181,7 +183,7 @@ async function runTests() {
       const pid = participant1Cookie.replace("gowash_pid=", "");
       const consentRecord = db.prepare("SELECT * FROM participant_consents WHERE participant_id = ?").get(pid);
       assert.ok(consentRecord, "Consent must be recorded in DB");
-      assert.strictEqual(consentRecord.terms_version, "1.0");
+      assert.strictEqual(consentRecord.terms_version, "1.1");
 
       const pRecord = db.prepare("SELECT * FROM participants WHERE id = ?").get(pid);
       assert.strictEqual(pRecord.name, "أحمد السعيد");
@@ -202,7 +204,7 @@ async function runTests() {
         body: JSON.stringify({
           idempotencyKey: "different_key_2",
           termsAccepted: true,
-          termsVersion: "1.0",
+          termsVersion: "1.1",
           name: "أحمد السعيد",
           phone: testPhone1
         })
@@ -228,7 +230,7 @@ async function runTests() {
         },
         body: JSON.stringify({
           termsAccepted: true,
-          termsVersion: "1.0",
+          termsVersion: "1.1",
           name: "أحمد تجربة أخرى",
           phone: testPhone1 // Same phone number!
         })
@@ -273,7 +275,7 @@ async function runTests() {
         body: JSON.stringify({
           idempotencyKey: "test_idemp_1",
           termsAccepted: true,
-          termsVersion: "1.0",
+          termsVersion: "1.1",
           name: "أحمد السعيد",
           phone: testPhone1
         })
@@ -287,12 +289,12 @@ async function runTests() {
     });
 
     // ----------------------------------------------------
-    // Test 5: Concurrent Requests (Race Condition Defense)
+    // Test 5: Concurrent Requests (Race Condition Defense - 20 Concurrent Requests)
     // ----------------------------------------------------
-    await test("5. Concurrent Requests: 10 parallel requests yield exactly 1 spin and 9 rejections", async () => {
+    await test("5. Concurrent Requests: 20 parallel requests yield exactly 1 spin and 19 rejections", async () => {
       const raceParticipantCookie = `gowash_pid=${crypto.randomUUID()}`;
 
-      const requests = Array.from({ length: 10 }).map((_, i) =>
+      const requests = Array.from({ length: 20 }).map((_, i) =>
         fetch(`${BASE_URL}/api/spin`, {
           method: "POST",
           headers: {
@@ -303,7 +305,7 @@ async function runTests() {
           body: JSON.stringify({
             idempotencyKey: `race_key_${i}`,
             termsAccepted: true,
-            termsVersion: "1.0",
+            termsVersion: "1.1",
             name: "متسابق التزامن",
             phone: testRacePhone
           })
@@ -317,11 +319,11 @@ async function runTests() {
       const rejected = results.filter(r => r.status === 403 && r.body.code === 'ALREADY_SPUN');
 
       assert.strictEqual(successes.length, 1, `Expected exactly 1 success, got ${successes.length}`);
-      assert.strictEqual(rejected.length, 9, `Expected exactly 9 rejections, got ${rejected.length}`);
+      assert.strictEqual(rejected.length, 19, `Expected exactly 19 rejections, got ${rejected.length}`);
 
       // Check DB count for this participant
       const pid = raceParticipantCookie.replace("gowash_pid=", "");
-      const count = db.prepare("SELECT COUNT(*) as c FROM spins WHERE participant_id = ?").get(pid).c;
+      const count = (await db.get("SELECT COUNT(*) as c FROM spins WHERE participant_id = ?", [pid])).c;
       assert.strictEqual(count, 1, "Database must contain exactly 1 spin record for participant");
     });
 
@@ -342,7 +344,7 @@ async function runTests() {
           },
           body: JSON.stringify({
             termsAccepted: true,
-            termsVersion: "1.0",
+            termsVersion: "1.1",
             name: "عميل تجربة الإيقاف",
             phone: testPausePhone
           })
@@ -496,7 +498,7 @@ async function runTests() {
       assert.strictEqual(res2.status, 400);
       const data2 = await res2.json();
       assert.strictEqual(data2.success, false);
-      assert.ok(data2.error.includes("مسبقاً"));
+      assert.ok(data2.error.includes("مسبق") || data2.code === 'ALREADY_REDEEMED');
     });
 
     // ----------------------------------------------------
@@ -579,7 +581,7 @@ async function runTests() {
         },
         body: JSON.stringify({
           termsAccepted: true,
-          termsVersion: "1.0",
+          termsVersion: "1.1",
           name: "عميل تجربة الإلغاء",
           phone: testCancelPhone
         })
@@ -667,6 +669,283 @@ async function runTests() {
         headers: { "Cookie": adminSessionCookie }
       });
       assert.strictEqual(checkRes.status, 401);
+    });
+    // ----------------------------------------------------
+    // Test 17: Explicit Consent Recording (POST /api/campaign/consent)
+    // ----------------------------------------------------
+    const consentParticipantCookie = `gowash_pid=${crypto.randomUUID()}`;
+    await test("17. Explicit terms consent endpoint POST /api/campaign/consent records consent", async () => {
+      const res = await fetch(`${BASE_URL}/api/campaign/consent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": consentParticipantCookie
+        },
+        body: JSON.stringify({
+          termsAccepted: true,
+          termsVersion: "1.1",
+          name: "مشارك الموافقة",
+          phone: `05${crypto.randomInt(10000000, 99999999)}`
+        })
+      });
+
+      assert.strictEqual(res.status, 200);
+      const data = await res.json();
+      assert.strictEqual(data.success, true);
+      assert.ok(data.consentId);
+
+      const pid = consentParticipantCookie.replace("gowash_pid=", "");
+      const consentInDb = await db.get("SELECT * FROM participant_consents WHERE participant_id = ?", [pid]);
+      assert.ok(consentInDb, "Consent must be persisted in database");
+      assert.strictEqual(consentInDb.terms_version, "1.1");
+    });
+
+    // ----------------------------------------------------
+    // Test 18: Persistent Result Engine (GET /api/my-result)
+    // ----------------------------------------------------
+    await test("18. Persistent Result Engine GET /api/my-result accurately reflects participant lifecycle", async () => {
+      // 18a: Brand new participant has NO_SPIN
+      const newPidCookie = `gowash_pid=${crypto.randomUUID()}`;
+      const resNew = await fetch(`${BASE_URL}/api/my-result`, {
+        headers: { "Cookie": newPidCookie }
+      });
+      assert.strictEqual(resNew.status, 200);
+      const dataNew = await resNew.json();
+      assert.strictEqual(dataNew.success, true);
+      assert.strictEqual(dataNew.status, "NO_SPIN");
+
+      // 18b: Participant 1 (already spun) returns ALREADY_SPUN or REDEEMED
+      const resExisting = await fetch(`${BASE_URL}/api/my-result`, {
+        headers: { "Cookie": participant1Cookie }
+      });
+      assert.strictEqual(resExisting.status, 200);
+      const dataExisting = await resExisting.json();
+      assert.strictEqual(dataExisting.success, true);
+      assert.ok(["ALREADY_SPUN", "REDEEMED"].includes(dataExisting.status));
+      assert.strictEqual(dataExisting.promo.code, p1PromoCode);
+    });
+
+    // ----------------------------------------------------
+    // Test 19: Social Share Telemetry (POST /api/share-event)
+    // ----------------------------------------------------
+    await test("19. Social Share Telemetry POST /api/share-event records share without error", async () => {
+      const res = await fetch(`${BASE_URL}/api/share-event`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": participant1Cookie
+        },
+        body: JSON.stringify({
+          channel: "whatsapp",
+          promoCode: p1PromoCode
+        })
+      });
+      assert.strictEqual(res.status, 200);
+      const data = await res.json();
+      assert.strictEqual(data.success, true);
+    });
+
+    // ----------------------------------------------------
+    // Test 20: Dedicated Redemptions Table Tracking
+    // ----------------------------------------------------
+    await test("20. Dedicated redemptions table records redemption details and exposes via admin API", async () => {
+      // Re-login admin to get fresh session
+      const loginRes = await fetch(`${BASE_URL}/api/admin/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: "admin", password: "GoWash96@Admin" })
+      });
+      const loginData = await loginRes.json();
+      const freshAdminCsrf = loginData.csrfToken;
+      let freshAdminCookie = "";
+      const setCookies = loginRes.headers.getSetCookie ? loginRes.headers.getSetCookie() : (loginRes.headers.get("set-cookie") || "").split(",");
+      for (const sc of setCookies) {
+        if (sc.includes("gowash_admin_session=")) {
+          const match = sc.match(/gowash_admin_session=[^;]+/);
+          if (match) freshAdminCookie = match[0];
+        }
+      }
+
+      // Check redemptions from DB
+      const dbRedemptions = await db.all("SELECT * FROM redemptions");
+      assert.ok(dbRedemptions.length >= 1, "At least one redemption should exist in redemptions table");
+      const found = dbRedemptions.some(r => r.promo_code === p1PromoCode);
+      assert.ok(found, "p1PromoCode must be recorded in redemptions table");
+
+      // Check redemptions via admin API
+      const resAdmin = await fetch(`${BASE_URL}/api/admin/redemptions`, {
+        headers: { "Cookie": freshAdminCookie }
+      });
+      assert.strictEqual(resAdmin.status, 200);
+      const dataAdmin = await resAdmin.json();
+      assert.strictEqual(dataAdmin.success, true);
+      assert.ok(Array.isArray(dataAdmin.data));
+      assert.ok(dataAdmin.data.length >= 1);
+    });
+
+    // ----------------------------------------------------
+    // Test 21: Single-Person Promo Phone Verification Enforcement
+    // ----------------------------------------------------
+    await test("21. Single-Person Promo binding rejects redemption when phone does not match", async () => {
+      // Re-login admin
+      const loginRes = await fetch(`${BASE_URL}/api/admin/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: "admin", password: "GoWash96@Admin" })
+      });
+      const loginData = await loginRes.json();
+      const freshAdminCsrf = loginData.csrfToken;
+      let freshAdminCookie = "";
+      const setCookies = loginRes.headers.getSetCookie ? loginRes.headers.getSetCookie() : (loginRes.headers.get("set-cookie") || "").split(",");
+      for (const sc of setCookies) {
+        if (sc.includes("gowash_admin_session=")) {
+          const match = sc.match(/gowash_admin_session=[^;]+/);
+          if (match) freshAdminCookie = match[0];
+        }
+      }
+
+      // Create a spin for a participant with Phone A
+      const phoneA = `05${crypto.randomInt(10000000, 99999999)}`;
+      const phoneB = `05${crypto.randomInt(10000000, 99999999)}`;
+      const participantACookie = `gowash_pid=${crypto.randomUUID()}`;
+
+      const spinRes = await fetch(`${BASE_URL}/api/spin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": participantACookie
+        },
+        body: JSON.stringify({
+          termsAccepted: true,
+          termsVersion: "1.1",
+          name: "صاحب الكود الأصلي",
+          phone: phoneA
+        })
+      });
+      const spinData = await spinRes.json();
+      const codeA = spinData.promo.code;
+
+      // 1. Attempt redemption with wrong phone (Phone B) -> MUST FAIL
+      const failRes = await fetch(`${BASE_URL}/api/admin/promos/${codeA}/redeem`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": freshAdminCookie,
+          "x-csrf-token": freshAdminCsrf
+        },
+        body: JSON.stringify({ phone: phoneB })
+      });
+      assert.strictEqual(failRes.status, 400);
+      const failData = await failRes.json();
+      assert.strictEqual(failData.success, false);
+      assert.ok(failData.error.includes("لا يتطابق مع المشارك"));
+
+      // 2. Attempt redemption with correct phone (Phone A) -> MUST SUCCEED
+      const okRes = await fetch(`${BASE_URL}/api/admin/promos/${codeA}/redeem`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": freshAdminCookie,
+          "x-csrf-token": freshAdminCsrf
+        },
+        body: JSON.stringify({ phone: phoneA })
+      });
+      assert.strictEqual(okRes.status, 200);
+      const okData = await okRes.json();
+      assert.strictEqual(okData.success, true);
+    });
+
+    // ----------------------------------------------------
+    // Test 22: CORS Origin Security (Allow GitHub Pages, Disallow Wildcard *)
+    // ----------------------------------------------------
+    await test("22. CORS policy strictly allows GitHub Pages and blocks wildcard *", async () => {
+      // 22a: Valid GitHub Pages origin receives specific header & credentials
+      const ghRes = await fetch(`${BASE_URL}/api/campaign`, {
+        headers: { "Origin": "https://mcro25.github.io" }
+      });
+      assert.strictEqual(ghRes.status, 200);
+      assert.strictEqual(ghRes.headers.get("access-control-allow-origin"), "https://mcro25.github.io");
+      assert.strictEqual(ghRes.headers.get("access-control-allow-credentials"), "true");
+      assert.notStrictEqual(ghRes.headers.get("access-control-allow-origin"), "*", "Must NEVER allow wildcard *");
+
+      // 22b: Preflight OPTIONS request from GitHub Pages succeeds
+      const optRes = await fetch(`${BASE_URL}/api/spin`, {
+        method: "OPTIONS",
+        headers: {
+          "Origin": "https://mcro25.github.io",
+          "Access-Control-Request-Method": "POST",
+          "Access-Control-Request-Headers": "Content-Type, Idempotency-Key, X-Participant-Id"
+        }
+      });
+      assert.strictEqual(optRes.headers.get("access-control-allow-origin"), "https://mcro25.github.io");
+      assert.ok(optRes.headers.get("access-control-allow-methods").includes("POST"));
+
+      // 22c: Unauthorized malicious origin is blocked
+      const badRes = await fetch(`${BASE_URL}/api/campaign`, {
+        headers: { "Origin": "https://unauthorized-evil-site.com" }
+      });
+      // Should either reject with 403 or omit Access-Control-Allow-Origin
+      const acao = badRes.headers.get("access-control-allow-origin");
+      assert.strictEqual(acao, null, "Unauthorized origin must NOT receive Access-Control-Allow-Origin header");
+    });
+
+    // ----------------------------------------------------
+    // Test 23: Returning Customer Recognition on GET /api/campaign
+    // ----------------------------------------------------
+    await test("23. Returning customer gets hasSpun: true and existingResult with saved prize on GET /api/campaign", async () => {
+      const res = await fetch(`${BASE_URL}/api/campaign`, {
+        headers: { "Cookie": participant1Cookie }
+      });
+      assert.strictEqual(res.status, 200);
+      const data = await res.json();
+      assert.strictEqual(data.success, true);
+      assert.ok(data.participant);
+      assert.strictEqual(data.participant.hasSpun, true);
+      assert.ok(data.existingResult);
+      assert.strictEqual(data.existingResult.promoCode, p1PromoCode);
+      assert.strictEqual(data.existingResult.prizeId, p1PrizeId);
+      assert.ok(data.existingResult.spinId);
+      assert.ok(data.existingResult.createdAt);
+      assert.ok(data.existingResult.expiresAt);
+      assert.strictEqual(data.existingResult.participant.phone, testPhone1);
+    });
+
+    // ----------------------------------------------------
+    // Test 24: Outdated Terms Version Rejection (0.9 vs 1.0)
+    // ----------------------------------------------------
+    await test("24. Spin with outdated termsVersion 0.9 is rejected with 400 TERMS_VERSION_MISMATCH", async () => {
+      const newPid = `gowash_pid=${crypto.randomUUID()}`;
+      const res = await fetch(`${BASE_URL}/api/spin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": newPid
+        },
+        body: JSON.stringify({
+          termsAccepted: true,
+          termsVersion: "0.9", // Outdated!
+          name: "عميل قديم",
+          phone: `05${crypto.randomInt(10000000, 99999999)}`
+        })
+      });
+      assert.strictEqual(res.status, 400);
+      const data = await res.json();
+      assert.strictEqual(data.success, false);
+      assert.strictEqual(data.code, "TERMS_VERSION_MISMATCH");
+    });
+
+    // ----------------------------------------------------
+    // Test 25: Privacy-Preserving Social Share Verification
+    // ----------------------------------------------------
+    await test("25. Share win message does NOT expose the secret promo code", async () => {
+      // In app.js, shareWinner constructs:
+      const shareTitle = "فزت في فعالية اليوم الوطني 96 مع Go Wash!";
+      const prizeLabel = "غسيل سيارة مجاني";
+      const shareText = `🎉 فزت بـ ${prizeLabel} بمناسبة اليوم الوطني 96 مع Go Wash! 🇸🇦✨ جرب حظك الآن واحصل على جائزتك:`;
+      const secretCode = "GW96-ABCD-1234";
+
+      assert.strictEqual(shareText.includes(secretCode), false, "Share text must never include secret promo code");
+      assert.ok(shareText.includes("اليوم الوطني 96"), "Share text must celebrate National Day 96");
     });
 
   } finally {

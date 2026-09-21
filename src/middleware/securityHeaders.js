@@ -21,8 +21,11 @@ function securityHeaders(req, res, next) {
   // Content Security Policy
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none';"
+    "default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://mcro25.github.io https://*.railway.app; frame-ancestors 'none';"
   );
+
+  // Expose headers for cross-origin clients
+  res.setHeader('Access-Control-Expose-Headers', 'X-Participant-Id, X-CSRF-Token');
 
   next();
 }

@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tests/full-flow.test.js"
+    "test": "node tests/full-flow.test.js && node tests/acceptance.test.js && node tests/security-scenarios.test.js",
+    "test:flow": "node tests/full-flow.test.js",
+    "test:acceptance": "node tests/acceptance.test.js",
+    "test:security": "node tests/security-scenarios.test.js",
+    "backup": "node src/scripts/backup.js",
+    "restore": "node src/scripts/restore.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +26,9 @@
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
-    "express": "^5.2.1"
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "pg": "^8.23.0",
+    "qrcode": "^1.5.4"
   }
 }

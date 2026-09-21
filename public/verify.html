@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>التحقق من الجائزة | Go Wash Saudi National Day 96</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #040A14;
+      --card-bg: linear-gradient(160deg, #0C2344 0%, #06152B 100%);
+      --border-color: rgba(0, 194, 255, 0.35);
+      --primary: #0077E6;
+      --accent: #FFD000;
+      --text-main: #FFFFFF;
+      --text-muted: #8E9FB5;
+      --active-green: #10B981;
+      --redeemed-blue: #3B82F6;
+      --expired-gray: #64748B;
+      --cancelled-red: #EF4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 12%, rgba(0, 119, 230, 0.22) 0%, transparent 60%),
+        radial-gradient(circle at 10% 25%, rgba(0, 194, 255, 0.12) 0%, transparent 45%),
+        linear-gradient(180deg, #061427 0%, #030914 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 18px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .verify-container {
+      width: 100%;
+      max-width: 480px;
+      margin-top: 10px;
+    }
+    .brand-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .brand-badge {
+      display: inline-block;
+      background: rgba(255, 208, 0, 0.14);
+      border: 1px solid rgba(255, 208, 0, 0.4);
+      color: var(--accent);
+      padding: 4px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      box-shadow: 0 0 14px rgba(255, 208, 0, 0.35);
+    }
+    .brand-title {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: -0.3px;
+    }
+    .verify-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border-color);
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 194, 255, 0.2);
+      backdrop-filter: blur(14px);
+      text-align: center;
+      position: relative;
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 7px 24px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+    .status-ACTIVE { background: rgba(16, 185, 129, 0.2); border: 1.5px solid var(--active-green); color: #34D399; }
+    .status-REDEEMED { background: rgba(59, 130, 246, 0.2); border: 1.5px solid var(--redeemed-blue); color: #60A5FA; }
+    .status-EXPIRED { background: rgba(100, 116, 139, 0.2); border: 1.5px solid var(--expired-gray); color: #94A3B8; }
+    .status-CANCELLED { background: rgba(239, 68, 68, 0.2); border: 1.5px solid var(--cancelled-red); color: #F87171; }
+
+    .prize-title {
+      font-size: 2.35rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+      background: linear-gradient(180deg, #FFFFFF 40%, #FFE259 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 10px rgba(255, 208, 0, 0.35));
+    }
+    .prize-subtext {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      margin-bottom: 22px;
+    }
+    .code-box {
+      background: rgba(3, 10, 20, 0.7);
+      border: 1.5px dashed rgba(255, 208, 0, 0.45);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 22px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+    .code-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 1.2px;
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 800;
+    }
+    .code-value {
+      font-family: 'SF Mono', 'Courier New', monospace;
+      font-size: 1.65rem;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-shadow: 0 0 12px rgba(255, 208, 0, 0.45);
+    }
+    .details-list {
+      text-align: right;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 18px;
+      margin-bottom: 22px;
+      font-size: 0.92rem;
+    }
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      color: var(--text-muted);
+    }
+    .detail-item strong {
+      color: #FFFFFF;
+    }
+    .security-badge {
+      background: rgba(0, 194, 255, 0.1);
+      border: 1px solid rgba(0, 194, 255, 0.25);
+      border-radius: 12px;
+      padding: 11px;
+      font-size: 0.85rem;
+      color: #38BDF8;
+      margin-bottom: 22px;
+      font-weight: 700;
+    }
+    .btn-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 1.05rem;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-bottom: 12px;
+    }
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #25D366 0%, #1EBE5D 100%);
+      color: #FFFFFF;
+      box-shadow: 0 8px 24px -3px rgba(37, 211, 102, 0.5);
+    }
+    .btn-whatsapp:hover {
+      background: linear-gradient(135deg, #28E06C 0%, #20BA5A 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -3px rgba(37, 211, 102, 0.65);
+    }
+    .btn-admin-verify {
+      background: rgba(0, 119, 230, 0.25);
+      color: #60A5FA;
+      border: 1px solid rgba(0, 119, 230, 0.45);
+    }
+    .btn-admin-verify:hover {
+      background: rgba(0, 119, 230, 0.4);
+      color: #FFF;
+      transform: translateY(-1px);
+    }
+    .loading-spinner {
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-top: 4px solid #00C2FF;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      animation: spin 0.8s linear infinite;
+      margin: 40px auto;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <div class="verify-container">
+    <header class="brand-header">
+      <div class="brand-badge">🇸🇦 فعالية اليوم الوطني 96</div>
+      <h1 class="brand-title">Go Wash — فحص الجائزة</h1>
+    </header>
+
+    <main class="verify-card" id="cardContainer">
+      <div id="loadingView">
+        <div class="loading-spinner"></div>
+        <p style="color: var(--text-muted); font-size: 0.98rem; font-weight: 700;">جاري التحقق من خوادم Go Wash الآمنة...</p>
+      </div>
+
+      <div id="resultView" style="display: none;">
+        <div id="statusPill" class="status-pill"></div>
+
+        <div id="prizeTitle" class="prize-title"></div>
+        <div id="prizeSubtext" class="prize-subtext"></div>
+
+        <div class="code-box">
+          <span class="code-label">PROMO CODE · الرمز الترويجي</span>
+          <div id="codeValue" class="code-value" dir="ltr"></div>
+        </div>
+
+        <div class="details-list">
+          <div class="detail-item">
+            <span>تاريخ الإصدار:</span>
+            <strong id="createdDate">---</strong>
+          </div>
+          <div class="detail-item">
+            <span>تاريخ الانتهاء:</span>
+            <strong id="expiresDate">---</strong>
+          </div>
+          <div class="detail-item" id="redeemedRow" style="display: none;">
+            <span>تاريخ الاستخدام:</span>
+            <strong id="redeemedDate">---</strong>
+          </div>
+        </div>
+
+        <div class="security-badge">
+          🛡️ تم التحقق مباشرة من السيرفر · توقيت الرياض (Asia/Riyadh)
+        </div>
+
+        <a id="whatsappBtn" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="btn-action btn-whatsapp">
+          حجز موعد غسيل بالخصم عبر الواتساب 💬
+        </a>
+
+        <a id="adminPortalBtn" href="/admin" class="btn-action btn-admin-verify">
+          دخول موظف Go Wash لاسترداد الجائزة ⚙️
+        </a>
+      </div>
+
+      <div id="errorView" style="display: none;">
+        <div style="font-size: 3.2rem; margin-bottom: 14px;">❌</div>
+        <h2 style="font-size: 1.35rem; margin-bottom: 8px; color: #F87171; font-weight: 900;" id="errorTitle">رمز التحقق غير صالح</h2>
+        <p style="color: var(--text-muted); font-size: 0.94rem; margin-bottom: 24px;" id="errorDesc">
+          لم يتم العثور على أي جائزة مرتبطة بهذا الرمز.
+        </p>
+        <a href="/" class="btn-action btn-admin-verify">العودة إلى الصفحة الرئيسية</a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const pathParts = window.location.pathname.split('/');
+      let token = pathParts[pathParts.length - 1];
+      if (!token || token === 'verify') {
+        const urlParams = new URLSearchParams(window.location.search);
+        token = urlParams.get('token') || urlParams.get('code') || '';
+      }
+
+      const loadingView = document.getElementById("loadingView");
+      const resultView = document.getElementById("resultView");
+      const errorView = document.getElementById("errorView");
+
+      if (!token) {
+        loadingView.style.display = "none";
+        errorView.style.display = "block";
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/verify/${encodeURIComponent(token)}`);
+        const data = await res.json();
+
+        loadingView.style.display = "none";
+
+        if (!res.ok || !data.success) {
+          errorView.style.display = "block";
+          document.getElementById("errorDesc").textContent = data.error || "رمز غير صالح أو منتهي الصلاحية.";
+          return;
+        }
+
+        resultView.style.display = "block";
+
+        const pill = document.getElementById("statusPill");
+        pill.textContent = data.statusLabel || data.status;
+        pill.className = `status-pill status-${data.status}`;
+
+        document.getElementById("prizeTitle").textContent = data.prize.label;
+        document.getElementById("prizeSubtext").textContent = data.prize.subtext || '';
+        document.getElementById("codeValue").textContent = data.code;
+
+        document.getElementById("createdDate").textContent = data.createdAtFormatted || new Date(data.createdAt).toLocaleString('ar-SA');
+        document.getElementById("expiresDate").textContent = data.expiresAtFormatted || new Date(data.expiresAt).toLocaleString('ar-SA');
+
+        if (data.redeemedAt) {
+          document.getElementById("redeemedRow").style.display = "flex";
+          document.getElementById("redeemedDate").textContent = data.redeemedAtFormatted || new Date(data.redeemedAt).toLocaleString('ar-SA');
+        }
+
+        const adminPortalBtn = document.getElementById("adminPortalBtn");
+        adminPortalBtn.href = `/admin?verify=${encodeURIComponent(data.code || token)}`;
+
+        const whatsText = encodeURIComponent(`مرحباً Go Wash، شاركت في فعالية اليوم الوطني 96 وأرغب في حجز غسيل بالخصم. كود الجائزة: ${data.code}`);
+        document.getElementById("whatsappBtn").href = `https://wa.me/966580700242?text=${whatsText}`;
+
+      } catch (err) {
+        loadingView.style.display = "none";
+        errorView.style.display = "block";
+        document.getElementById("errorDesc").textContent = "تعذر الاتصال بالخادم. يرجى إعادة المحاولة لاحقاً.";
+      }
+    });
+  </script>
+</body>
+</html>

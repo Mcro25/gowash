@@ -2,1510 +2,451 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Go Wash | فعالية اليوم الوطني السعودي 96 الحصرية</title>
-  <meta name="description" content="فعالية حصرية لليوم الوطني السعودي 96 مع مغسلة Go Wash المتنقلة. لف عجلة الحظ واربح عروض وخصومات وترقية باقة Signature." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Go Wash — National Day 96 Spin Event | لف واربح</title>
+  <meta name="description" content="فعالية اليوم الوطني السعودي 96 التفاعلية مع Go Wash. لف العجلة واربح خصومات وترقيات فورية لباقة Signature الفاخرة." />
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      /* Go Wash Brand Identity */
-      --gowash-blue: #1D6FB8;
-      --gowash-dark-blue: #0F2A4A;
-      --gowash-orange: #F15A24;
-      --gowash-orange-hover: #D94916;
-
-      /* Saudi National Day 96 Identity */
-      --nd-green-deep: #005429;
-      --nd-green-core: #006C35;
-      --nd-green-bright: #10B981;
-      --nd-gold: #D4AF37;
-
-      /* UI Surfaces */
-      --bg-dark: #071320;
-      --bg-card: #0E2034;
-      --bg-card-hover: #152E4A;
-      --border-subtle: rgba(255, 255, 255, 0.1);
-      --border-active: rgba(241, 90, 36, 0.4);
-      --border-green: rgba(0, 108, 53, 0.5);
-
-      --text-white: #FFFFFF;
-      --text-muted: #94A3B8;
-      --text-soft: #CBD5E1;
-
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 24px;
-      --radius-full: 9999px;
-      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-      background-color: var(--bg-dark);
-      color: var(--text-white);
-      font-family: 'Cairo', system-ui, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-      min-height: 100vh;
-      overflow-x: hidden;
-      line-height: 1.6;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(0, 108, 53, 0.2) 0%, transparent 55%),
-        radial-gradient(circle at 10% 30%, rgba(29, 111, 184, 0.15) 0%, transparent 45%),
-        radial-gradient(circle at 90% 60%, rgba(241, 90, 36, 0.1) 0%, transparent 40%);
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .text-center { text-align: center; }
-
-    /* Header */
-    .header {
-      position: sticky;
-      top: 0;
-      background: rgba(7, 19, 32, 0.92);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border-subtle);
-      z-index: 100;
-    }
-
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 82px;
-    }
-
-    .brand-group {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: nowrap;
-    }
-
-    /* Go Wash Exact Official Vector Logo */
-    .brand-logo {
-      display: inline-flex;
-      align-items: center;
-      text-decoration: none;
-      transition: transform 0.2s ease;
-    }
-
-    .brand-logo:hover {
-      transform: scale(1.02);
-    }
-
-    .logo-svg {
-      height: 48px;
-      width: auto;
-      filter: drop-shadow(0 2px 10px rgba(0, 132, 255, 0.25));
-    }
-
-    .campaign-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, rgba(0, 108, 53, 0.3) 0%, rgba(7, 19, 32, 0.8) 100%);
-      border: 1px solid var(--border-green);
-      padding: 6px 14px;
-      border-radius: var(--radius-full);
-    }
-
-    .ksa-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--nd-green-bright);
-      box-shadow: 0 0 10px var(--nd-green-bright);
-    }
-
-    .campaign-badge span {
-      font-size: 0.82rem;
-      font-weight: 800;
-      color: #72F3AA;
-      letter-spacing: -0.2px;
-    }
-
-    .nav-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-soft);
-      padding: 8px 16px;
-      border-radius: var(--radius-md);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.88rem;
-      transition: var(--transition);
-    }
-
-    .nav-btn:hover {
-      background: rgba(29, 111, 184, 0.2);
-      border-color: var(--gowash-blue);
-      color: var(--text-white);
-    }
-
-    /* Exclusive National Day Banner Alert */
-    .exclusive-strip {
-      background: linear-gradient(90deg, #005429 0%, #007A3D 50%, #005429 100%);
-      color: #E2FFE8;
-      font-size: 0.82rem;
-      font-weight: 800;
-      text-align: center;
-      padding: 7px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-      letter-spacing: 0.3px;
-    }
-
-    /* Hero */
-    .hero-section {
-      padding: 45px 0 25px;
-      text-align: center;
-    }
-
-    .hero-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(241, 90, 36, 0.12);
-      border: 1px solid rgba(241, 90, 36, 0.35);
-      padding: 5px 16px;
-      border-radius: var(--radius-full);
-      font-size: 0.86rem;
-      font-weight: 800;
-      color: var(--gowash-orange);
-      margin-bottom: 18px;
-    }
-
-    .hero-title {
-      font-size: 2.8rem;
-      font-weight: 900;
-      line-height: 1.25;
-      margin-bottom: 14px;
-    }
-
-    .text-gold {
-      color: #72F3AA;
-      text-shadow: 0 0 20px rgba(0, 108, 53, 0.6);
-    }
-
-    .hero-subtitle {
-      font-size: 1.15rem;
-      color: var(--text-soft);
-      max-width: 620px;
-      margin: 0 auto 24px;
-    }
-
-    .countdown-box {
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      padding: 10px 22px;
-      border-radius: var(--radius-full);
-      margin-bottom: 28px;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-    }
-
-    .countdown-box strong {
-      color: var(--text-white);
-      font-feature-settings: "tnum";
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      font-weight: 800;
-      text-decoration: none;
-      transition: var(--transition);
-    }
-
-    .btn-hero {
-      background: linear-gradient(135deg, var(--gowash-blue) 0%, #155894 100%);
-      color: #FFFFFF;
-      padding: 14px 34px;
-      border-radius: var(--radius-md);
-      font-size: 1.1rem;
-      box-shadow: 0 10px 26px rgba(29, 111, 184, 0.4);
-    }
-
-    .btn-hero:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 32px rgba(29, 111, 184, 0.5);
-    }
-
-    /* Wheel Section */
-    .wheel-section {
-      padding: 40px 0 60px;
-    }
-
-    .section-title {
-      font-size: 2.1rem;
-      font-weight: 900;
-      margin-bottom: 6px;
-    }
-
-    .section-subtitle {
-      font-size: 1rem;
-      color: var(--text-muted);
-      margin-bottom: 34px;
-    }
-
-    .wheel-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 440px;
-      margin: 0 auto 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .canvas-container {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #wheelCanvas {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.75), 0 0 0 8px rgba(0, 108, 53, 0.35);
-      touch-action: none;
-    }
-
-    .wheel-pointer-container {
-      position: absolute;
-      top: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      pointer-events: none;
-    }
-
-    .wheel-pointer {
-      width: 0;
-      height: 0;
-      border-left: 18px solid transparent;
-      border-right: 18px solid transparent;
-      border-top: 32px solid var(--gowash-orange);
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.7));
-    }
-
-    .wheel-center-hub {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 82px;
-      height: 82px;
-      border-radius: 50%;
-      background: var(--gowash-dark-blue);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), inset 0 0 0 3px var(--gowash-orange);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 5;
-    }
-
-    .hub-ring {
-      width: 66px;
-      height: 66px;
-      border-radius: 50%;
-      border: 1px dashed rgba(255, 255, 255, 0.35);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hub-brand {
-      font-size: 0.75rem;
-      font-weight: 900;
-      color: #FFFFFF;
-      line-height: 1;
-    }
-
-    .hub-tag {
-      font-size: 0.58rem;
-      font-weight: 700;
-      color: #72F3AA;
-      margin-top: 2px;
-    }
-
-    .spin-action-wrapper {
-      max-width: 380px;
-      margin: 0 auto;
-    }
-
-    .btn-spin {
-      width: 100%;
-      background: linear-gradient(135deg, var(--gowash-orange) 0%, #D44815 100%);
-      color: #FFFFFF;
-      padding: 16px 28px;
-      font-size: 1.25rem;
-      font-weight: 900;
-      border-radius: var(--radius-md);
-      box-shadow: 0 10px 28px rgba(241, 90, 36, 0.45);
-    }
-
-    .btn-spin:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 34px rgba(241, 90, 36, 0.55);
-    }
-
-    .btn-spin:disabled {
-      background: #253342;
-      color: #64748B;
-      cursor: not-allowed;
-      box-shadow: none;
-      transform: none;
-    }
-
-    .btn-loader {
-      display: none;
-      width: 22px;
-      height: 22px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-top-color: #FFFFFF;
-      border-radius: 50%;
-      animation: spinLoader 0.8s linear infinite;
-    }
-
-    .btn-spin.is-loading .btn-text { display: none; }
-    .btn-spin.is-loading .btn-loader { display: inline-block; }
-
-    @keyframes spinLoader {
-      to { transform: rotate(360deg); }
-    }
-
-    .status-message {
-      min-height: 24px;
-      margin-top: 12px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: var(--text-soft);
-    }
-
-    .status-message.error { color: #F87171; }
-
-    .eligibility-notice {
-      margin-top: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.84rem;
-      color: var(--text-muted);
-    }
-
-    .indicator-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--nd-green-bright);
-    }
-
-    .eligibility-notice.exhausted .indicator-dot {
-      background: #64748B;
-    }
-
-    /* Steps */
-    .steps-section {
-      padding: 50px 0;
-      background: rgba(14, 32, 52, 0.4);
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 36px;
-    }
-
-    .step-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 24px 20px;
-      text-align: right;
-    }
-
-    .step-num {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-sm);
-      background: rgba(0, 108, 53, 0.25);
-      border: 1px solid var(--nd-green-core);
-      color: #72F3AA;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-    }
-
-    .step-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .step-desc {
-      font-size: 0.92rem;
-      color: var(--text-muted);
-      line-height: 1.55;
-    }
-
-    /* Two Cars Dedicated Offer */
-    .offers-section {
-      padding: 60px 0;
-    }
-
-    .offer-banner {
-      background: linear-gradient(135deg, #0D2338 0%, #081726 100%);
-      border: 1px solid rgba(241, 90, 36, 0.4);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-    }
-
-    .offer-accent-bar {
-      height: 5px;
-      width: 100%;
-      background: linear-gradient(90deg, var(--nd-green-core) 0%, var(--gowash-blue) 50%, var(--gowash-orange) 100%);
-    }
-
-    .offer-content {
-      padding: 36px 32px;
-    }
-
-    .offer-meta-badge {
-      display: inline-block;
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--gowash-orange);
-      background: rgba(241, 90, 36, 0.12);
-      border: 1px solid rgba(241, 90, 36, 0.3);
-      padding: 4px 14px;
-      border-radius: var(--radius-full);
-      margin-bottom: 12px;
-    }
-
-    .offer-heading {
-      font-size: 1.9rem;
-      font-weight: 900;
-      margin-bottom: 8px;
-    }
-
-    .offer-discount-tag {
-      font-size: 2.3rem;
-      font-weight: 900;
-      color: var(--gowash-orange);
-      line-height: 1.2;
-      margin-bottom: 12px;
-    }
-
-    .offer-text {
-      color: var(--text-soft);
-      font-size: 1.05rem;
-      max-width: 680px;
-      margin-bottom: 20px;
-    }
-
-    .non-stackable-alert {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      background: rgba(241, 90, 36, 0.08);
-      border: 1px dashed rgba(241, 90, 36, 0.4);
-      padding: 12px 16px;
-      border-radius: var(--radius-sm);
-      color: #FFB38A;
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-
-    .alert-icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-      margin-top: 2px;
-      color: var(--gowash-orange);
-    }
-
-    /* Terms */
-    .terms-section {
-      padding: 45px 0;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .terms-title {
-      font-size: 1.3rem;
-      font-weight: 800;
-      margin-bottom: 18px;
-    }
-
-    .terms-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .terms-list li {
-      position: relative;
-      padding-right: 20px;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .terms-list li::before {
-      content: "•";
-      position: absolute;
-      right: 0;
-      color: var(--nd-green-bright);
-      font-weight: bold;
-    }
-
-    /* Modal */
-    .modal-dialog {
-      border: none;
-      background: transparent;
-      padding: 0;
-      max-width: 480px;
-      width: calc(100% - 32px);
-      margin: auto;
-    }
-
-    .modal-dialog::backdrop {
-      background: rgba(4, 11, 20, 0.88);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-
-    .modal-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-active);
-      border-radius: var(--radius-lg);
-      padding: 32px 28px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
-      position: relative;
-      animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes modalPop {
-      from { opacity: 0; transform: scale(0.92); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .modal-close-btn {
-      position: absolute;
-      top: 18px;
-      left: 18px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border-subtle);
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      color: var(--text-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .modal-close-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #FFFFFF;
-    }
-
-    .modal-kicker {
-      font-size: 1rem;
-      font-weight: 800;
-      color: #72F3AA;
-    }
-
-    .modal-title {
-      font-size: 1.45rem;
-      font-weight: 900;
-      margin-top: 4px;
-    }
-
-    .modal-prize-card {
-      margin: 20px 0;
-      padding: 22px;
-      background: #13273D;
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      text-align: center;
-    }
-
-    .prize-badge-amount {
-      font-size: 2.8rem;
-      font-weight: 900;
-      color: #FFFFFF;
-      line-height: 1.1;
-      font-feature-settings: "tnum";
-    }
-
-    .prize-badge-title {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--gowash-orange);
-      margin-top: 6px;
-    }
-
-    .prize-badge-sub {
-      font-size: 0.92rem;
-      color: var(--text-soft);
-      margin-top: 6px;
-    }
-
-    .promo-box {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px dashed rgba(255, 255, 255, 0.2);
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
-      margin-bottom: 20px;
-    }
-
-    .promo-label {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .promo-code-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .promo-code-text {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 1.35rem;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-      color: #72F3AA;
-    }
-
-    .btn-copy {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--border-subtle);
-      color: #FFFFFF;
-      padding: 6px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.88rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .btn-copy:hover {
-      background: var(--gowash-blue);
-    }
-
-    .modal-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .btn-booking {
-      width: 100%;
-      background: var(--gowash-orange);
-      color: #FFFFFF;
-      padding: 14px;
-      border-radius: var(--radius-md);
-      font-size: 1.05rem;
-      text-align: center;
-    }
-
-    .btn-booking:hover {
-      background: var(--gowash-orange-hover);
-    }
-
-    .btn-share {
-      width: 100%;
-      background: transparent;
-      border: 1px solid var(--border-subtle);
-      color: var(--text-soft);
-      padding: 12px;
-      border-radius: var(--radius-md);
-      font-size: 0.95rem;
-    }
-
-    .btn-share:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: #FFFFFF;
-    }
-
-    .instructions-accordion {
-      border-top: 1px solid var(--border-subtle);
-      padding-top: 14px;
-    }
-
-    .accordion-toggle {
-      width: 100%;
-      background: none;
-      border: none;
-      color: var(--text-soft);
-      font-family: inherit;
-      font-size: 0.9rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      padding: 4px 0;
-    }
-
-    .accordion-content {
-      display: none;
-      padding-top: 10px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .instructions-accordion.active .accordion-content {
-      display: block;
-    }
-
-    .instructions-accordion.active .chevron {
-      transform: rotate(180deg);
-    }
-
-    /* Footer */
-    .footer {
-      padding: 40px 0;
-      background: #050E17;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .footer-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 16px;
-    }
-
-    .footer-desc {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      max-width: 500px;
-    }
-
-    .footer-copy {
-      font-size: 0.8rem;
-      color: rgba(255, 255, 255, 0.4);
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 16px;
-      width: 100%;
-    }
-
-    @media (max-width: 900px) {
-      .steps-grid { grid-template-columns: 1fr; gap: 16px; }
-      .hero-title { font-size: 2.2rem; }
-    }
-
-    @media (max-width: 600px) {
-      .header-container { height: 72px; }
-      .logo-svg { height: 42px; }
-      .hero-title { font-size: 1.9rem; }
-      .wheel-wrapper { max-width: 310px; }
-      .offer-content { padding: 24px 18px; }
-      .modal-box { padding: 24px 18px; }
-      .countdown-box { flex-direction: column; gap: 6px; border-radius: var(--radius-md); }
-    }
-  </style>
+  <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
+<body class="event-body">
 
-  <!-- شريط الحصرية لليوم الوطني 96 فقط -->
-  <div class="exclusive-strip">
-    🇸🇦 فعالية حصرية بمناسبة اليوم الوطني السعودي 96 — العروض سارية فقط طوال فترة احتفالات اليوم الوطني
+  <!-- خلفية الفعالية الديناميكية مع رقم 96 الضخم -->
+  <div class="event-bg" aria-hidden="true">
+    <div class="bg-watermark-96">96</div>
+    <div class="bg-sheen"></div>
   </div>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="container header-container">
-      <div class="brand-group">
-        <a href="#" class="brand-logo" aria-label="Go Wash جو واش">
-          <!-- الشعار الرسمي الاحترافي: قطرة ماء زرقاء مشعة + جنط برتقالي + GOWASH + جو واش عالية التباين -->
-          <svg class="logo-svg" viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="gwBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#00A3FF"/>
-                <stop offset="100%" stop-color="#0066CC"/>
-              </linearGradient>
-              <linearGradient id="gwOrange" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FF6B00"/>
-                <stop offset="100%" stop-color="#E04800"/>
-              </linearGradient>
-            </defs>
+  <!-- زر التحكم بالصوت (Minimalist Floating Icon) -->
+  <button type="button" id="soundToggleBtn" class="floating-sound-btn" aria-label="تشغيل أو كتم الصوت" title="صوت العجلة">
+    <span id="soundIcon">🔊</span>
+  </button>
 
-            <!-- G -->
-            <path d="M80 38C73 33 63 30 51 30C31 30 16 45 16 67C16 89 31 104 51 104C63 104 73 99 79 91V76H51V62H95V97C84 110 69 117 51 117C21 117 0 95 0 67C0 39 21 17 51 17C69 17 84 24 95 36L80 38Z" fill="url(#gwBlue)"/>
-            
-            <!-- O (Water Drop + Wheel Rim Icon) -->
-            <g transform="translate(104, 13)">
-              <!-- Outer Water Drop Silhouette -->
-              <path d="M48 2C48 2 10 46 10 74C10 97 27 114 48 114C69 114 86 97 86 74C86 46 48 2 48 2Z" fill="url(#gwBlue)"/>
-              <!-- Lower Orange Tire Arc -->
-              <path d="M12 72C12 95 28 111 48 111C68 111 84 95 84 72" stroke="url(#gwOrange)" stroke-width="12" stroke-linecap="round"/>
-              <!-- Rim Inner Hub Circle -->
-              <circle cx="48" cy="73" r="26" fill="#FFFFFF"/>
-              <circle cx="48" cy="73" r="21" stroke="url(#gwOrange)" stroke-width="4" fill="none"/>
-              <circle cx="48" cy="73" r="6" fill="url(#gwOrange)"/>
-              <!-- Rim Spokes -->
-              <line x1="48" y1="52" x2="48" y2="67" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="48" y1="79" x2="48" y2="94" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="27" y1="73" x2="42" y2="73" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="54" y1="73" x2="69" y2="73" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="33" y1="58" x2="44" y2="69" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="52" y1="77" x2="63" y2="88" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="33" y1="88" x2="44" y2="77" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="52" y1="69" x2="63" y2="58" stroke="url(#gwOrange)" stroke-width="3.5" stroke-linecap="round"/>
-            </g>
+  <!-- تنبيه حالة الفعالية (إذا كانت متوقفة أو منتهية) -->
+  <div id="campaignAlert" class="campaign-alert-bar" style="display: none;"></div>
 
-            <!-- WASH Letters (High-Contrast White) -->
-            <!-- W -->
-            <path d="M214 34L228 98H241L253 52L265 98H278L292 34H276L269 77L258 34H248L237 77L230 34H214Z" fill="#FFFFFF"/>
-            <!-- A -->
-            <path d="M322 34L303 98H319L324 82H346L351 98H367L347 34H322ZM328 68L335 46L342 68H328Z" fill="#FFFFFF"/>
-            <!-- S -->
-            <path d="M408 48C403 44 396 42 388 42C381 42 377 45 377 49C377 53 381 55 389 57L397 59C409 62 416 68 416 78C416 90 404 98 388 98C378 98 369 95 363 89L370 76C375 81 381 84 388 84C395 84 400 81 400 76C400 72 396 70 389 68L381 66C369 63 362 57 362 48C362 36 374 28 388 28C397 28 404 31 410 35L408 48Z" fill="#FFFFFF"/>
-            <!-- H -->
-            <path d="M424 34V98H440V70H462V98H478V34H462V56H440V34H424Z" fill="#FFFFFF"/>
+  <!-- تجربة الفعالية الرئيسية (Single Focused Event Page) -->
+  <main class="event-wrapper">
 
-            <!-- Arabic: جو واش (Centered beautifully below WASH) -->
-            <text x="346" y="130" fill="#38BDF8" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" letter-spacing="1" text-anchor="middle">جو واش</text>
-          </svg>
-        </a>
+    <!-- 1. افتتاحية الفعالية (Opening Screen Hero) -->
+    <header class="event-header">
+      <div class="event-brand-mark">
+        <svg class="brand-svg" viewBox="0 0 480 136" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Go Wash">
+          <defs>
+            <linearGradient id="gwBlueEv" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00C2FF"/>
+              <stop offset="100%" stop-color="#0066CC"/>
+            </linearGradient>
+            <linearGradient id="gwOrangeEv" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FF7A00"/>
+              <stop offset="100%" stop-color="#E04800"/>
+            </linearGradient>
+          </defs>
+          <!-- G -->
+          <path d="M80 38C73 33 63 30 51 30C31 30 16 45 16 67C16 89 31 104 51 104C63 104 73 99 79 91V76H51V62H95V97C84 110 69 117 51 117C21 117 0 95 0 67C0 39 21 17 51 17C69 17 84 24 95 36L80 38Z" fill="url(#gwBlueEv)"/>
+          <!-- O (Drop + Rim) -->
+          <g transform="translate(104, 13)">
+            <path d="M48 2C48 2 10 46 10 74C10 97 27 114 48 114C69 114 86 97 86 74C86 46 48 2 48 2Z" fill="url(#gwBlueEv)"/>
+            <path d="M12 72C12 95 28 111 48 111C68 111 84 95 84 72" stroke="url(#gwOrangeEv)" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="48" cy="73" r="26" fill="#FFFFFF"/>
+            <circle cx="48" cy="73" r="21" stroke="url(#gwOrangeEv)" stroke-width="4" fill="none"/>
+            <circle cx="48" cy="73" r="6" fill="url(#gwOrangeEv)"/>
+            <line x1="48" y1="52" x2="48" y2="67" stroke="url(#gwOrangeEv)" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="48" y1="79" x2="48" y2="94" stroke="url(#gwOrangeEv)" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="27" y1="73" x2="42" y2="73" stroke="url(#gwOrangeEv)" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="54" y1="73" x2="69" y2="73" stroke="url(#gwOrangeEv)" stroke-width="3.5" stroke-linecap="round"/>
+          </g>
+          <!-- WASH -->
+          <path d="M214 34L228 98H241L253 52L265 98H278L292 34H276L269 77L258 34H248L237 77L230 34H214Z" fill="#FFFFFF"/>
+          <path d="M322 34L303 98H319L324 82H346L351 98H367L347 34H322ZM328 68L335 46L342 68H328Z" fill="#FFFFFF"/>
+          <path d="M408 48C403 44 396 42 388 42C381 42 377 45 377 49C377 53 381 55 389 57L397 59C409 62 416 68 416 78C416 90 404 98 388 98C378 98 369 95 363 89L370 76C375 81 381 84 388 84C395 84 400 81 400 76C400 72 396 70 389 68L381 66C369 63 362 57 362 48C362 36 374 28 388 28C397 28 404 31 410 35L408 48Z" fill="#FFFFFF"/>
+          <path d="M424 34V98H440V70H462V98H478V34H462V56H440V34H424Z" fill="#FFFFFF"/>
+          <text x="346" y="130" fill="#38BDF8" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" letter-spacing="1" text-anchor="middle">جو واش</text>
+        </svg>
       </div>
 
-      <nav>
-        <a href="#offers-section" class="nav-btn">عرض السيارتين 25%</a>
-      </nav>
-    </div>
-  </header>
+      <div class="event-identity-tag">
+        <span class="tag-number">96</span>
+        <span class="tag-divider">|</span>
+        <span class="tag-name">اليوم الوطني السعودي</span>
+      </div>
 
-  <main>
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="container">
-        <h1 class="hero-title">
-          جرّب حظك مع <span style="color: var(--gowash-blue);">Go Wash</span><br>
-          واحتفل بـ <span class="text-gold">اليوم الوطني 96</span>
-        </h1>
+      <h1 class="event-headline">لف واربح</h1>
+    </header>
+
+    <!-- 2. ساحة العجلة التفاعلية (Spin Wheel Arena) -->
+    <section class="wheel-arena" id="wheelArena">
+
+      <div class="wheel-stage-container">
         
-        <p class="hero-subtitle">
-          لف العجلة واربح خصمك الفوري أو الترقية الكبرى لباقة GoWash Signature — العرض متاح حصرياً فقط طوال فترة احتفالات اليوم الوطني السعودي!
-        </p>
+        <!-- مؤشر التوقف الذهبي الفاخر ثلاثي الأبعاد -->
+        <div class="wheel-pointer" id="wheelPointer" aria-hidden="true">
+          <svg viewBox="0 0 48 58" width="48" height="58" fill="none">
+            <defs>
+              <filter id="pointerShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.6"/>
+              </filter>
+              <linearGradient id="goldPointerGrad" x1="0" y1="0" x2="48" y2="58" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FFF5C0"/>
+                <stop offset="35%" stop-color="#FFD000"/>
+                <stop offset="70%" stop-color="#B8860B"/>
+                <stop offset="100%" stop-color="#785500"/>
+              </linearGradient>
+              <linearGradient id="jewelGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00E5FF"/>
+                <stop offset="100%" stop-color="#0055B3"/>
+              </linearGradient>
+            </defs>
+            <!-- Needle Body -->
+            <path d="M24 56L6 14C3 8 7 1 14 1H34C41 1 45 8 42 14L24 56Z" fill="url(#goldPointerGrad)" filter="url(#pointerShadow)"/>
+            <path d="M24 50L10 14H38L24 50Z" fill="#FFF" opacity="0.25"/>
+            <!-- Bevel Highlight -->
+            <line x1="24" y1="5" x2="24" y2="48" stroke="#FFF" stroke-width="1.5" opacity="0.6"/>
+            <!-- Center Jewel Accent -->
+            <circle cx="24" cy="15" r="7" fill="url(#jewelGrad)" stroke="#FFEAA7" stroke-width="1.8"/>
+            <circle cx="22" cy="13" r="2.2" fill="#FFF" opacity="0.8"/>
+          </svg>
+        </div>
 
-        <div>
-          <a href="#wheel-section" class="btn btn-hero" id="heroStartBtn">
-            ابدأ الآن ولف العجلة
+        <!-- حلقة الـ LED النيونية -->
+        <div class="wheel-led-ring" id="wheelLedRing"></div>
+
+        <!-- كانفاس العجلة عالي الدقة -->
+        <div class="canvas-wrapper">
+          <canvas id="wheelCanvas" width="460" height="460"></canvas>
+          <div class="wheel-center-cap">
+            <span class="cap-brand">GO WASH</span>
+            <span class="cap-year">96</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- زر اللف الأساسي (The Central CTA) -->
+      <div class="wheel-action-area" id="wheelActionArea">
+        <button type="button" id="spinBtn" class="btn-spin-hero">
+          <span class="btn-spin-text" id="spinBtnLabel">لف واربح</span>
+          <span class="btn-spin-arrow">🎡</span>
+        </button>
+
+        <div class="spin-sub-notice">
+          <span>فرصة واحدة لكل رقم جوال</span>
+          <span class="notice-dot">·</span>
+          <button type="button" class="btn-recover-link" id="openRecoverModalBtn">
+            شاركت مسبقاً؟ استرجع كودك
+          </button>
+        </div>
+
+        <!-- تنبيه الحالة اللحظية -->
+        <div id="spinStatusMsg" class="spin-status-banner"></div>
+      </div>
+    </section>
+
+    <!-- 3. بطاقة الجائزة المحفوظة الدائمة (Persistent Winner Ticket / Returning Customer) -->
+    <!-- تظهر فوراً إذا كان المستخدم فائزاً وتمنع أي تدوير مكرر Server-side -->
+    <section class="winner-ticket-section" id="winnerPersistentCard" style="display: none;">
+      <div class="vip-ticket">
+        <div class="ticket-header">
+          <span class="ticket-badge" id="ticketBadgeText">🇸🇦 أنت شاركت بالفعل</span>
+          <span class="ticket-status-live" id="ticketStatusBadge">مفعل وجاهز للاستخدام</span>
+        </div>
+
+        <div class="ticket-main">
+          <span class="ticket-kicker" id="ticketKickerText">جائزتك السابقة مع Go Wash:</span>
+          <h2 id="savedPrizeTitle" class="ticket-prize-name">خصم 20%</h2>
+          <p id="savedPrizeSubtext" class="ticket-prize-sub">خصم Go Wash على جميع باقات الغسيل المتنقل</p>
+
+          <div class="ticket-code-card">
+            <span class="code-label">PROMO CODE · رمزك الخاص</span>
+            <div class="code-value-row">
+              <span id="savedPromoCode" class="code-value" dir="ltr">GW96-XXXX-XXXX</span>
+              <button type="button" id="copySavedCodeBtn" class="btn-ticket-copy">
+                <span id="copySavedCodeText">نسخ الكود</span>
+              </button>
+            </div>
+
+            <!-- QR Code for the Prize -->
+            <div class="prize-qr-wrapper" id="savedQrWrapper" style="display: none;">
+              <div class="prize-qr-box">
+                <img id="savedQrCodeImg" src="" alt="QR Code للجائزة" width="130" height="130" />
+              </div>
+              <span class="prize-qr-hint">امسح الـ QR لدى موظف Go Wash للتحقق الفوري</span>
+            </div>
+          </div>
+
+          <div class="ticket-actions">
+            <a id="savedBookingBtn" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-ticket">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+              </svg>
+              <span>احجز الآن بالخصم عبر الواتساب</span>
+            </a>
+            <div class="ticket-sub-actions">
+              <button type="button" id="savedShareBtn" class="btn-ticket-share">
+                <span>🎁 مشاركة الجائزة</span>
+              </button>
+              <button type="button" id="savedHowToUseBtn" class="btn-ticket-how">
+                <span>📖 طريقة الاستخدام</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="ticketRedeemedNotice" class="ticket-status-notice" style="display: none;"></div>
+
+          <div class="ticket-meta">
+            <span>المستفيد: <strong id="savedParticipantName">---</strong></span>
+            <span dir="ltr">الجوال: <strong id="savedParticipantPhone">---</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. طريقة الاستخدام (How to Use) - فائقة الاختصار -->
+    <section class="how-to-use-section" id="howToUseSection">
+      <div class="how-to-use-header">
+        <span class="how-badge">طريقة الاستخدام</span>
+      </div>
+      <div class="steps-mini-row">
+        <div class="step-mini-item">
+          <span class="step-num">1</span>
+          <span class="step-label">انسخ كودك الخاص</span>
+        </div>
+        <span class="step-arrow">←</span>
+        <div class="step-mini-item">
+          <span class="step-num">2</span>
+          <span class="step-label">أرسله عبر الواتساب</span>
+        </div>
+        <span class="step-arrow">←</span>
+        <div class="step-mini-item">
+          <span class="step-num">3</span>
+          <span class="step-label">احصل على الخصم فوراً</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. عرض السيارتين (Two Cars Secondary Offer) - مقتضب وأنيق -->
+    <section class="two-cars-strip">
+      <div class="offer-compact-box">
+        <div class="offer-compact-head">
+          <span class="offer-tag">عرض اليوم الوطني 96</span>
+          <h3 class="offer-title">سيارتان في نفس الموقع — <strong>خصم 25%</strong></h3>
+        </div>
+        <div class="offer-compact-action">
+          <a id="twoCarsBookingBtn" href="https://wa.me/966580700242?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20Go%20Wash%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%A7%D8%AF%D8%A9%20%D9%85%D9%86%20%D8%B9%D8%B1%D8%B6%20%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%AA%D9%8A%D9%86%2025%25%20%D9%81%D9%8A%20%D9%86%D9%81%D8%B3%20%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9." target="_blank" rel="noopener noreferrer" class="btn-compact-offer">
+            <span>احجز السيارتين</span>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
           </a>
         </div>
       </div>
+      <p class="offer-nonstackable-hint">غير قابل للجمع مع جائزة Spin Wheel</p>
     </section>
 
-    <!-- Spin Wheel Section -->
-    <section class="wheel-section" id="wheel-section">
-      <div class="container">
-        <div class="section-header text-center">
-          <h2 class="section-title">وش راح تربح اليوم؟</h2>
-          <p class="section-subtitle">اضغط لف العجلة وسجل جائزتك الاحتفالية المخصصة لسيارتك</p>
-        </div>
-
-        <div class="wheel-wrapper">
-          <div class="wheel-pointer-container" aria-hidden="true">
-            <div class="wheel-pointer"></div>
-          </div>
-
-          <div class="canvas-container">
-            <canvas id="wheelCanvas" width="460" height="460" role="img" aria-label="عجلة حظ Go Wash لليوم الوطني 96"></canvas>
-            <div class="wheel-center-hub" aria-hidden="true">
-              <div class="hub-ring">
-                <span class="hub-brand">Go Wash</span>
-                <span class="hub-tag">اليوم الوطني 96</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="spin-action-wrapper text-center">
-          <button id="spinBtn" class="btn btn-spin" aria-label="لف عجلة الحظ الآن">
-            <span class="btn-text">لف العجلة</span>
-            <span class="btn-loader" aria-hidden="true"></span>
-          </button>
-          
-          <div id="spinStatusMsg" class="status-message" aria-live="polite"></div>
-          
-          <div id="eligibilityTracker" class="eligibility-notice">
-            <span class="indicator-dot"></span>
-            <span id="trackerText">فرصة تدوير واحدة فقط لكل عميل خلال الفعالية</span>
-          </div>
-        </div>
+    <!-- 6. قنوات التواصل (Social Links Only) -->
+    <section class="social-strip">
+      <span class="social-strip-label">تابع Go Wash</span>
+      <div class="social-icons-row">
+        <a id="socialWhatsapp" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="social-icon-btn whatsapp" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+        </a>
+        <a id="socialInstagram" href="https://instagram.com/Gowash.sa" target="_blank" rel="noopener noreferrer" class="social-icon-btn instagram" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+        <a id="socialTiktok" href="https://www.tiktok.com/@Gowash.sa" target="_blank" rel="noopener noreferrer" class="social-icon-btn tiktok" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.74 1.35-.07 2.57-.96 2.98-2.25.17-.53.22-1.09.21-1.65.03-4.85-.01-9.7.02-14.55z"/>
+          </svg>
+        </a>
       </div>
     </section>
 
-    <!-- How it works -->
-    <section class="steps-section">
-      <div class="container">
-        <h2 class="section-title text-center">3 خطوات للاستفادة من الفعالية</h2>
-        <div class="steps-grid">
-          <div class="step-card">
-            <div class="step-num">1</div>
-            <h3 class="step-title">لف العجلة</h3>
-            <p class="step-desc">اضغط على زر التدوير لتحديد جائزتك الوطنية الحصرية.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-num">2</div>
-            <h3 class="step-title">انسخ الكود</h3>
-            <p class="step-desc">احصل على كود الخصم الفريد GW96 الصادر فوراً لطلبك.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-num">3</div>
-            <h3 class="step-title">احجز وسيارتك تلمع</h3>
-            <p class="step-desc">شارك الكود مع فريق Go Wash واستمتع بغسيل متنقل فاخر عند بابك.</p>
-          </div>
-        </div>
+    <!-- 7. فوتر شبه معدوم (Minimal Footer) -->
+    <footer class="event-footer">
+      <div class="footer-simple-content">
+        <span>Go Wash · National Day 96</span>
+        <span class="footer-dot">·</span>
+        <span>WhatsApp · Instagram · TikTok</span>
       </div>
-    </section>
+    </footer>
 
-    <!-- Two Cars Dedicated Offer Section -->
-    <section class="offers-section" id="offers-section">
-      <div class="container">
-        <div class="offer-banner">
-          <div class="offer-accent-bar" aria-hidden="true"></div>
-          <div class="offer-content">
-            <div class="offer-meta-badge">عرض اليوم الوطني الخاص للسيارتين</div>
-            <h2 class="offer-heading">غسيل سيارتين في نفس الموقع</h2>
-            <div class="offer-discount-tag">خصم 25% فوري</div>
-            <p class="offer-text">
-              اطلب غسيل سيارتين معاً في نفس الموعد ونفس الموقع خلال احتفالات اليوم الوطني 96، واحصل على خصم 25% على الفاتورة الإجمالية مباشرة.
-            </p>
-            <div class="non-stackable-alert" role="note">
-              <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-              </svg>
-              <span>ملاحظة ملزمة: هذا العرض مستقل تماماً وغير قابل للجمع مع خصومات Spin Wheel أو أي عروض ترويجية أخرى.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Terms -->
-    <section class="terms-section">
-      <div class="container">
-        <h2 class="terms-title">شروط وأحكام فعالية اليوم الوطني 96</h2>
-        <ul class="terms-list">
-          <li><strong>حصرية الفعالية:</strong> هذه الفعالية وجميع خصوماتها مخصصة فقط لاحتفالات اليوم الوطني السعودي 96 وتنتهي بانتهاء مدة الحملة.</li>
-          <li>فرصة الاستخدام محددة بمرة واحدة فقط لكل عميل / رقم هاتف.</li>
-          <li>العروض تطبق وفق التغطية التشغيلية وأوقات عمل أسطول Go Wash المتنقل.</li>
-          <li>لا يمكن الجمع بين العروض الترويجية إطلاقاً (إما كود العجلة أو عرض السيارتين 25%).</li>
-          <li>خصم غسيل سيارتين (25%) مستقل وغير قابل للإضافة مع خصومات العجلة.</li>
-          <li>جائزة "GoWash Signature Upgrade" تعني: (ادفع قيمة باقة الغسيل العادي واحصل على ترقية كاملة لباقة GoWash Signature الفاخرة).</li>
-          <li>الكود الترويجي مخصص للاستخدام الشخصي ولمرة واحدة فقط.</li>
-          <li>تحتفظ إدارة Go Wash بحق التحقق من صلاحية الأكواد وإيقاف الفعالية وفق الأنظمة والتعليمات المنشورة.</li>
-        </ul>
-      </div>
-    </section>
   </main>
 
-  <!-- Winner Modal Dialog -->
-  <dialog id="winnerModal" class="modal-dialog" aria-labelledby="modalHeading" aria-modal="true">
-    <div class="modal-box">
-      <button id="modalCloseBtn" class="modal-close-btn" aria-label="إغلاق">
-        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
-          <path d="M18 6L6 18M6 6l12 12"/>
-        </svg>
-      </button>
+  <!-- نافذة الشروط والأحكام وتأكيد البيانات (Terms & Spin Entry Modal) -->
+  <dialog id="termsModal" class="modal-dialog" role="dialog" aria-labelledby="termsHeading" aria-modal="true">
+    <div class="terms-modal-card">
+      <button type="button" id="termsCloseIcon" class="modal-close-icon" aria-label="إغلاق">✕</button>
 
-      <div class="modal-header text-center">
-        <span class="modal-kicker">🇸🇦 مبروك فوزك في اليوم الوطني 96!</span>
-        <h3 id="modalHeading" class="modal-title">لقد ربحت مع Go Wash</h3>
-      </div>
+      <!-- الخطوة 1: الشروط والأحكام الرسمية مع زري موافق / غير موافق -->
+      <div id="termsStep1" class="terms-step-panel">
+        <div class="modal-event-head">
+          <span class="modal-badge-nd">🇸🇦 سحب اليوم الوطني 96</span>
+          <h3 id="termsHeading" class="modal-title-bold">الشروط والأحكام</h3>
+          <p class="modal-subtext">يرجى قراءة الشروط والأحكام والموافقة عليها قبل لف العجلة للمشاركة في الفعالية:</p>
+        </div>
 
-      <div class="modal-prize-card" id="modalPrizeCard"></div>
+        <div class="terms-full-box">
+          <div class="terms-version-heading">الشروط والأحكام الرسمية (الإصدار 1.1)</div>
+          <ul class="terms-official-list">
+            <li><strong>فرصة تدوير واحدة:</strong> لكل مشارك (رقم جوال) فرصة سحب وتدوير واحدة فقط طوال فترة الفعالية.</li>
+            <li><strong>شخصي وغير قابل للنقل:</strong> جميع الأكواد الترويجية مخصصة للمشارك الذي حصل عليها شخصياً، ولا يجوز نقلها أو بيعها أو استخدامها من قِبل شخص آخر.</li>
+            <li><strong>استخدام لمرة واحدة:</strong> كل كود خصم صالح للاستخدام مرة واحدة فقط، ويصبح غير صالح بعد إتمام عملية الاسترداد.</li>
+            <li><strong>التحقق عند الاسترداد:</strong> يحق لإدارة Go Wash التحقق من هوية صاحب الجائزة ومطابقة رقم الجوال المسجل قبل تطبيق الخصم.</li>
+            <li><strong>منع التحايل:</strong> لا يجوز استخدام وسائل غير مشروعة أو أرقام وهمية أو التحايل على نظام الفعالية.</li>
+            <li><strong>عدم الجمع بين العروض:</strong> جوائز عجلة الحظ غير قابلة للدمج مع عرض السيارتين (25%) أو أي عروض ترويجية أخرى.</li>
+            <li><strong>نطاق الخدمة:</strong> تطبق مواعيد تقديم خدمة الغسيل المتنقل وفق النطاق التشغيلي وأوقات عمل أسطول Go Wash بالمملكة.</li>
+          </ul>
+        </div>
 
-      <div class="promo-box">
-        <span class="promo-label">الرمز الترويجي الحصري لليوم الوطني:</span>
-        <div class="promo-code-row">
-          <span id="promoCodeDisplay" class="promo-code-text">--------</span>
-          <button id="copyCodeBtn" class="btn-copy" aria-label="نسخ رمز الخصم">
-            <span id="copyBtnText">نسخ الكود</span>
+        <div class="modal-action-row">
+          <button type="button" id="acceptTermsBtn" class="btn-modal-agree">
+            <span>موافق</span>
+          </button>
+          <button type="button" id="declineTermsBtn" class="btn-modal-decline">
+            <span>غير موافق</span>
           </button>
         </div>
       </div>
 
-      <div class="modal-actions">
-        <a id="bookingCtaBtn" href="https://wa.me/966580700242?text=" target="_blank" rel="noopener noreferrer" class="btn btn-booking">
-          احجز غسيلك بالخصم الآن
-        </a>
-        <button id="shareResultBtn" class="btn btn-share">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="18" cy="5" r="3"/>
-            <circle cx="6" cy="12" r="3"/>
-            <circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-          </svg>
-          شارك فوزك مع أصحابك
-        </button>
+      <!-- الخطوة 2: بيانات استلام الجائزة (تظهر فور الضغط على موافق) -->
+      <div id="termsStep2" class="terms-step-panel" style="display: none;">
+        <div class="modal-event-head">
+          <span class="modal-badge-nd">🇸🇦 سحب اليوم الوطني 96</span>
+          <h3 class="modal-title-bold">بيانات استلام الجائزة</h3>
+          <p class="modal-subtext">أدخل اسمك ورقم جوالك لربط كود الخصم الحصري بك شخصياً ومنع نقله:</p>
+        </div>
+
+        <form id="spinForm" novalidate onsubmit="return false;" class="modal-entry-form">
+          <!-- الاسم -->
+          <div class="form-group-event">
+            <label for="participantName" class="form-label-event">الاسم الكريم</label>
+            <input type="text" id="participantName" class="form-input-event" placeholder="مثال: فهد المطيري" maxlength="70" required autocomplete="name">
+            <span class="field-error" id="nameErrorMsg"></span>
+          </div>
+
+          <!-- الجوال -->
+          <div class="form-group-event">
+            <label for="participantPhone" class="form-label-event">رقم الجوال السعودي</label>
+            <div class="phone-box-event" dir="ltr">
+              <span class="phone-flag">🇸🇦 +966</span>
+              <input type="tel" id="participantPhone" class="form-input-event phone-inner" placeholder="05xxxxxxxx" maxlength="10" required autocomplete="tel" dir="ltr" inputmode="numeric">
+            </div>
+            <span class="field-error" id="phoneErrorMsg"></span>
+          </div>
+
+          <div class="modal-action-row">
+            <button type="button" id="startSpinSubmitBtn" class="btn-modal-spin">
+              <span>ابدأ السحب 🎡</span>
+            </button>
+            <button type="button" id="backToTermsBtn" class="btn-modal-cancel">
+              <span>رجوع للشروط</span>
+            </button>
+          </div>
+        </form>
       </div>
 
-      <div class="instructions-accordion">
-        <button type="button" class="accordion-toggle" id="instructionsToggle" aria-expanded="false">
-          كيف أستخدم الخصم؟
-          <span class="chevron">▾</span>
-        </button>
-        <div class="accordion-content" id="instructionsContent">
-          <p>1. انسخ الرمز الترويجي الظاهر أعلاه.</p>
-          <p>2. اضغط "احجز غسيلك بالخصم الآن" للتواصل الفوري مع خدمة عملاء Go Wash عبر الواتساب.</p>
-          <p>3. أرسل الكود قبل تأكيد موعد الغسيل المتنقل لتطبيق الخصم فوراً على فاتورتك.</p>
-        </div>
-      </div>
     </div>
   </dialog>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer-container">
-      <div class="footer-desc">
-        <strong>Go Wash — جو واش</strong><br>
-        خدمة غسيل السيارات المتنقلة الأولى.
+  <!-- نافذة الاحتفال بالفوز اللحظي (Event Moment Winner Modal) -->
+  <dialog id="winnerModal" class="modal-dialog" role="dialog" aria-labelledby="modalWinTitle" aria-modal="true">
+    <div class="modal-celebration-card">
+      <button id="modalCloseBtn" class="modal-close-icon" aria-label="إغلاق">✕</button>
+
+      <div class="celebration-hero">
+        <span class="celebration-badge">🇸🇦 مبروك أنت الفائز!</span>
+        <h2 id="modalWinTitle" class="celebration-headline">مبروك</h2>
       </div>
-      <div class="footer-copy">
-        <p>© 2026 Go Wash جو واش. جميع الحقوق محفوظة.</p>
+
+      <!-- إعلان الجائزة بـ Typography جريئة وضخمة -->
+      <div class="celebration-prize-hero" id="modalPrizeCard">
+        <!-- يتم ملؤها ديناميكياً -->
       </div>
+
+      <!-- تذكرة كود الخصم -->
+      <div class="winning-ticket-card">
+        <span class="ticket-sub-label">PROMO CODE · رمزك الخاص</span>
+        <div class="ticket-code-flex">
+          <span id="promoCodeDisplay" class="ticket-code-big" dir="ltr">GW96-XXXX-XXXX</span>
+          <button type="button" id="copyCodeBtn" class="btn-copy-ticket">
+            <span id="copyBtnText">نسخ الكود</span>
+          </button>
+        </div>
+
+        <!-- QR Code for the Prize -->
+        <div class="prize-qr-wrapper" id="modalQrWrapper" style="display: none;">
+          <div class="prize-qr-box">
+            <img id="winnerQrCodeImg" src="" alt="QR Code للجائزة" width="140" height="140" />
+          </div>
+          <span class="prize-qr-hint">امسح الـ QR لدى موظف Go Wash للتحقق والاسترداد الفوري</span>
+        </div>
+      </div>
+
+      <!-- أزرار الإجراء الفورية -->
+      <div class="celebration-actions">
+        <a id="bookingCtaBtn" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="btn-celebrate-whatsapp">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          <span>استخدم الكود عبر الواتساب</span>
+        </a>
+        <div class="celebration-sub-actions">
+          <button type="button" id="shareResultBtn" class="btn-celebrate-share">
+            <span>🎁 مشاركة الجائزة</span>
+          </button>
+          <button type="button" id="modalHowToUseBtn" class="btn-celebrate-how">
+            <span>📖 طريقة الاستخدام</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="celebration-footer-note">جائزتك وكودك محفوظان في السيرفر ولن يضيعا أبداً حتى عند تحديث الصفحة أو إغلاقها.</p>
     </div>
-  </footer>
+  </dialog>
 
-  <!-- Logic Engine -->
+  <!-- نافذة استرجاع الجائزة برقم الجوال (Recover Prize Modal) -->
+  <dialog id="recoverModal" class="modal-dialog" role="dialog" aria-labelledby="recoverTitle" aria-modal="true">
+    <div class="recover-modal-card">
+      <button id="recoverCloseBtn" class="modal-close-icon" aria-label="إغلاق">✕</button>
+
+      <div class="modal-event-head">
+        <span class="modal-badge-nd">استرجاع الكود</span>
+        <h3 id="recoverTitle" class="modal-title-bold">استرجع جائزتك</h3>
+        <p class="modal-subtext">أدخل رقم جوالك الذي شاركت به لعرض كود الخصم فوراً.</p>
+      </div>
+
+      <form id="recoverForm" onsubmit="return false;" class="modal-entry-form">
+        <div class="form-group-event">
+          <label for="recoverPhoneInput" class="form-label-event">رقم الجوال المسجل</label>
+          <div class="phone-box-event" dir="ltr">
+            <span class="phone-flag">🇸🇦 +966</span>
+            <input type="tel" id="recoverPhoneInput" class="form-input-event phone-inner" placeholder="05xxxxxxxx" maxlength="10" required dir="ltr">
+          </div>
+          <span class="field-error" id="recoverErrorMsg"></span>
+        </div>
+
+        <button type="button" id="submitRecoverBtn" class="btn-modal-spin">
+          <span>البحث عن جائزتي</span>
+        </button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- كانفاس الاحتفال بالقصاصات الملونة (Confetti Canvas) -->
+  <canvas id="confettiCanvas" class="confetti-canvas-overlay" aria-hidden="true"></canvas>
+
+  <!-- رسالة التنبيه العائمة الموحدة (Toast) -->
+  <div id="appToast" class="app-toast" role="alert" aria-live="polite"></div>
+
+  <!-- رابط الـ Backend العام (Public API Endpoint) للاستضافة على GitHub Pages -->
   <script>
-    /**
-     * IMPORTANT SECURITY NOTE:
-     * Frontend is not trusted.
-     * All eligibility checks, prize selection, promo generation,
-     * and redemption validation must be performed server-side in production.
-     */
-
-    // Configuration
-    const campaignConfig = {
-      campaignName: "Go Wash Saudi National Day 96 Exclusive",
-      campaignCode: "GW96",
-      active: true,
-      maxSpinsPerCustomer: 1,
-
-      // 6 Equal Visual Sectors with National Day + Go Wash Identity
-      wheel: {
-        prizes: [
-          {
-            id: "discount_20",
-            label: "20%",
-            type: "discount",
-            amount: 20,
-            subtext: "خصم على غسيل Go Wash بمناسبة اليوم الوطني",
-            probability: 15.0,
-            color: "#1D6FB8", // Go Wash Blue
-            textColor: "#FFFFFF"
-          },
-          {
-            id: "discount_15",
-            label: "15%",
-            type: "discount",
-            amount: 15,
-            subtext: "خصم على غسيل سيارتك المتنقل",
-            probability: 25.0,
-            color: "#006C35", // Saudi National Day Green
-            textColor: "#FFFFFF"
-          },
-          {
-            id: "discount_10",
-            label: "10%",
-            type: "discount",
-            amount: 10,
-            subtext: "خصم فوري لاحتفال اليوم الوطني 96",
-            probability: 30.0,
-            color: "#0F2A4A", // Go Wash Navy
-            textColor: "#FFFFFF"
-          },
-          {
-            id: "discount_9_6",
-            label: "9.6%",
-            type: "discount",
-            amount: 9.6,
-            subtext: "خصم رمزي خاص باليوم الوطني 96",
-            probability: 19.0,
-            color: "#005429", // Deep KSA Green
-            textColor: "#72F3AA"
-          },
-          {
-            id: "discount_5",
-            label: "5%",
-            type: "discount",
-            amount: 5,
-            subtext: "خصم على خدمات غسيل Go Wash",
-            probability: 10.0,
-            color: "#14375A",
-            textColor: "#FFFFFF"
-          },
-          {
-            id: "signature_upgrade",
-            label: "Signature",
-            type: "upgrade",
-            amount: 100,
-            subtext: "ادفع قيمة الغسيل العادي واحصل على GoWash Signature",
-            probability: 1.0, // 1% Grand Prize
-            color: "#F15A24", // Go Wash Accent Orange
-            textColor: "#FFFFFF"
-          }
-        ]
-      },
-
-      offers: {
-        twoCars: {
-          enabled: true,
-          discount: 25,
-          stackable: false
-        }
-      }
-    };
-
-    // Probability Engine
-    const ProbabilityEngine = {
-      validate(prizes) {
-        const total = prizes.reduce((acc, p) => acc + (parseFloat(p.probability) || 0), 0);
-        return Math.abs(total - 100) < 0.001;
-      },
-      select(prizes) {
-        // TODO: Prize must be selected server-side in production.
-        const rand = Math.random() * 100;
-        let cumulative = 0;
-        for (let i = 0; i < prizes.length; i++) {
-          cumulative += prizes[i].probability;
-          if (rand < cumulative) return prizes[i];
-        }
-        return prizes[prizes.length - 1];
-      }
-    };
-
-    // Storage Demo Layer
-    const StorageService = {
-      KEY: "gowash_nd96_exclusive_session",
-      hasSpun() {
-        // TODO: Replace local eligibility check with server-side validation.
-        return localStorage.getItem(this.KEY) !== null;
-      },
-      save(prize, code) {
-        const data = {
-          date: new Date().toISOString(),
-          prize: prize.label,
-          code: code
-        };
-        localStorage.setItem(this.KEY, JSON.stringify(data));
-      },
-      getSaved() {
-        try {
-          return JSON.parse(localStorage.getItem(this.KEY));
-        } catch(e) { return null; }
-      }
-    };
-
-    // Promo & WhatsApp Helper
-    const Rewards = {
-      genCode() {
-        const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-        let part = "";
-        for (let i = 0; i < 4; i++) part += chars.charAt(Math.floor(Math.random() * chars.length));
-        return `GW96-${part}`;
-      },
-      getBookingUrl(code, prize) {
-        const phone = "966580700242"; // رقم Go Wash المعتمد
-        const text = `مرحباً Go Wash، شاركت في فعالية اليوم الوطني 96 وحصلت على:\n` +
-                     `الهدية: ${prize.label} (${prize.subtext})\n` +
-                     `الكود الحصري: ${code}\n` +
-                     `أرغب في حجز موعد لغسيل سيارتي.`;
-        return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-      }
-    };
-
-    // Canvas Wheel Engine
-    class VisualWheel {
-      constructor(canvasId, prizes) {
-        this.canvas = document.getElementById(canvasId);
-        this.ctx = this.canvas.getContext("2d");
-        this.prizes = prizes;
-        this.num = prizes.length;
-        this.arc = (2 * Math.PI) / this.num;
-        this.rotation = 0;
-        this.isSpinning = false;
-
-        this.initDPI();
-        this.draw();
-      }
-
-      initDPI() {
-        const dpr = window.devicePixelRatio || 1;
-        this.canvas.width = 460 * dpr;
-        this.canvas.height = 460 * dpr;
-        this.ctx.scale(dpr, dpr);
-        this.size = 460;
-      }
-
-      draw() {
-        const center = this.size / 2;
-        const radius = center - 8;
-
-        this.ctx.clearRect(0, 0, this.size, this.size);
-        this.ctx.save();
-        this.ctx.translate(center, center);
-        this.ctx.rotate(this.rotation);
-
-        for (let i = 0; i < this.num; i++) {
-          const p = this.prizes[i];
-          const start = i * this.arc;
-          const end = start + this.arc;
-
-          this.ctx.beginPath();
-          this.ctx.moveTo(0, 0);
-          this.ctx.arc(0, 0, radius, start, end);
-          this.ctx.fillStyle = p.color;
-          this.ctx.fill();
-
-          this.ctx.lineWidth = 2;
-          this.ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
-          this.ctx.stroke();
-
-          // Sector text
-          this.ctx.save();
-          this.ctx.rotate(start + this.arc / 2);
-          this.ctx.textAlign = "right";
-          this.ctx.fillStyle = p.textColor;
-
-          if (p.type === "upgrade") {
-            this.ctx.font = "900 18px 'Cairo', sans-serif";
-            this.ctx.fillText("Signature", radius - 28, 6);
-          } else {
-            this.ctx.font = "900 24px 'Cairo', sans-serif";
-            this.ctx.fillText(p.label, radius - 30, 8);
-          }
-          this.ctx.restore();
-        }
-        this.ctx.restore();
-      }
-
-      calculateAngle(winningPrize) {
-        const index = this.prizes.findIndex(p => p.id === winningPrize.id);
-        const sectorCenter = (index * this.arc) + (this.arc / 2);
-        const pointer = 1.5 * Math.PI; // Top Center (270 deg)
-
-        const jitter = (Math.random() - 0.5) * (this.arc * 0.4);
-        let baseAngle = pointer - sectorCenter + jitter;
-        baseAngle = ((baseAngle % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
-
-        const spins = 6 * (2 * Math.PI);
-        const currentMod = this.rotation % (2 * Math.PI);
-        const distance = ((baseAngle - currentMod) + (2 * Math.PI)) % (2 * Math.PI);
-
-        return this.rotation + spins + distance;
-      }
-
-      spinTo(targetAngle, callback) {
-        this.isSpinning = true;
-        const start = this.rotation;
-        const delta = targetAngle - start;
-        const duration = 5200;
-        const startTime = performance.now();
-
-        const easeOut = (t) => 1 - Math.pow(1 - t, 5);
-
-        const frame = (now) => {
-          const elapsed = now - startTime;
-          const prog = Math.min(elapsed / duration, 1);
-          this.rotation = start + (delta * easeOut(prog));
-          this.draw();
-
-          if (prog < 1) {
-            requestAnimationFrame(frame);
-          } else {
-            this.isSpinning = false;
-            this.rotation = targetAngle;
-            this.draw();
-            if (callback) callback();
-          }
-        };
-
-        requestAnimationFrame(frame);
-      }
-    }
-
-    // UI Orchestration
-    document.addEventListener("DOMContentLoaded", () => {
-      const spinBtn = document.getElementById("spinBtn");
-      const statusMsg = document.getElementById("spinStatusMsg");
-      const trackerText = document.getElementById("trackerText");
-      const trackerBox = document.getElementById("eligibilityTracker");
-      const modal = document.getElementById("winnerModal");
-      const closeBtn = document.getElementById("modalCloseBtn");
-      const prizeCard = document.getElementById("modalPrizeCard");
-      const codeDisplay = document.getElementById("promoCodeDisplay");
-      const copyBtn = document.getElementById("copyCodeBtn");
-      const copyText = document.getElementById("copyBtnText");
-      const bookingBtn = document.getElementById("bookingCtaBtn");
-      const shareBtn = document.getElementById("shareResultBtn");
-      const accordToggle = document.getElementById("instructionsToggle");
-      const accordContent = document.querySelector(".instructions-accordion");
-
-      if (!ProbabilityEngine.validate(campaignConfig.wheel.prizes)) {
-        statusMsg.textContent = "خطأ في ضبط نسب الاحتمالات (يجب أن تساوي 100%).";
-        statusMsg.classList.add("error");
-        spinBtn.disabled = true;
-        return;
-      }
-
-      const wheel = new VisualWheel("wheelCanvas", campaignConfig.wheel.prizes);
-
-      const disablePermanently = (msg) => {
-        spinBtn.disabled = true;
-        spinBtn.classList.remove("is-loading");
-        statusMsg.textContent = msg;
-        trackerBox.classList.add("exhausted");
-        trackerText.textContent = "تم استهلاك فرصة التدوير الخاصة بك في فعالية اليوم الوطني 96.";
-      };
-
-      if (StorageService.hasSpun()) {
-        const saved = StorageService.getSaved();
-        disablePermanently(`لقد حصلت مسبقاً على: (${saved ? saved.prize : 'جائزتك'})`);
-      }
-
-      document.getElementById("heroStartBtn")?.addEventListener("click", (e) => {
-        e.preventDefault();
-        document.getElementById("wheel-section").scrollIntoView({ behavior: "smooth" });
-      });
-
-      accordToggle?.addEventListener("click", () => {
-        const isExp = accordContent.classList.toggle("active");
-        accordToggle.setAttribute("aria-expanded", isExp);
-      });
-
-      closeBtn?.addEventListener("click", () => modal.close());
-      modal?.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
-
-      copyBtn?.addEventListener("click", async () => {
-        const code = codeDisplay.textContent;
-        if (!code || code === "--------") return;
-        try {
-          await navigator.clipboard.writeText(code);
-          copyText.textContent = "تم النسخ!";
-          setTimeout(() => copyText.textContent = "نسخ الكود", 2500);
-        } catch(e) {
-          copyText.textContent = "تم النسخ!";
-        }
-      });
-
-      shareBtn?.addEventListener("click", () => {
-        const code = codeDisplay.textContent;
-        const shareData = {
-          title: "Go Wash | احتفال اليوم الوطني السعودي 96",
-          text: `ربحت مع Go Wash في فعالية اليوم الوطني السعودي 96! كود الخصم: ${code}`,
-          url: window.location.href
-        };
-        if (navigator.share) {
-          navigator.share(shareData).catch(() => {});
-        } else {
-          navigator.clipboard.writeText(window.location.href);
-          alert("تم نسخ رابط الفعالية لمشاركته مع أصدقائك!");
-        }
-      });
-
-      spinBtn.addEventListener("click", () => {
-        if (wheel.isSpinning) return;
-        if (StorageService.hasSpun()) {
-          disablePermanently("عذراً، انتهت فرصتك المتاحة في هذه الفعالية.");
-          return;
-        }
-
-        spinBtn.disabled = true;
-        spinBtn.classList.add("is-loading");
-        statusMsg.textContent = "جاري السحب على جائزتك لاحتفال اليوم الوطني...";
-
-        setTimeout(() => {
-          const winningPrize = ProbabilityEngine.select(campaignConfig.wheel.prizes);
-          const targetAngle = wheel.calculateAngle(winningPrize);
-          statusMsg.textContent = "";
-
-          wheel.spinTo(targetAngle, () => {
-            const promo = Rewards.genCode();
-            StorageService.save(winningPrize, promo);
-            disablePermanently(`مبروك! فزت بـ ${winningPrize.label}`);
-
-            if (winningPrize.type === "upgrade") {
-              prizeCard.innerHTML = `
-                <div class="prize-badge-amount" style="color: var(--gowash-orange);">GoWash Signature</div>
-                <div class="prize-badge-title">ترقية مجانية فاخرة!</div>
-                <div class="prize-badge-sub">ادفع قيمة الغسيل العادي واحصل على باقة GoWash Signature الشاملة.</div>
-              `;
-            } else {
-              prizeCard.innerHTML = `
-                <div class="prize-badge-amount">${winningPrize.label}</div>
-                <div class="prize-badge-title">خصم اليوم الوطني على غسيلك</div>
-                <div class="prize-badge-sub">${winningPrize.subtext}</div>
-              `;
-            }
-
-            codeDisplay.textContent = promo;
-            bookingBtn.href = Rewards.getBookingUrl(promo, winningPrize);
-            modal.showModal();
-          });
-        }, 350);
-      });
-    });
+    window.GOWASH_API_URL = window.GOWASH_API_URL || (window.location.hostname.includes('github.io') ? "https://gowash-production.up.railway.app" : "");
   </script>
+  <script src="./js/app.js"></script>
 </body>
 </html>

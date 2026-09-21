@@ -22,6 +22,9 @@
       <button class="nav-item active" data-tab="overview">
         📊 نظرة عامة
       </button>
+      <button class="nav-item" data-tab="quick-redeem" style="border-right: 3px solid #10B981; font-weight: 800;">
+        ⚡ التحقق والاسترداد السريع
+      </button>
       <button class="nav-item" data-tab="campaign">
         ⚙️ إدارة الحملة
       </button>
@@ -67,7 +70,10 @@
         </button>
         <h2 id="topbarTitle" class="page-title">نظرة عامة على الفعالية</h2>
       </div>
-      <div class="topbar-actions">
+      <div class="topbar-actions" style="display: flex; gap: 8px; align-items: center;">
+        <a href="/api/admin/backup/export" class="btn-action-sm" style="text-decoration: none; padding: 7px 12px; background: rgba(59, 130, 246, 0.15); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.4); font-size: 0.82rem; font-weight: 700; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;" download>
+          💾 نسخة احتياطية
+        </a>
         <button id="topbarKillSwitch" class="btn-kill-switch">
           🛑 إيقاف الحملة فوري (Kill Switch)
         </button>
@@ -129,22 +135,59 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
             <div>
               <h3 class="card-title" style="margin-bottom: 4px; color: #34D399; display: flex; align-items: center; gap: 8px;">
-                <span>🏷️</span> فحص وتحديد البرومو كود كمُستخدَم (تسجيل فوري)
+                <span>🏷️</span> التحقق واسترداد الجائزة (Promo Code Verification & Redemption)
               </h3>
               <p style="color: var(--admin-soft); font-size: 0.88rem; margin-bottom: 0;">
-                أدخل كود الخصم (مثل: GW96-XXXX-XXXX) أو رقم جوال العميل للتحقق الفوري وتحديد الكود كـ <strong>مُستخدَم</strong> بضغطة واحدة.
+                ابحث برمز الكود (مثل: <code>GW96-XXXX-XXXX</code>) أو رقم الجوال للتحقق من هوية المشارك واسترداد الجائزة فوراً.
               </p>
             </div>
           </div>
           
           <div style="display: flex; gap: 10px; max-width: 620px; flex-wrap: wrap;">
-            <input type="text" id="quickLookupInput" class="form-input" placeholder="أدخل الكود (GW96-XXXX-XXXX) أو الجوال (05xxxxxxxx)..." style="flex: 1; min-width: 250px; font-family: monospace; font-size: 1rem; text-transform: uppercase;">
-            <button type="button" id="quickLookupBtn" class="btn-primary" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); white-space: nowrap; padding: 10px 22px; font-weight: 800;">
-              🔍 فحص الكود
+            <input type="text" id="quickLookupInput" class="form-input" placeholder="[ GW96-AB72X ] أو رقم جوال العميل..." style="flex: 1; min-width: 250px; font-family: monospace; font-size: 1.05rem; text-transform: uppercase;">
+            <button type="button" id="quickLookupBtn" class="btn-primary" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); white-space: nowrap; padding: 10px 26px; font-weight: 800; font-size: 1rem;">
+              تحقق
             </button>
           </div>
 
           <div id="quickLookupResult" style="display: none; margin-top: 16px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Redeem & Verification Panel -->
+      <section id="panel-quick-redeem" class="tab-panel">
+        <div class="quick-redeem-container">
+          <div class="qr-scan-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h3 class="card-title" style="margin: 0; font-size: 1.25rem; color: #FFF;">⚡ فحص واسترداد الجوائز السريع</h3>
+                <p style="color: var(--admin-muted); font-size: 0.84rem; margin: 4px 0 0 0;">خاص بموظفي وممثلي Go Wash للتحقق وصرف الجوائز فورياً من الجوال أو المتصفح</p>
+              </div>
+              <span class="badge badge-active" style="padding: 4px 10px;">سرعة التحقق والتأكيد</span>
+            </div>
+
+            <div class="quick-input-row">
+              <input type="text" id="quickRedeemInput" placeholder="أدخل Promo Code أو امسح رمز QR..." autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
+              <button type="button" id="quickRedeemBtn" class="btn-primary" style="padding: 12px 24px; font-size: 1rem; font-weight: 800; white-space: nowrap;">
+                تحقق من الكود 🔍
+              </button>
+            </div>
+
+            <div class="quick-actions-row">
+              <label for="quickRedeemFileInput" class="btn-action-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; background: rgba(255,255,255,0.06); border: 1px solid var(--admin-border); color: #FFF; font-weight: 700; border-radius: var(--radius-sm);">
+                📷 مسح QR بالكاميرا
+                <input type="file" id="quickRedeemFileInput" accept="image/*" capture="environment" style="display: none;">
+              </label>
+              <button type="button" id="quickRedeemClearBtn" class="btn-action-sm" style="padding: 9px 16px; display: none;">
+                مسح الحقل ✕
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Redeem Result Card -->
+          <div id="quickRedeemResultBox" style="display: none;">
             <!-- Rendered by JS -->
           </div>
         </div>
@@ -235,7 +278,7 @@
       <section id="panel-spins" class="tab-panel">
         <div class="panel-card">
           <div class="table-controls">
-            <h3 class="card-title" style="margin-bottom: 0;">سجل تدوير العملاء</h3>
+            <h3 class="card-title" style="margin-bottom: 0;">سجل تدوير العملاء والنتائج المحفوظة</h3>
             <input type="text" id="spinsSearchInput" class="search-input" placeholder="بحث بالمعرف، الكود، أو الجائزة...">
           </div>
 
@@ -244,12 +287,13 @@
               <thead>
                 <tr>
                   <th>معرف اللفة</th>
-                  <th>اسم العميل</th>
+                  <th>المشارك</th>
                   <th>رقم الجوال</th>
                   <th>الجائزة</th>
                   <th>الكود الترويجي</th>
-                  <th>حالة الكود</th>
-                  <th>الوقت</th>
+                  <th>الحالة</th>
+                  <th>تاريخ اللفة</th>
+                  <th>تاريخ الاسترداد</th>
                   <th>الإجراءات</th>
                 </tr>
               </thead>
@@ -385,6 +429,55 @@
 
     </main>
   </div>
+
+  <!-- Quick Redeem Confirmation Dialog -->
+  <dialog id="quickRedeemConfirmModal" class="modal-dialog" style="padding: 0; border: none; border-radius: var(--radius-md); background: transparent; max-width: 480px; width: 92%;">
+    <div style="background: #0D1B2A; border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: 24px; color: #FFF; box-shadow: 0 16px 40px rgba(0,0,0,0.85);">
+      <h3 style="margin-top: 0; color: #10B981; font-size: 1.25rem; display: flex; align-items: center; gap: 8px;">
+        ⚠️ تأكيد استرداد الجائزة
+      </h3>
+      <div style="margin: 16px 0; font-size: 0.95rem; line-height: 1.7; background: rgba(255,255,255,0.04); padding: 16px; border-radius: var(--radius-sm);">
+        <div style="margin-bottom: 8px;">🎁 <strong>الجائزة:</strong> <span id="quickConfirmPrize" style="color: #FCD34D; font-weight: bold;"></span></div>
+        <div style="margin-bottom: 8px;">🏷️ <strong>Promo Code:</strong> <span id="quickConfirmCode" style="font-family: monospace; font-size: 1.2rem; color: #72F3AA; font-weight: 900;"></span></div>
+        <div style="color: #F87171; font-size: 0.85rem; margin-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px;">
+          ⚠️ بعد الاسترداد لن يمكن استخدام هذا الكود مرة أخرى وسيتم حفظ العملية في سجل العمليات.
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+        <button type="button" id="quickConfirmCancelBtn" class="btn-action-sm" style="padding: 10px 20px; font-size: 0.95rem;">
+          إلغاء
+        </button>
+        <button type="button" id="quickConfirmSubmitBtn" class="btn-primary" style="padding: 10px 24px; font-size: 0.95rem; background: linear-gradient(135deg, #10B981 0%, #059669 100%); font-weight: 800;">
+          تأكيد الاسترداد ✅
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Promo Cancellation Confirmation Dialog (Requirements 26 & 27) -->
+  <dialog id="cancelConfirmModal" class="modal-dialog" style="padding: 0; border: none; border-radius: var(--radius-md); background: transparent; max-width: 440px; width: 90%;">
+    <div style="background: #0D1B2A; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: var(--radius-md); padding: 24px; color: #FFF; box-shadow: 0 16px 40px rgba(0,0,0,0.85); text-align: center;">
+      <h3 style="margin-top: 0; color: #EF4444; font-size: 1.25rem; font-weight: 800;">
+        شطب Promo Code
+      </h3>
+      <div style="margin: 18px 0; background: rgba(239, 68, 68, 0.08); border: 1px dashed rgba(239, 68, 68, 0.3); border-radius: var(--radius-sm); padding: 16px;">
+        <div id="cancelModalCode" style="font-family: monospace; font-size: 1.4rem; font-weight: 900; color: #F87171; letter-spacing: 1px;">
+          GW96-XXXX
+        </div>
+      </div>
+      <p style="color: var(--admin-soft); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+        هذا سيجعل الكود غير صالح للاستخدام.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 14px;">
+        <button type="button" id="cancelModalDismissBtn" class="btn-action-sm" style="padding: 10px 24px; font-size: 0.95rem;">
+          إلغاء
+        </button>
+        <button type="button" id="cancelModalConfirmBtn" class="btn-action-sm cancel" style="padding: 10px 24px; font-size: 0.95rem; background: #DC2626; color: #FFF; font-weight: 800; border-color: #EF4444;">
+          تأكيد الشطب
+        </button>
+      </div>
+    </div>
+  </dialog>
 
   <!-- Global Toast Feedback -->
   <div id="toastMsg" class="toast-msg"></div>

@@ -5,54 +5,63 @@ const bcrypt = require('bcryptjs');
 const db = require('../db');
 const config = require('../config');
 const { requireAdmin, validateCsrf } = require('../middleware/auth');
+const { loginRateLimiter } = require('../middleware/rateLimiter');
 const { logAdminAction } = require('../services/auditService');
-const { redeemPromoCode, cancelPromoCode, unredeemPromoCode, lookupPromoCode } = require('../services/promoService');
+const { redeemPromoCode, cancelPromoCode, unredeemPromoCode, lookupPromoCode, verifyPromo } = require('../services/promoService');
+const { createBackup } = require('../scripts/backup');
 
 // POST /api/admin/login
-router.post('/login', (req, res) => {
-  const { username, password } = req.body || {};
+router.post('/login', loginRateLimiter(5, 15 * 60 * 1000), async (req, res) => {
+  try {
+    const { username, password } = req.body || {};
 
-  if (!username || !password) {
-    return res.status(400).json({ success: false, error: 'يرجى إدخال اسم المستخدم وكلمة المرور.' });
+    if (!username || !password) {
+      return res.status(400).json({ success: false, error: 'يرجى إدخال اسم المستخدم وكلمة المرور.' });
+    }
+
+    const user = await db.get('SELECT id, username, email, password_hash FROM admin_users WHERE username = ? OR email = ?', [username.trim(), username.trim()]);
+
+    if (!user || !bcrypt.compareSync(password, user.password_hash)) {
+      await logAdminAction(username, 'LOGIN_FAILED', null, 'FAILED', { reason: 'Invalid credentials' });
+      return res.status(401).json({ success: false, error: 'اسم المستخدم أو كلمة المرور غير صحيحة.' });
+    }
+
+    // Create admin session
+    const sessionId = crypto.randomUUID();
+    const csrfToken = crypto.randomBytes(24).toString('hex');
+    const now = new Date();
+    const expiresIso = new Date(now.getTime() + config.SESSION_EXPIRY_MS).toISOString();
+
+    await db.run(`
+      INSERT INTO admin_sessions (id, admin_id, csrf_token, created_at, expires_at)
+      VALUES (?, ?, ?, ?, ?)
+    `, [sessionId, user.id, csrfToken, now.toISOString(), expiresIso]);
+
+    const isSecure = config.NODE_ENV === 'production' || req.secure || req.headers['x-forwarded-proto'] === 'https';
+
+    res.cookie('gowash_admin_session', sessionId, {
+      httpOnly: true,
+      secure: isSecure,
+      sameSite: isSecure ? 'None' : 'Lax',
+      path: '/',
+      maxAge: config.SESSION_EXPIRY_MS
+    });
+
+    await logAdminAction(user.username, 'LOGIN_SUCCESS', null, 'SUCCESS');
+
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email
+      },
+      csrfToken
+    });
+  } catch (err) {
+    console.error('Admin login error:', err);
+    res.status(500).json({ success: false, error: 'حدث خطأ أثناء تسجيل الدخول.' });
   }
-
-  const user = db.prepare('SELECT id, username, email, password_hash FROM admin_users WHERE username = ? OR email = ?').get(username.trim(), username.trim());
-
-  if (!user || !bcrypt.compareSync(password, user.password_hash)) {
-    logAdminAction(username, 'LOGIN_FAILED', null, 'FAILED', { reason: 'Invalid credentials' });
-    return res.status(401).json({ success: false, error: 'اسم المستخدم أو كلمة المرور غير صحيحة.' });
-  }
-
-  // Create admin session
-  const sessionId = crypto.randomUUID();
-  const csrfToken = crypto.randomBytes(24).toString('hex');
-  const now = new Date();
-  const expiresIso = new Date(now.getTime() + config.SESSION_EXPIRY_MS).toISOString();
-
-  db.prepare(`
-    INSERT INTO admin_sessions (id, admin_id, csrf_token, created_at, expires_at)
-    VALUES (?, ?, ?, ?, ?)
-  `).run(sessionId, user.id, csrfToken, now.toISOString(), expiresIso);
-
-  res.cookie('gowash_admin_session', sessionId, {
-    httpOnly: true,
-    secure: config.NODE_ENV === 'production',
-    sameSite: 'Strict',
-    path: '/',
-    maxAge: config.SESSION_EXPIRY_MS
-  });
-
-  logAdminAction(user.username, 'LOGIN_SUCCESS', null, 'SUCCESS');
-
-  res.json({
-    success: true,
-    user: {
-      id: user.id,
-      username: user.username,
-      email: user.email
-    },
-    csrfToken
-  });
 });
 
 // Protected routes below
@@ -72,41 +81,41 @@ router.get('/me', (req, res) => {
 });
 
 // POST /api/admin/logout
-router.post('/logout', (req, res) => {
+router.post('/logout', async (req, res) => {
   if (req.admin?.sessionId) {
-    db.prepare('DELETE FROM admin_sessions WHERE id = ?').run(req.admin.sessionId);
-    logAdminAction(req.admin.username, 'ADMIN_LOGOUT', null, 'SUCCESS');
+    await db.run('DELETE FROM admin_sessions WHERE id = ?', [req.admin.sessionId]);
+    await logAdminAction(req.admin.username, 'ADMIN_LOGOUT', null, 'SUCCESS');
   }
   res.clearCookie('gowash_admin_session');
   res.json({ success: true });
 });
 
 // GET /api/admin/overview - Real database metrics
-router.get('/overview', (req, res) => {
+router.get('/overview', async (req, res) => {
   try {
-    const totalSpins = db.prepare('SELECT COUNT(*) as count FROM spins').get().count;
-    const uniqueParticipants = db.prepare('SELECT COUNT(DISTINCT participant_id) as count FROM spins').get().count;
-    const rewardsIssued = db.prepare('SELECT COUNT(*) as count FROM promo_codes').get().count;
-    const activeCodes = db.prepare("SELECT COUNT(*) as count FROM promo_codes WHERE status = 'ACTIVE'").get().count;
-    const redeemedCodes = db.prepare("SELECT COUNT(*) as count FROM promo_codes WHERE status = 'REDEEMED'").get().count;
-    const expiredCodes = db.prepare("SELECT COUNT(*) as count FROM promo_codes WHERE status = 'EXPIRED'").get().count;
-    const blockedRequests = db.prepare(`
+    const totalSpinsRow = await db.get('SELECT COUNT(*) as count FROM spins');
+    const uniqueParticipantsRow = await db.get('SELECT COUNT(DISTINCT participant_id) as count FROM spins');
+    const rewardsIssuedRow = await db.get('SELECT COUNT(*) as count FROM promo_codes');
+    const activeCodesRow = await db.get("SELECT COUNT(*) as count FROM promo_codes WHERE status = 'ACTIVE'");
+    const redeemedCodesRow = await db.get("SELECT COUNT(*) as count FROM promo_codes WHERE status = 'REDEEMED'");
+    const expiredCodesRow = await db.get("SELECT COUNT(*) as count FROM promo_codes WHERE status = 'EXPIRED'");
+    const blockedRequestsRow = await db.get(`
       SELECT COUNT(*) as count FROM security_logs
       WHERE event_type IN ('RATE_LIMIT_EXCEEDED', 'SPIN_FLOOD_ATTEMPT', 'CONCURRENT_SPIN_BLOCKED')
-    `).get().count;
+    `);
 
-    const campaign = db.prepare('SELECT status, name, start_date, end_date FROM campaign_settings WHERE id = 1').get();
+    const campaign = await db.get('SELECT status, name, start_date, end_date FROM campaign_settings WHERE id = 1');
 
     res.json({
       success: true,
       stats: {
-        totalSpins,
-        uniqueParticipants,
-        rewardsIssued,
-        activeCodes,
-        redeemedCodes,
-        expiredCodes,
-        blockedRequests
+        totalSpins: parseInt(totalSpinsRow?.count || 0, 10),
+        uniqueParticipants: parseInt(uniqueParticipantsRow?.count || 0, 10),
+        rewardsIssued: parseInt(rewardsIssuedRow?.count || 0, 10),
+        activeCodes: parseInt(activeCodesRow?.count || 0, 10),
+        redeemedCodes: parseInt(redeemedCodesRow?.count || 0, 10),
+        expiredCodes: parseInt(expiredCodesRow?.count || 0, 10),
+        blockedRequests: parseInt(blockedRequestsRow?.count || 0, 10)
       },
       campaign: campaign || { status: 'ACTIVE' }
     });
@@ -117,13 +126,13 @@ router.get('/overview', (req, res) => {
 });
 
 // GET /api/admin/campaign
-router.get('/campaign', (req, res) => {
-  const campaign = db.prepare('SELECT * FROM campaign_settings WHERE id = 1').get();
+router.get('/campaign', async (req, res) => {
+  const campaign = await db.get('SELECT * FROM campaign_settings WHERE id = 1');
   res.json({ success: true, campaign });
 });
 
 // PUT /api/admin/campaign
-router.put('/campaign', validateCsrf, (req, res) => {
+router.put('/campaign', validateCsrf, async (req, res) => {
   const { status, name, start_date, end_date, max_spins_per_participant } = req.body || {};
 
   if (!['ACTIVE', 'PAUSED', 'ENDED'].includes(status)) {
@@ -131,35 +140,35 @@ router.put('/campaign', validateCsrf, (req, res) => {
   }
 
   const now = new Date().toISOString();
-  db.prepare(`
+  await db.run(`
     UPDATE campaign_settings
     SET status = ?, name = COALESCE(?, name), start_date = ?, end_date = ?,
         max_spins_per_participant = COALESCE(?, max_spins_per_participant), updated_at = ?
     WHERE id = 1
-  `).run(status, name || null, start_date || null, end_date || null, max_spins_per_participant || 1, now);
+  `, [status, name || null, start_date || null, end_date || null, max_spins_per_participant || 1, now]);
 
-  logAdminAction(req.admin.username, 'CAMPAIGN_STATUS_UPDATED', status, 'SUCCESS', { name, start_date, end_date });
+  await logAdminAction(req.admin.username, 'CAMPAIGN_STATUS_UPDATED', status, 'SUCCESS', { name, start_date, end_date });
 
   res.json({ success: true, message: 'تم تحديث إعدادات الحملة بنجاح.' });
 });
 
 // POST /api/admin/kill-switch - Instant stop
-router.post('/kill-switch', validateCsrf, (req, res) => {
+router.post('/kill-switch', validateCsrf, async (req, res) => {
   const now = new Date().toISOString();
-  db.prepare("UPDATE campaign_settings SET status = 'PAUSED', updated_at = ? WHERE id = 1").run(now);
-  logAdminAction(req.admin.username, 'KILL_SWITCH_TRIGGERED', 'CAMPAIGN_PAUSED', 'SUCCESS', 'Emergency kill switch triggered');
+  await db.run("UPDATE campaign_settings SET status = 'PAUSED', updated_at = ? WHERE id = 1", [now]);
+  await logAdminAction(req.admin.username, 'KILL_SWITCH_TRIGGERED', 'CAMPAIGN_PAUSED', 'SUCCESS', 'Emergency kill switch triggered');
 
   res.json({ success: true, message: 'تم تفعيل زر الإيقاف الفوري (Kill Switch). تم إيقاف الفعالية فورياً.' });
 });
 
 // GET /api/admin/prizes
-router.get('/prizes', (req, res) => {
-  const prizes = db.prepare('SELECT * FROM prizes ORDER BY display_order ASC').all();
+router.get('/prizes', async (req, res) => {
+  const prizes = await db.all('SELECT * FROM prizes ORDER BY display_order ASC');
   res.json({ success: true, prizes });
 });
 
 // PUT /api/admin/prizes - Strict probability validation (Must equal 100%)
-router.put('/prizes', validateCsrf, (req, res) => {
+router.put('/prizes', validateCsrf, async (req, res) => {
   const { prizes } = req.body || {};
 
   if (!Array.isArray(prizes) || prizes.length === 0) {
@@ -191,30 +200,27 @@ router.put('/prizes', validateCsrf, (req, res) => {
 
   // Update inside transaction
   try {
-    db.exec('BEGIN IMMEDIATE');
-    const updateStmt = db.prepare(`
-      UPDATE prizes
-      SET label = ?, subtext = ?, probability = ?, is_active = COALESCE(?, 1)
-      WHERE id = ?
-    `);
+    await db.transaction(async (tx) => {
+      for (const p of prizes) {
+        await tx.run(`
+          UPDATE prizes
+          SET label = ?, subtext = ?, probability = ?, is_active = COALESCE(?, 1)
+          WHERE id = ?
+        `, [p.label, p.subtext, parseFloat(p.probability), p.is_active !== undefined ? p.is_active : 1, p.id]);
+      }
+    });
 
-    for (const p of prizes) {
-      updateStmt.run(p.label, p.subtext, parseFloat(p.probability), p.is_active !== undefined ? p.is_active : 1, p.id);
-    }
-
-    db.exec('COMMIT');
-    logAdminAction(req.admin.username, 'PROBABILITY_UPDATED', 'prizes', 'SUCCESS', { totalProbability });
+    await logAdminAction(req.admin.username, 'PROBABILITY_UPDATED', 'prizes', 'SUCCESS', { totalProbability });
 
     res.json({ success: true, message: 'تم تحديث نسب واحتمالات الجوائز بنجاح.' });
   } catch (err) {
-    try { db.exec('ROLLBACK'); } catch (e) {}
     console.error('Error updating prizes:', err);
     res.status(500).json({ success: false, error: 'فشل حفظ تعديلات الجوائز.' });
   }
 });
 
 // GET /api/admin/spins - Search & pagination
-router.get('/spins', (req, res) => {
+router.get('/spins', async (req, res) => {
   const page = Math.max(1, parseInt(req.query.page || '1', 10));
   const limit = Math.min(50, Math.max(10, parseInt(req.query.limit || '20', 10)));
   const offset = (page - 1) * limit;
@@ -222,7 +228,7 @@ router.get('/spins', (req, res) => {
 
   let query = `
     SELECT s.id, s.participant_id, s.created_at, pr.label as prize_label, pr.type as prize_type,
-           p.code as promo_code, p.status as promo_status,
+           p.code as promo_code, p.status as promo_status, p.expires_at, p.redeemed_at,
            COALESCE(pt.name, 'غير محدد') as participant_name,
            COALESCE(pt.phone, '---') as participant_phone
     FROM spins s
@@ -248,8 +254,9 @@ router.get('/spins', (req, res) => {
 
   query += ` ORDER BY s.created_at DESC LIMIT ? OFFSET ?`;
 
-  const total = db.prepare(countQuery).get(...params).count;
-  const records = db.prepare(query).all(...params, limit, offset);
+  const totalRow = await db.get(countQuery, params);
+  const total = parseInt(totalRow?.count || 0, 10);
+  const records = await db.all(query, [...params, limit, offset]);
 
   res.json({
     success: true,
@@ -264,7 +271,7 @@ router.get('/spins', (req, res) => {
 });
 
 // GET /api/admin/promos - Search & pagination
-router.get('/promos', (req, res) => {
+router.get('/promos', async (req, res) => {
   const page = Math.max(1, parseInt(req.query.page || '1', 10));
   const limit = Math.min(50, Math.max(10, parseInt(req.query.limit || '20', 10)));
   const offset = (page - 1) * limit;
@@ -303,8 +310,9 @@ router.get('/promos', (req, res) => {
 
   query += ` ORDER BY p.created_at DESC LIMIT ? OFFSET ?`;
 
-  const total = db.prepare(countQuery).get(...params).count;
-  const records = db.prepare(query).all(...params, limit, offset);
+  const totalRow = await db.get(countQuery, params);
+  const total = parseInt(totalRow?.count || 0, 10);
+  const records = await db.all(query, [...params, limit, offset]);
 
   res.json({
     success: true,
@@ -319,17 +327,46 @@ router.get('/promos', (req, res) => {
 });
 
 // GET /api/admin/promos/lookup?term=...
-router.get('/promos/lookup', (req, res) => {
-  const result = lookupPromoCode(req.query.term);
+router.get('/promos/lookup', async (req, res) => {
+  const result = await lookupPromoCode(req.query.term);
   if (!result.success) {
     return res.status(404).json(result);
   }
   res.json(result);
 });
 
+// GET /api/admin/verify/:term - Quick Admin Verification Lookup (by Code or QR Token)
+router.get('/verify/:term', async (req, res) => {
+  try {
+    const result = await verifyPromo(req.params.term);
+    if (!result.success) {
+      const status = result.code === 'NOT_FOUND' ? 404 : 400;
+      return res.status(status).json(result);
+    }
+    res.json(result);
+  } catch (err) {
+    console.error('Error in admin verify lookup:', err);
+    res.status(500).json({ success: false, error: 'حدث خطأ أثناء فحص الجائزة.' });
+  }
+});
+
+// GET /api/admin/backup/export - Authenticated database backup download
+router.get('/backup/export', async (req, res) => {
+  try {
+    const summary = await createBackup();
+    await logAdminAction(req.admin.username, 'DB_BACKUP_EXPORT', summary.filename, 'SUCCESS');
+    res.download(summary.file, summary.filename);
+  } catch (err) {
+    console.error('Error exporting database backup:', err);
+    res.status(500).json({ success: false, error: 'فشل تصدير النسخة الاحتياطية.' });
+  }
+});
+
 // POST /api/admin/promos/:code/redeem
-router.post('/promos/:code/redeem', validateCsrf, (req, res) => {
-  const result = redeemPromoCode(req.params.code, req.admin.username);
+router.post('/promos/:code/redeem', validateCsrf, async (req, res) => {
+  const verification = req.body?.participantVerification || req.body?.participantPhone || req.body?.phone || null;
+  const ip = req.ip || req.connection.remoteAddress || '127.0.0.1';
+  const result = await redeemPromoCode(req.params.code, req.admin.username, verification, ip);
   if (!result.success) {
     return res.status(400).json(result);
   }
@@ -337,8 +374,8 @@ router.post('/promos/:code/redeem', validateCsrf, (req, res) => {
 });
 
 // POST /api/admin/promos/:code/unredeem
-router.post('/promos/:code/unredeem', validateCsrf, (req, res) => {
-  const result = unredeemPromoCode(req.params.code, req.admin.username);
+router.post('/promos/:code/unredeem', validateCsrf, async (req, res) => {
+  const result = await unredeemPromoCode(req.params.code, req.admin.username);
   if (!result.success) {
     return res.status(400).json(result);
   }
@@ -346,28 +383,50 @@ router.post('/promos/:code/unredeem', validateCsrf, (req, res) => {
 });
 
 // POST /api/admin/promos/:code/cancel
-router.post('/promos/:code/cancel', validateCsrf, (req, res) => {
-  const result = cancelPromoCode(req.params.code, req.admin.username, req.body?.reason);
+router.post('/promos/:code/cancel', validateCsrf, async (req, res) => {
+  const result = await cancelPromoCode(req.params.code, req.admin.username, req.body?.reason);
   if (!result.success) {
     return res.status(400).json(result);
   }
   res.json(result);
 });
 
+// GET /api/admin/redemptions - List dedicated redemption logs
+router.get('/redemptions', async (req, res) => {
+  const page = Math.max(1, parseInt(req.query.page || '1', 10));
+  const limit = Math.min(50, Math.max(10, parseInt(req.query.limit || '20', 10)));
+  const offset = (page - 1) * limit;
+
+  const totalRow = await db.get('SELECT COUNT(*) as count FROM redemptions');
+  const total = parseInt(totalRow?.count || 0, 10);
+  const records = await db.all('SELECT * FROM redemptions ORDER BY redeemed_at DESC LIMIT ? OFFSET ?', [limit, offset]);
+
+  res.json({
+    success: true,
+    data: records,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit)
+    }
+  });
+});
+
 // GET /api/admin/security-logs
-router.get('/security-logs', (req, res) => {
-  const logs = db.prepare('SELECT * FROM security_logs ORDER BY timestamp DESC LIMIT 50').all();
+router.get('/security-logs', async (req, res) => {
+  const logs = await db.all('SELECT * FROM security_logs ORDER BY timestamp DESC LIMIT 50');
   res.json({ success: true, logs });
 });
 
 // GET /api/admin/audit-logs
-router.get('/audit-logs', (req, res) => {
-  const logs = db.prepare('SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 50').all();
+router.get('/audit-logs', async (req, res) => {
+  const logs = await db.all('SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 50');
   res.json({ success: true, logs });
 });
 
 // PUT /api/admin/password
-router.put('/password', validateCsrf, (req, res) => {
+router.put('/password', validateCsrf, async (req, res) => {
   const { currentPassword, newPassword } = req.body || {};
 
   if (!currentPassword || !newPassword) {
@@ -378,7 +437,7 @@ router.put('/password', validateCsrf, (req, res) => {
     return res.status(400).json({ success: false, error: 'يجب أن لا تقل كلمة المرور الجديدة عن 8 أحرف.' });
   }
 
-  const user = db.prepare('SELECT password_hash FROM admin_users WHERE id = ?').get(req.admin.id);
+  const user = await db.get('SELECT password_hash FROM admin_users WHERE id = ?', [req.admin.id]);
   if (!bcrypt.compareSync(currentPassword, user.password_hash)) {
     return res.status(400).json({ success: false, error: 'كلمة المرور الحالية غير صحيحة.' });
   }
@@ -386,8 +445,8 @@ router.put('/password', validateCsrf, (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const newHash = bcrypt.hashSync(newPassword, salt);
 
-  db.prepare('UPDATE admin_users SET password_hash = ? WHERE id = ?').run(newHash, req.admin.id);
-  logAdminAction(req.admin.username, 'PASSWORD_CHANGED', null, 'SUCCESS');
+  await db.run('UPDATE admin_users SET password_hash = ? WHERE id = ?', [newHash, req.admin.id]);
+  await logAdminAction(req.admin.username, 'PASSWORD_CHANGED', null, 'SUCCESS');
 
   res.json({ success: true, message: 'تم تغيير كلمة المرور بنجاح.' });
 });
