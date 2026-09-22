@@ -47,7 +47,8 @@ function selectPrize(prizes) {
 }
 
 // Saudi phone normalization & validation
-function normalizeSaudiPhone(rawPhone) {
+// Saudi phone parsing, normalization & masking
+function parseSaudiPhone(rawPhone) {
   if (!rawPhone || typeof rawPhone !== 'string') return null;
   let cleaned = rawPhone.trim().replace(/[\s\-\(\)\.]/g, '');
   if (cleaned.startsWith('+966')) {
@@ -63,16 +64,136 @@ function normalizeSaudiPhone(rawPhone) {
   }
   // Must be 10 digits starting with 05
   if (/^05[0-9]{8}$/.test(cleaned)) {
-    return cleaned;
+    const local = cleaned;
+    const normalized = '+966' + cleaned.slice(1);
+    const masked = `${cleaned.slice(0, 2)}••••${cleaned.slice(6)}`;
+    return { local, normalized, masked };
   }
   return null;
 }
 
+function normalizeSaudiPhone(rawPhone) {
+  const parsed = parseSaudiPhone(rawPhone);
+  return parsed ? parsed.local : null;
+}
+
 function validateName(rawName) {
   if (!rawName || typeof rawName !== 'string') return null;
-  const trimmed = rawName.trim();
+  const trimmed = rawName.trim().replace(/<[^>]*>/g, '');
   if (trimmed.length < 2 || trimmed.length > 70) return null;
   return trimmed;
+}
+
+// Handle Participant Entry Screen (Upfront Registration & Duplicate Check)
+async function handleParticipantEntry({ participantId, name, phone, ip, userAgent }) {
+  const ipH = hashIp(ip);
+  const nowIso = new Date().toISOString();
+
+  // 1. Check Campaign Status
+  const campaign = await db.get('SELECT status, start_date, end_date FROM campaign_settings WHERE id = 1');
+  if (!campaign) {
+    return { success: false, code: 'CAMPAIGN_NOT_FOUND', error: 'إعدادات الفعالية غير متاحة حالياً.' };
+  }
+  if (campaign.status === 'PAUSED') {
+    return { success: false, code: 'CAMPAIGN_PAUSED', error: 'الفعالية متوقفة مؤقتاً في الوقت الحالي.' };
+  }
+  if (campaign.status === 'ENDED') {
+    return { success: false, code: 'CAMPAIGN_ENDED', error: 'انتهت فعالية اليوم الوطني السعودي 96.' };
+  }
+
+  // 2. Validate Name & Phone
+  const validName = validateName(name);
+  if (!validName) {
+    return { success: false, code: 'INVALID_NAME', error: 'يرجى إدخال اسمك الكريم (حرفين على الأقل وبحد أقصى 70 حرفاً).' };
+  }
+
+  const parsedPhone = parseSaudiPhone(phone);
+  if (!parsedPhone) {
+    return { success: false, code: 'INVALID_PHONE', error: 'يرجى إدخال رقم جوال سعودي صحيح يبدأ بـ 05 ويتكون من 10 أرقام (مثال: 0580700242).' };
+  }
+
+  // 3. Check if this phone number already participated and spun in this campaign
+  const existingPhoneSpin = await db.get(`
+    SELECT s.id, s.created_at as spin_created_at, pr.id as prize_id, pr.label as prize_label, pr.type as prize_type, pr.subtext as prize_subtext,
+           p.code as promo_code, p.expires_at as promo_expires_at, p.status as promo_status, p.redeemed_at as promo_redeemed_at,
+           p.qr_token as promo_qr_token,
+           pt.id as participant_id, pt.name as participant_name, pt.phone as participant_phone, pt.normalized_phone
+    FROM spins s
+    JOIN participants pt ON s.participant_id = pt.id
+    JOIN prizes pr ON s.prize_id = pr.id
+    LEFT JOIN promo_codes p ON s.id = p.spin_id
+    WHERE pt.normalized_phone = ? OR pt.phone = ?
+  `, [parsedPhone.normalized, parsedPhone.local]);
+
+  if (existingPhoneSpin) {
+    const qrDataUrl = await generateQrDataUrl(existingPhoneSpin.promo_qr_token);
+    return {
+      success: true,
+      alreadyParticipated: true,
+      participant: {
+        name: existingPhoneSpin.participant_name || validName,
+        phone: parsedPhone.masked
+      },
+      existingPrize: {
+        id: existingPhoneSpin.prize_id,
+        label: existingPhoneSpin.prize_label,
+        type: existingPhoneSpin.prize_type,
+        subtext: existingPhoneSpin.prize_subtext,
+        code: existingPhoneSpin.promo_code,
+        status: existingPhoneSpin.promo_status || 'ACTIVE',
+        expiresAt: existingPhoneSpin.promo_expires_at,
+        redeemedAt: existingPhoneSpin.promo_redeemed_at,
+        qrToken: existingPhoneSpin.promo_qr_token || null,
+        qrDataUrl,
+        participant: {
+          name: existingPhoneSpin.participant_name || validName,
+          phone: parsedPhone.masked
+        }
+      }
+    };
+  }
+
+  // 4. Save or update participant record
+  const existingByPhone = await db.get(
+    'SELECT id FROM participants WHERE (normalized_phone = ? OR phone = ?) AND campaign_id = ?',
+    [parsedPhone.normalized, parsedPhone.local, 'national_day_96']
+  );
+
+  let finalParticipantId = participantId;
+
+  if (existingByPhone) {
+    finalParticipantId = existingByPhone.id;
+    await db.run(`
+      UPDATE participants
+      SET name = ?, phone = ?, normalized_phone = ?, last_seen_at = ?, ip_hash = ?, user_agent = ?
+      WHERE id = ?
+    `, [validName, parsedPhone.local, parsedPhone.normalized, nowIso, ipH, userAgent || '', existingByPhone.id]);
+  } else {
+    const existingParticipant = await db.get('SELECT id FROM participants WHERE id = ?', [participantId]);
+    if (existingParticipant) {
+      await db.run(`
+        UPDATE participants
+        SET name = ?, phone = ?, normalized_phone = ?, campaign_id = 'national_day_96', last_seen_at = ?, ip_hash = ?, user_agent = ?
+        WHERE id = ?
+      `, [validName, parsedPhone.local, parsedPhone.normalized, nowIso, ipH, userAgent || '', participantId]);
+    } else {
+      await db.run(`
+        INSERT INTO participants (id, name, phone, normalized_phone, campaign_id, first_seen_at, last_seen_at, ip_hash, user_agent)
+        VALUES (?, ?, ?, ?, 'national_day_96', ?, ?, ?, ?)
+      `, [participantId, validName, parsedPhone.local, parsedPhone.normalized, nowIso, nowIso, ipH, userAgent || '']);
+    }
+  }
+
+  return {
+    success: true,
+    alreadyParticipated: false,
+    participant: {
+      id: finalParticipantId,
+      name: validName,
+      phone: parsedPhone.masked,
+      normalizedPhone: parsedPhone.normalized
+    }
+  };
 }
 
 // Record participant terms consent
@@ -146,14 +267,15 @@ async function getMyResult(participantId) {
     },
     participant: {
       name: spin.participant_name,
-      phone: spin.participant_phone
+      phone: spin.participant_phone,
+      maskedPhone: spin.participant_phone ? (parseSaudiPhone(spin.participant_phone)?.masked || spin.participant_phone) : ''
     }
   };
 }
 
 async function checkPrizeByPhone(rawPhone) {
-  const validPhone = normalizeSaudiPhone(rawPhone);
-  if (!validPhone) {
+  const parsedPhone = parseSaudiPhone(rawPhone);
+  if (!parsedPhone) {
     return { success: false, code: 'INVALID_PHONE', message: 'يرجى إدخال رقم جوال سعودي صحيح (مثال: 0580700242).' };
   }
   const spin = await db.get(`
@@ -165,8 +287,8 @@ async function checkPrizeByPhone(rawPhone) {
     JOIN participants pt ON s.participant_id = pt.id
     JOIN prizes pr ON s.prize_id = pr.id
     LEFT JOIN promo_codes p ON s.id = p.spin_id
-    WHERE pt.phone = ?
-  `, [validPhone]);
+    WHERE pt.phone = ? OR pt.normalized_phone = ?
+  `, [parsedPhone.local, parsedPhone.normalized]);
 
   if (!spin) {
     return { success: false, code: 'NOT_FOUND', message: 'لا توجد جائزة مسجلة بهذا الرقم في فعالية اليوم الوطني 96.' };
@@ -193,7 +315,8 @@ async function checkPrizeByPhone(rawPhone) {
     },
     participant: {
       name: spin.participant_name,
-      phone: spin.participant_phone
+      phone: spin.participant_phone,
+      maskedPhone: parsedPhone.masked
     }
   };
 }
@@ -253,7 +376,19 @@ async function executeSpin({ participantId, idempotencyKey, ip, userAgent, terms
   }
 
   // 3. Enforce and Validate Name and Saudi Phone (Mandatory before Spin)
-  const validName = validateName(name);
+  let validName = validateName(name);
+  let parsedPhone = parseSaudiPhone(phone);
+
+  if ((!validName || !parsedPhone) && participantId) {
+    const savedP = await db.get('SELECT name, phone, normalized_phone FROM participants WHERE id = ?', [participantId]);
+    if (savedP) {
+      if (!validName && savedP.name) validName = savedP.name;
+      if (!parsedPhone && (savedP.phone || savedP.normalized_phone)) {
+        parsedPhone = parseSaudiPhone(savedP.normalized_phone || savedP.phone);
+      }
+    }
+  }
+
   if (!validName) {
     return {
       success: false,
@@ -262,14 +397,16 @@ async function executeSpin({ participantId, idempotencyKey, ip, userAgent, terms
     };
   }
 
-  const validPhone = normalizeSaudiPhone(phone);
-  if (!validPhone) {
+  if (!parsedPhone) {
     return {
       success: false,
       code: 'INVALID_PHONE',
       message: 'يرجى إدخال رقم جوال سعودي صحيح يبدأ بـ 05 ويتكون من 10 أرقام (مثال: 0580700242).'
     };
   }
+
+  const validPhone = parsedPhone.local;
+  const normalizedPhone = parsedPhone.normalized;
 
   // 4. Check Idempotency Key
   if (idempotencyKey) {
@@ -298,7 +435,7 @@ async function executeSpin({ participantId, idempotencyKey, ip, userAgent, terms
         },
         participant: {
           name: validName,
-          phone: validPhone
+          phone: parsedPhone.masked
         }
       };
     }
@@ -308,13 +445,13 @@ async function executeSpin({ participantId, idempotencyKey, ip, userAgent, terms
   if (validPhone) {
     const existingPhoneSpin = await db.get(`
       SELECT s.id, s.prize_id, pr.label as prize_label, pr.type as prize_type, pr.subtext as prize_subtext,
-             p.code as promo_code, p.expires_at as promo_expires_at, pt.name, pt.phone
+             p.code as promo_code, p.expires_at as promo_expires_at, pt.name, pt.phone, pt.normalized_phone
       FROM spins s
       JOIN participants pt ON s.participant_id = pt.id
       JOIN prizes pr ON s.prize_id = pr.id
       LEFT JOIN promo_codes p ON s.id = p.spin_id
-      WHERE pt.phone = ?
-    `, [validPhone]);
+      WHERE pt.phone = ? OR pt.normalized_phone = ?
+    `, [validPhone, normalizedPhone]);
 
     if (existingPhoneSpin) {
       await logSecurityEvent(ipH, participantId, 'DUPLICATE_PHONE_SPIN_ATTEMPT', `Phone ${validPhone} attempted to spin again`);
@@ -329,8 +466,10 @@ async function executeSpin({ participantId, idempotencyKey, ip, userAgent, terms
           subtext: existingPhoneSpin.prize_subtext,
           code: existingPhoneSpin.promo_code,
           expiresAt: existingPhoneSpin.promo_expires_at,
-          name: existingPhoneSpin.name,
-          phone: existingPhoneSpin.phone
+          participant: {
+            name: existingPhoneSpin.name,
+            phone: parsedPhone.masked
+          }
         }
       };
     }
@@ -400,20 +539,21 @@ async function executeSpin({ participantId, idempotencyKey, ip, userAgent, terms
           SELECT COUNT(*) as count 
           FROM spins s 
           JOIN participants pt ON s.participant_id = pt.id 
-          WHERE pt.phone = ?
-        `, [validPhone]);
+          WHERE pt.phone = ? OR pt.normalized_phone = ?
+        `, [validPhone, normalizedPhone]);
         if (checkPhone && parseInt(checkPhone.count, 10) > 0) {
           throw new Error('ALREADY_SPUN_CONCURRENT_PHONE');
         }
       }
 
-      // Update or insert participant record with verified name and phone
+      // Update or insert participant record with verified name, phone and normalized_phone
       const existingP = await tx.get('SELECT id FROM participants WHERE id = ?', [participantId]);
       if (existingP) {
-        await tx.run('UPDATE participants SET name = ?, phone = ? WHERE id = ?', [validName, validPhone, participantId]);
+        await tx.run('UPDATE participants SET name = ?, phone = ?, normalized_phone = ?, campaign_id = ?, last_seen_at = ? WHERE id = ?',
+          [validName, validPhone, normalizedPhone, 'national_day_96', nowIso, participantId]);
       } else {
-        await tx.run('INSERT INTO participants (id, name, phone, first_seen_at, ip_hash, user_agent) VALUES (?, ?, ?, ?, ?, ?)',
-          [participantId, validName, validPhone, nowIso, ipH, userAgent || '']);
+        await tx.run('INSERT INTO participants (id, name, phone, normalized_phone, campaign_id, first_seen_at, last_seen_at, ip_hash, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          [participantId, validName, validPhone, normalizedPhone, 'national_day_96', nowIso, nowIso, ipH, userAgent || '']);
       }
 
       // Insert spin record
@@ -458,7 +598,8 @@ async function executeSpin({ participantId, idempotencyKey, ip, userAgent, terms
       },
       participant: {
         name: validName,
-        phone: validPhone
+        phone: validPhone,
+        maskedPhone: parsedPhone.masked
       }
     };
   } catch (err) {
@@ -486,6 +627,8 @@ module.exports = {
   checkPrizeByPhone,
   getMyResult,
   recordConsent,
+  handleParticipantEntry,
+  parseSaudiPhone,
   normalizeSaudiPhone,
   validateName
 };

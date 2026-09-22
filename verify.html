@@ -9,31 +9,32 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #040A14;
-      --card-bg: linear-gradient(160deg, #0C2344 0%, #06152B 100%);
-      --border-color: rgba(0, 194, 255, 0.35);
-      --primary: #0077E6;
-      --accent: #FFD000;
-      --text-main: #FFFFFF;
-      --text-muted: #8E9FB5;
-      --active-green: #10B981;
-      --redeemed-blue: #3B82F6;
-      --expired-gray: #64748B;
-      --cancelled-red: #EF4444;
+      --bg-canvas: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --border-color: #E2E8F0;
+      --primary: #0066CC;
+      --primary-deep: #0A1E3F;
+      --accent: #FF6600;
+      --text-main: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+      --active-green: #0D5C3A;
+      --redeemed-blue: #1E40AF;
+      --expired-gray: #475569;
+      --cancelled-red: #991B1B;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
     body {
-      background-color: var(--bg-dark);
+      background-color: var(--bg-canvas);
       background-image: 
-        radial-gradient(circle at 50% 12%, rgba(0, 119, 230, 0.22) 0%, transparent 60%),
-        radial-gradient(circle at 10% 25%, rgba(0, 194, 255, 0.12) 0%, transparent 45%),
-        linear-gradient(180deg, #061427 0%, #030914 100%);
+        radial-gradient(circle at 50% 0%, rgba(0, 102, 204, 0.07) 0%, transparent 60%),
+        linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 32px 18px;
+      padding: 36px 18px;
       -webkit-font-smoothing: antialiased;
     }
     .verify-container {
@@ -46,72 +47,75 @@
       margin-bottom: 24px;
     }
     .brand-badge {
-      display: inline-block;
-      background: rgba(255, 208, 0, 0.14);
-      border: 1px solid rgba(255, 208, 0, 0.4);
-      color: var(--accent);
-      padding: 4px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 102, 204, 0.2);
+      color: var(--primary);
+      padding: 5px 16px;
       border-radius: 999px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 800;
-      margin-bottom: 10px;
-      box-shadow: 0 0 14px rgba(255, 208, 0, 0.35);
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0, 40, 90, 0.05);
+    }
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--active-green);
     }
     .brand-title {
       font-size: 1.75rem;
       font-weight: 900;
-      color: #FFFFFF;
+      color: var(--primary-deep);
       letter-spacing: -0.3px;
     }
     .verify-card {
       background: var(--card-bg);
-      border: 1.5px solid var(--border-color);
+      border: 1px solid var(--border-color);
+      border-top: 4px solid var(--primary);
       border-radius: 24px;
       padding: 28px 24px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 194, 255, 0.2);
-      backdrop-filter: blur(14px);
+      box-shadow: 0 16px 40px rgba(0, 40, 90, 0.08);
       text-align: center;
       position: relative;
     }
     .status-pill {
       display: inline-block;
-      padding: 7px 24px;
+      padding: 6px 22px;
       border-radius: 999px;
       font-weight: 900;
-      font-size: 1.05rem;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      font-size: 1rem;
+      margin-bottom: 18px;
     }
-    .status-ACTIVE { background: rgba(16, 185, 129, 0.2); border: 1.5px solid var(--active-green); color: #34D399; }
-    .status-REDEEMED { background: rgba(59, 130, 246, 0.2); border: 1.5px solid var(--redeemed-blue); color: #60A5FA; }
-    .status-EXPIRED { background: rgba(100, 116, 139, 0.2); border: 1.5px solid var(--expired-gray); color: #94A3B8; }
-    .status-CANCELLED { background: rgba(239, 68, 68, 0.2); border: 1.5px solid var(--cancelled-red); color: #F87171; }
+    .status-ACTIVE { background: #ECFDF5; border: 1.5px solid rgba(13, 92, 58, 0.3); color: var(--active-green); }
+    .status-REDEEMED { background: #EFF6FF; border: 1.5px solid #BFDBFE; color: var(--redeemed-blue); }
+    .status-EXPIRED { background: #F1F5F9; border: 1.5px solid #CBD5E1; color: var(--expired-gray); }
+    .status-CANCELLED { background: #FEF2F2; border: 1.5px solid #FECACA; color: var(--cancelled-red); }
 
     .prize-title {
-      font-size: 2.35rem;
+      font-size: 2.2rem;
       font-weight: 900;
-      color: #FFFFFF;
+      color: var(--primary-deep);
       margin-bottom: 6px;
-      background: linear-gradient(180deg, #FFFFFF 40%, #FFE259 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 10px rgba(255, 208, 0, 0.35));
+      line-height: 1.2;
     }
     .prize-subtext {
-      color: var(--text-muted);
+      color: var(--text-secondary);
       font-size: 0.98rem;
       margin-bottom: 22px;
     }
     .code-box {
-      background: rgba(3, 10, 20, 0.7);
-      border: 1.5px dashed rgba(255, 208, 0, 0.45);
+      background: #F0F7FF;
+      border: 1.5px dashed rgba(0, 102, 204, 0.35);
       border-radius: 14px;
       padding: 16px;
       margin-bottom: 22px;
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
     }
     .code-label {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
       letter-spacing: 1.2px;
       display: block;
@@ -120,15 +124,14 @@
     }
     .code-value {
       font-family: 'SF Mono', 'Courier New', monospace;
-      font-size: 1.65rem;
+      font-size: 1.6rem;
       font-weight: 900;
-      color: var(--accent);
+      color: var(--primary);
       letter-spacing: 2px;
-      text-shadow: 0 0 12px rgba(255, 208, 0, 0.45);
     }
     .details-list {
       text-align: right;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid var(--border-color);
       padding-top: 18px;
       margin-bottom: 22px;
       font-size: 0.92rem;
@@ -140,15 +143,15 @@
       color: var(--text-muted);
     }
     .detail-item strong {
-      color: #FFFFFF;
+      color: var(--text-main);
     }
     .security-badge {
-      background: rgba(0, 194, 255, 0.1);
-      border: 1px solid rgba(0, 194, 255, 0.25);
+      background: #F0F7FF;
+      border: 1px solid rgba(0, 102, 204, 0.18);
       border-radius: 12px;
       padding: 11px;
       font-size: 0.85rem;
-      color: #38BDF8;
+      color: var(--primary);
       margin-bottom: 22px;
       font-weight: 700;
     }
@@ -170,31 +173,31 @@
       margin-bottom: 12px;
     }
     .btn-whatsapp {
-      background: linear-gradient(135deg, #25D366 0%, #1EBE5D 100%);
+      background: #25D366;
       color: #FFFFFF;
-      box-shadow: 0 8px 24px -3px rgba(37, 211, 102, 0.5);
+      box-shadow: 0 8px 20px -3px rgba(37, 211, 102, 0.4);
     }
     .btn-whatsapp:hover {
-      background: linear-gradient(135deg, #28E06C 0%, #20BA5A 100%);
+      background: #20BA5A;
       transform: translateY(-2px);
-      box-shadow: 0 12px 28px -3px rgba(37, 211, 102, 0.65);
+      box-shadow: 0 12px 24px -3px rgba(37, 211, 102, 0.5);
     }
     .btn-admin-verify {
-      background: rgba(0, 119, 230, 0.25);
-      color: #60A5FA;
-      border: 1px solid rgba(0, 119, 230, 0.45);
+      background: #FFFFFF;
+      color: var(--primary);
+      border: 1px solid rgba(0, 102, 204, 0.3);
     }
     .btn-admin-verify:hover {
-      background: rgba(0, 119, 230, 0.4);
-      color: #FFF;
+      background: #F0F7FF;
+      border-color: var(--primary);
       transform: translateY(-1px);
     }
     .loading-spinner {
-      border: 4px solid rgba(255, 255, 255, 0.1);
-      border-top: 4px solid #00C2FF;
+      border: 3px solid var(--border-color);
+      border-top: 3px solid var(--primary);
       border-radius: 50%;
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
       animation: spin 0.8s linear infinite;
       margin: 40px auto;
     }
@@ -205,7 +208,10 @@
 
   <div class="verify-container">
     <header class="brand-header">
-      <div class="brand-badge">🇸🇦 فعالية اليوم الوطني 96</div>
+      <div class="brand-badge">
+        <span class="badge-dot"></span>
+        <span>فعالية اليوم الوطني 96</span>
+      </div>
       <h1 class="brand-title">Go Wash — فحص الجائزة</h1>
     </header>
 
@@ -242,25 +248,25 @@
         </div>
 
         <div class="security-badge">
-          🛡️ تم التحقق مباشرة من السيرفر · توقيت الرياض (Asia/Riyadh)
+          تم التحقق مباشرة من السيرفر · توقيت الرياض (Asia/Riyadh)
         </div>
 
         <a id="whatsappBtn" href="https://wa.me/966580700242" target="_blank" rel="noopener noreferrer" class="btn-action btn-whatsapp">
-          حجز موعد غسيل بالخصم عبر الواتساب 💬
+          حجز موعد غسيل بالخصم عبر الواتساب
         </a>
 
-        <a id="adminPortalBtn" href="/admin" class="btn-action btn-admin-verify">
-          دخول موظف Go Wash لاسترداد الجائزة ⚙️
+        <a id="adminPortalBtn" href="https://gowash-production.up.railway.app/admin" class="btn-action btn-admin-verify">
+          دخول موظف Go Wash لاسترداد الجائزة
         </a>
       </div>
 
       <div id="errorView" style="display: none;">
-        <div style="font-size: 3.2rem; margin-bottom: 14px;">❌</div>
-        <h2 style="font-size: 1.35rem; margin-bottom: 8px; color: #F87171; font-weight: 900;" id="errorTitle">رمز التحقق غير صالح</h2>
+        <div style="font-size: 3rem; margin-bottom: 14px;">⚠️</div>
+        <h2 style="font-size: 1.35rem; margin-bottom: 8px; color: #DC2626; font-weight: 900;" id="errorTitle">رمز التحقق غير صالح</h2>
         <p style="color: var(--text-muted); font-size: 0.94rem; margin-bottom: 24px;" id="errorDesc">
           لم يتم العثور على أي جائزة مرتبطة بهذا الرمز.
         </p>
-        <a href="/" class="btn-action btn-admin-verify">العودة إلى الصفحة الرئيسية</a>
+        <a href="./" class="btn-action btn-admin-verify">العودة إلى الصفحة الرئيسية</a>
       </div>
     </main>
   </div>
@@ -269,7 +275,7 @@
     document.addEventListener("DOMContentLoaded", async () => {
       const pathParts = window.location.pathname.split('/');
       let token = pathParts[pathParts.length - 1];
-      if (!token || token === 'verify') {
+      if (!token || token === 'verify' || token === 'verify.html') {
         const urlParams = new URLSearchParams(window.location.search);
         token = urlParams.get('token') || urlParams.get('code') || '';
       }

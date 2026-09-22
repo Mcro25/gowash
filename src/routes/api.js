@@ -3,10 +3,10 @@ const router = express.Router();
 const QRCode = require('qrcode');
 const db = require('../db');
 const config = require('../config');
-const { executeSpin, checkPrizeByPhone, getMyResult, recordConsent } = require('../services/spinService');
+const { executeSpin, checkPrizeByPhone, getMyResult, recordConsent, handleParticipantEntry, parseSaudiPhone } = require('../services/spinService');
 const { verifyPromo } = require('../services/promoService');
 const { logSecurityEvent } = require('../services/auditService');
-const { hashIp, spinRateLimiter, consentRateLimiter, redeemRateLimiter } = require('../middleware/rateLimiter');
+const { hashIp, spinRateLimiter, consentRateLimiter, redeemRateLimiter, entryRateLimiter } = require('../middleware/rateLimiter');
 
 // GET /api/campaign - Public campaign metadata & visual sector layout
 router.get('/campaign', async (req, res) => {
@@ -84,6 +84,64 @@ router.get('/campaign', async (req, res) => {
     console.error('Error fetching campaign metadata:', err);
     res.status(500).json({ success: false, error: 'حدث خطأ أثناء تحميل بيانات الفعالية.' });
   }
+});
+
+// POST /api/participant/entry & /api/participant - Event Entry Screen upfront registration & duplicate check
+router.post(['/participant/entry', '/participant'], entryRateLimiter(25, 60000), async (req, res) => {
+  try {
+    const participantId = req.participantId;
+    if (!participantId) {
+      return res.status(400).json({ success: false, error: 'تعذر التحقق من معرف الجلسة. يرجى تحديث الصفحة.' });
+    }
+
+    const { name, phone } = req.body || {};
+    const result = await handleParticipantEntry({
+      participantId,
+      name,
+      phone,
+      ip: req.ip || req.connection?.remoteAddress,
+      userAgent: req.get('User-Agent') || ''
+    });
+
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+
+    res.json(result);
+  } catch (err) {
+    console.error('Participant entry error:', err);
+    res.status(500).json({ success: false, error: 'حدث خطأ غير متوقع أثناء تسجيل الدخول.' });
+  }
+});
+
+// POST /api/participant/send-otp (Optional OTP capability)
+router.post('/participant/send-otp', entryRateLimiter(5, 60000), async (req, res) => {
+  if (!config.ENABLE_OTP) {
+    return res.status(404).json({ success: false, error: 'خدمة التحقق عبر الرسائل النصية غير مفعلة حالياً.' });
+  }
+  const { phone } = req.body || {};
+  const parsed = parseSaudiPhone(phone);
+  if (!parsed) {
+    return res.status(400).json({ success: false, error: 'رقم الجوال غير صحيح.' });
+  }
+  const otpCode = String(Math.floor(1000 + Math.random() * 9000));
+  const expiresAt = new Date(Date.now() + 5 * 60000).toISOString();
+  await db.run('UPDATE participants SET otp_code = ?, otp_expires_at = ? WHERE id = ?', [otpCode, expiresAt, req.participantId]);
+  res.json({ success: true, message: 'تم إرسال رمز التحقق إلى جوالك.' });
+});
+
+// POST /api/participant/verify-otp (Optional OTP verification)
+router.post('/participant/verify-otp', entryRateLimiter(10, 60000), async (req, res) => {
+  if (!config.ENABLE_OTP) {
+    return res.status(404).json({ success: false, error: 'خدمة التحقق غير مفعلة.' });
+  }
+  const { otp } = req.body || {};
+  const row = await db.get('SELECT otp_code, otp_expires_at FROM participants WHERE id = ?', [req.participantId]);
+  if (!row || row.otp_code !== otp || new Date(row.otp_expires_at) < new Date()) {
+    return res.status(400).json({ success: false, error: 'رمز التحقق غير صحيح أو انتهت صلاحيته.' });
+  }
+  await db.run('UPDATE participants SET otp_verified = 1, otp_code = NULL WHERE id = ?', [req.participantId]);
+  res.json({ success: true, message: 'تم التحقق بنجاح.' });
 });
 
 // POST /api/consent & POST /api/campaign/consent - Record participant terms agreement before spin

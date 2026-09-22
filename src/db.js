@@ -267,7 +267,13 @@ async function initSchema() {
         id VARCHAR(64) PRIMARY KEY,
         name VARCHAR(128),
         phone VARCHAR(32),
+        normalized_phone VARCHAR(32),
+        campaign_id VARCHAR(64) NOT NULL DEFAULT 'national_day_96',
         first_seen_at VARCHAR(64) NOT NULL,
+        last_seen_at VARCHAR(64),
+        otp_code VARCHAR(16),
+        otp_expires_at VARCHAR(64),
+        otp_verified INTEGER NOT NULL DEFAULT 0,
         ip_hash VARCHAR(64),
         user_agent TEXT
       );
@@ -385,6 +391,22 @@ async function initSchema() {
       console.warn('[PostgreSQL Migration Warning]', e.message);
     }
 
+    // Ensure participants columns exist in existing PostgreSQL table
+    try {
+      await db.exec(`
+        ALTER TABLE participants ADD COLUMN IF NOT EXISTS normalized_phone VARCHAR(32);
+        ALTER TABLE participants ADD COLUMN IF NOT EXISTS campaign_id VARCHAR(64) DEFAULT 'national_day_96';
+        ALTER TABLE participants ADD COLUMN IF NOT EXISTS last_seen_at VARCHAR(64);
+        ALTER TABLE participants ADD COLUMN IF NOT EXISTS otp_code VARCHAR(16);
+        ALTER TABLE participants ADD COLUMN IF NOT EXISTS otp_expires_at VARCHAR(64);
+        ALTER TABLE participants ADD COLUMN IF NOT EXISTS otp_verified INTEGER DEFAULT 0;
+        CREATE INDEX IF NOT EXISTS idx_participants_norm_phone ON participants(normalized_phone);
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_participants_campaign_phone ON participants(campaign_id, normalized_phone);
+      `);
+    } catch (e) {
+      console.warn('[PostgreSQL Participants Migration Warning]', e.message);
+    }
+
     // Seed defaults for PostgreSQL
     const campaign = await db.get('SELECT id FROM campaign_settings WHERE id = 1');
     if (!campaign) {
@@ -444,7 +466,13 @@ async function initSchema() {
         id TEXT PRIMARY KEY,
         name TEXT,
         phone TEXT,
+        normalized_phone TEXT,
+        campaign_id TEXT NOT NULL DEFAULT 'national_day_96',
         first_seen_at TEXT NOT NULL,
+        last_seen_at TEXT,
+        otp_code TEXT,
+        otp_expires_at TEXT,
+        otp_verified INTEGER NOT NULL DEFAULT 0,
         ip_hash TEXT,
         user_agent TEXT
       );
@@ -575,6 +603,34 @@ async function initSchema() {
       }
     } catch (e) {
       console.warn('[SQLite Migration Warning]', e.message);
+    }
+
+    // Ensure participants columns exist in existing SQLite table
+    try {
+      const partInfo = sqliteDb.prepare("PRAGMA table_info(participants)").all();
+      const colNames = partInfo.map(c => c.name);
+      if (!colNames.includes('normalized_phone')) {
+        sqliteDb.exec("ALTER TABLE participants ADD COLUMN normalized_phone TEXT;");
+      }
+      if (!colNames.includes('campaign_id')) {
+        sqliteDb.exec("ALTER TABLE participants ADD COLUMN campaign_id TEXT DEFAULT 'national_day_96';");
+      }
+      if (!colNames.includes('last_seen_at')) {
+        sqliteDb.exec("ALTER TABLE participants ADD COLUMN last_seen_at TEXT;");
+      }
+      if (!colNames.includes('otp_code')) {
+        sqliteDb.exec("ALTER TABLE participants ADD COLUMN otp_code TEXT;");
+      }
+      if (!colNames.includes('otp_expires_at')) {
+        sqliteDb.exec("ALTER TABLE participants ADD COLUMN otp_expires_at TEXT;");
+      }
+      if (!colNames.includes('otp_verified')) {
+        sqliteDb.exec("ALTER TABLE participants ADD COLUMN otp_verified INTEGER DEFAULT 0;");
+      }
+      sqliteDb.exec("CREATE INDEX IF NOT EXISTS idx_participants_norm_phone ON participants(normalized_phone);");
+      sqliteDb.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_participants_campaign_phone ON participants(campaign_id, normalized_phone);");
+    } catch (e) {
+      console.warn('[SQLite Participants Migration Warning]', e.message);
     }
 
     // Seed default campaign settings if empty

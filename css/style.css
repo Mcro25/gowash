@@ -1,72 +1,69 @@
 /* ==========================================================================
-   Go Wash — Saudi National Day 96 Campaign
-   Art Direction: Go Wash Brand Identity × Saudi National Day 96
-   Style: Contemporary Saudi Automotive Campaign • Precision • Editorial
+   Go Wash — Saudi National Day 96 Event Experience
+   Art Direction: Premium Automotive Campaign × Contemporary Saudi Campaign
+   Zero AI Look · No Template Cards · Pure Editorial Typography & Composition
    ========================================================================== */
 
 :root {
   /* ------------------------------------------------------------------------
-     1. Brand Color Hierarchy
-     Hero: Go Wash Blue | Breathable: White | Accent: Orange | Secondary: Saudi Green
+     1. Strict Brand Palette
+     Go Wash Blue (Anchor) -> White (Space) -> Orange (Highlight) -> Saudi Green (Accent)
      ------------------------------------------------------------------------ */
-  --gw-blue-primary: #0066CC;
-  --gw-blue-deep: #004080;
-  --gw-blue-navy: #0A1E3F;
-  --gw-blue-vibrant: #0080FF;
-  --gw-blue-electric: #00B4D8;
-  --gw-blue-ice: #F0F7FF;
-  --gw-blue-subtle: #EBF4FF;
-  --gw-blue-tint: rgba(0, 102, 204, 0.06);
+  --c-navy-black: #050B14;
+  --c-navy-dark: #0A1424;
+  --c-navy-surface: #0F1D33;
+  --c-navy-border: rgba(255, 255, 255, 0.12);
+  --c-navy-hover: #172B4C;
 
-  /* Breathable White Space & Surfaces */
-  --gw-white: #FFFFFF;
-  --gw-bg: #F8FAFC;
-  --gw-surface: #FFFFFF;
-  --gw-surface-elevated: #FFFFFF;
-  --gw-surface-card: #FFFFFF;
-  
-  /* Orange Accent (Action, Pointer, Spin CTA, Focus) */
-  --gw-orange-primary: #FF6600;
-  --gw-orange-bright: #FF7A00;
-  --gw-orange-hover: #E65500;
-  --gw-orange-subtle: #FFF4ED;
-  --gw-orange-glow: rgba(255, 102, 0, 0.25);
+  --c-blue-brand: #0066FF;
+  --c-blue-deep: #0047AB;
+  --c-blue-tint: #EBF3FF;
 
-  /* Saudi Green (Subtle, Intentional, Seasonal Secondary Accent ONLY) */
-  --nd-green-royal: #0D5C3A;
-  --nd-green-bright: #059669;
-  --nd-green-emerald: #10B981;
-  --nd-green-badge-bg: #ECFDF5;
-  --nd-green-border: rgba(13, 92, 58, 0.25);
+  --c-orange-brand: #FF5500;
+  --c-orange-hover: #E04800;
+  --c-orange-tint: rgba(255, 85, 0, 0.12);
 
-  /* Typography & Neutrals */
-  --text-primary: #0A192F;
-  --text-secondary: #334155;
-  --text-muted: #64748B;
-  --text-light: #94A3B8;
+  --c-saudi-green: #006C35;
+  --c-saudi-green-accent: #059669;
+  --c-saudi-green-tint: rgba(0, 108, 53, 0.12);
 
-  /* Borders & Dividers */
-  --border-subtle: #E2E8F0;
-  --border-medium: #CBD5E1;
-  --border-blue: rgba(0, 102, 204, 0.22);
+  --c-white: #FFFFFF;
+  --c-offwhite: #F8FAFC;
+  --c-slate-100: #F1F5F9;
+  --c-slate-200: #E2E8F0;
+  --c-slate-400: #94A3B8;
+  --c-slate-700: #334155;
+  --c-slate-900: #0F172A;
 
-  /* Radii */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
-  --radius-full: 9999px;
+  /* ------------------------------------------------------------------------
+     2. Spacing Scale: 8, 12, 16, 24, 32, 48, 64, 80
+     ------------------------------------------------------------------------ */
+  --s-8: 8px;
+  --s-12: 12px;
+  --s-16: 16px;
+  --s-24: 24px;
+  --s-32: 32px;
+  --s-48: 48px;
+  --s-64: 64px;
+  --s-80: 80px;
 
-  /* Soft Optical Diffused Shadows (Automotive Precision, No Neon) */
-  --shadow-xs: 0 1px 3px rgba(0, 40, 90, 0.05);
-  --shadow-sm: 0 4px 12px rgba(0, 40, 90, 0.06);
-  --shadow-md: 0 10px 28px -4px rgba(0, 40, 90, 0.09);
-  --shadow-lg: 0 20px 48px -8px rgba(0, 40, 90, 0.12);
-  --shadow-cta: 0 10px 26px -3px rgba(255, 102, 0, 0.4);
+  /* ------------------------------------------------------------------------
+     3. Structured Geometry (No Endless Pill Rounding)
+     ------------------------------------------------------------------------ */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+
+  /* ------------------------------------------------------------------------
+     4. Subtle Natural Shadows
+     ------------------------------------------------------------------------ */
+  --sh-subtle: 0 1px 3px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+  --sh-elevated: 0 12px 36px rgba(0, 0, 0, 0.35);
 }
 
-/* Reset & Ergonomics */
+/* --------------------------------------------------------------------------
+   Reset & Baseline
+   -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -82,114 +79,88 @@ html {
 
 body.event-body {
   font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--gw-bg);
-  color: var(--text-primary);
+  background-color: var(--c-navy-black);
+  color: var(--c-white);
   line-height: 1.5;
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   overflow-x: hidden;
-  text-align: center;
+  text-align: right;
+  direction: rtl;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* --------------------------------------------------------------------------
-   Dynamic Event Background: Architectural 96 Watermark + Aero Streamlines
-   Fresh, Breathable, High-Key Editorial Canvas
+   Editorial Background Architecture
+   Deep Navy Lacquer + Technical Line Grid + Cropped 96 Watermark
    -------------------------------------------------------------------------- */
-.event-bg {
+.campaign-backdrop {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background: 
-    radial-gradient(circle at 50% 0%, rgba(0, 102, 204, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 10% 20%, rgba(0, 180, 216, 0.05) 0%, transparent 45%),
-    radial-gradient(circle at 90% 40%, rgba(255, 102, 0, 0.03) 0%, transparent 50%),
-    linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+    radial-gradient(ellipse at 50% -8%, #006C35 0%, #013D1D 40%, #03080F 85%);
   overflow: hidden;
 }
 
-/* Signature Architectural 96: Sculptural Display Watermark */
-.bg-watermark-96 {
-  position: absolute;
-  top: 1%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(22rem, 60vw, 44rem);
-  font-weight: 900;
-  line-height: 0.85;
-  color: rgba(0, 102, 204, 0.032);
-  user-select: none;
-  letter-spacing: -0.06em;
-  font-family: 'Cairo', sans-serif;
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Subtle Automotive Wind-Tunnel & Water Streamlines */
-.bg-aero-lines {
+.editorial-line-grid {
   position: absolute;
   inset: 0;
   background-image: 
-    radial-gradient(ellipse 800px 350px at 50% 180px, rgba(0, 102, 204, 0.03) 0%, transparent 70%),
-    repeating-linear-gradient(90deg, transparent, transparent 120px, rgba(0, 102, 204, 0.015) 120px, rgba(0, 102, 204, 0.015) 121px);
-  z-index: 2;
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* 96 AS AN EDITORIAL ART ELEMENT: BOLD, UNMISTAKABLE, AND PROUD */
+.oversized-96 {
+  position: absolute;
+  top: 15px;
+  left: -20px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(230px, 50vw, 480px);
+  line-height: 0.75;
+  letter-spacing: -0.06em;
+  color: rgba(0, 108, 53, 0.15);
+  -webkit-text-stroke: 3px rgba(16, 185, 129, 0.45);
+  filter: drop-shadow(0 0 50px rgba(0, 108, 53, 0.6));
+  user-select: none;
   pointer-events: none;
 }
 
-.bg-sheen {
-  position: absolute;
-  top: -10%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120vw;
-  height: 50vh;
-  background: radial-gradient(ellipse at center, rgba(0, 128, 255, 0.06) 0%, transparent 70%);
-  z-index: 2;
-  filter: blur(50px);
-}
-
 /* --------------------------------------------------------------------------
-   Floating Audio Toggle (Precision Tactile Icon)
+   Tactile Sound Toggle (Clean & Unobtrusive)
    -------------------------------------------------------------------------- */
-.floating-sound-btn {
+.sound-toggle-btn {
   position: fixed;
-  top: 16px;
-  left: 16px;
-  z-index: 95;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--border-subtle);
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: var(--text-secondary);
+  top: var(--s-16);
+  left: var(--s-16);
+  z-index: 90;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--c-navy-border);
+  background: var(--c-navy-surface);
+  color: var(--c-white);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.floating-sound-btn:hover {
-  background: #FFFFFF;
-  border-color: var(--gw-blue-primary);
-  color: var(--gw-blue-primary);
-  box-shadow: var(--shadow-md);
-  transform: scale(1.06);
+.sound-toggle-btn:hover {
+  background: var(--c-navy-hover);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
-.floating-sound-btn:active {
-  transform: scale(0.95);
-}
-
-.floating-sound-btn.is-muted {
-  opacity: 0.5;
-  border-color: var(--border-subtle);
+.sound-toggle-btn.is-muted {
+  opacity: 0.4;
 }
 
 /* --------------------------------------------------------------------------
@@ -199,1412 +170,1340 @@ body.event-body {
   position: relative;
   z-index: 80;
   background: #DC2626;
-  color: #FFF;
-  padding: 11px 18px;
-  font-weight: 800;
-  font-size: 0.92rem;
+  color: #FFFFFF;
+  padding: var(--s-12) var(--s-16);
+  font-weight: 700;
+  font-size: 0.88rem;
   text-align: center;
-  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25);
 }
 
 .campaign-alert-bar.paused {
   background: #D97706;
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
 }
 
 /* --------------------------------------------------------------------------
-   Main Event Wrapper (Breathable Editorial Layout)
+   Main Campaign Stage
    -------------------------------------------------------------------------- */
-.event-wrapper {
+.campaign-stage {
   position: relative;
   z-index: 10;
-  max-width: 540px;
+  width: 100%;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 24px 18px 48px 18px;
+  padding: 0 var(--s-16) var(--s-48);
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* --------------------------------------------------------------------------
-   1. Editorial Campaign Hero
+   Top Masthead: Clean Go Wash Brand + Saudi National Day Emblem
    -------------------------------------------------------------------------- */
-.event-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 16px;
+.campaign-masthead {
   width: 100%;
-}
-
-.event-brand-mark {
-  width: 160px;
-  margin-bottom: 14px;
+  padding: var(--s-20) 0 var(--s-16);
   display: flex;
-  justify-content: center;
-  transition: transform 0.25s ease;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--c-navy-border);
+  margin-bottom: var(--s-24);
 }
 
-.event-brand-mark:hover {
+.masthead-brand {
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(0 4px 14px rgba(0, 102, 255, 0.45));
+  transition: transform 0.2s ease;
+}
+
+.masthead-brand:hover {
   transform: scale(1.02);
 }
 
 .brand-svg {
-  width: 100%;
+  width: clamp(140px, 36vw, 175px);
   height: auto;
-  filter: drop-shadow(0 4px 12px rgba(0, 102, 204, 0.12));
+  display: block;
 }
 
-/* Unified Campaign Signature Pill: Go Wash Blue × 96 × Saudi Green Detail */
-.campaign-signature-pill {
+/* Saudi National Day 96 Emblem Badge: BOLD, PROUD, AND UNMISTAKABLE */
+.national-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: var(--gw-white);
-  border: 1px solid rgba(0, 102, 204, 0.2);
-  padding: 5px 16px;
-  border-radius: var(--radius-full);
-  margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0, 40, 90, 0.05);
+  gap: var(--s-8);
+  background: linear-gradient(135deg, rgba(0, 108, 53, 0.6) 0%, rgba(4, 34, 20, 0.9) 100%);
+  border: 2px solid #D4AF37;
+  box-shadow: 0 4px 20px rgba(0, 108, 53, 0.5), 0 0 12px rgba(212, 175, 55, 0.4);
+  padding: 8px var(--s-16);
+  border-radius: 999px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.pill-badge-96 {
+.national-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(0, 108, 53, 0.65), 0 0 18px rgba(212, 175, 55, 0.6);
+}
+
+.saudi-emblem-svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.national-text {
+  font-size: 0.92rem;
   font-weight: 900;
-  font-size: 1.05rem;
-  color: var(--gw-blue-primary);
-  letter-spacing: 0.5px;
-  line-height: 1;
-}
-
-.pill-divider {
-  color: var(--border-medium);
-  font-size: 0.85rem;
-}
-
-.pill-title {
-  font-weight: 800;
-  font-size: 0.84rem;
-  color: var(--text-secondary);
-  letter-spacing: 0.2px;
-}
-
-.pill-green-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: var(--nd-green-royal);
-  display: inline-block;
-  box-shadow: 0 0 0 2px rgba(13, 92, 58, 0.15);
-}
-
-.event-headline {
-  font-size: clamp(2.4rem, 8vw, 2.95rem);
-  font-weight: 900;
-  letter-spacing: -0.6px;
-  line-height: 1.15;
-  margin-bottom: 6px;
-  color: var(--gw-blue-navy);
-}
-
-.event-subheadline {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  max-width: 380px;
-  line-height: 1.45;
+  color: var(--c-white);
+  letter-spacing: 0.03em;
 }
 
 /* --------------------------------------------------------------------------
-   2. Automotive Precision Wheel Arena
+   Screen Views Architecture (Fade in)
    -------------------------------------------------------------------------- */
-.wheel-arena {
+.screen-view {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  margin-top: 10px;
+  animation: viewFadeIn 0.3s ease-out;
 }
 
-.wheel-stage-container {
-  position: relative;
-  width: min(92vw, 410px);
-  height: min(92vw, 410px);
+@keyframes viewFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------------------------------------------
+   1. Event Entry View — NO CARDS. Pure, clean, editorial form.
+   -------------------------------------------------------------------------- */
+.entry-view {
+  padding-top: var(--s-8);
+}
+
+.entry-lead-block {
+  text-align: center;
+  margin-bottom: var(--s-24);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Authentic Saudi Slogan Tag: Bold Emerald Green with Gold Border */
+.saudi-motto-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  background: linear-gradient(90deg, #006C35 0%, #004D25 100%);
+  border: 1.5px solid #D4AF37;
+  box-shadow: 0 4px 16px rgba(0, 108, 53, 0.4), 0 0 10px rgba(212, 175, 55, 0.3);
+  padding: 6px 20px;
+  border-radius: 999px;
+  margin-bottom: var(--s-16);
+  letter-spacing: 0.03em;
+}
+
+.motto-flag {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.campaign-kicker {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--c-orange-brand);
+  letter-spacing: 0.06em;
+  margin-bottom: var(--s-8);
+}
+
+.campaign-hero-title {
+  font-size: clamp(2.1rem, 7vw, 2.75rem);
+  font-weight: 900;
+  color: var(--c-white);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--s-8);
+  text-align: center;
+}
+
+.campaign-hero-subtitle {
+  font-size: 0.92rem;
+  color: var(--c-slate-400);
+  line-height: 1.45;
+  max-width: 340px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Saudi National Day 96 Divider & Trust Elements
+   -------------------------------------------------------------------------- */
+.national-divider {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 260px;
+  margin: var(--s-16) auto var(--s-20);
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent);
+}
+
+.divider-emblem {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--c-saudi-gold);
+  letter-spacing: 0.15em;
+  user-select: none;
+}
+
+/* Form Wrap: Centered, Symmetrical, Editorial Architecture */
+.entry-form-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.entry-direct-form {
+  width: 100%;
+  max-width: 360px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-16);
+  align-items: center;
 }
 
-/* Automotive Gauge Pointer */
-.wheel-pointer {
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 40;
-  filter: drop-shadow(0 6px 14px rgba(0, 40, 90, 0.25));
-  transition: transform 0.08s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-origin: 50% 12px;
+.input-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-8);
 }
 
-.wheel-pointer.is-ticking {
-  transform: translateX(-50%) rotate(-12deg) scale(1.08);
+.input-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  text-align: center;
 }
 
-/* Precision Dial Tick Ring (Automotive Micro-Graduations) */
-.wheel-led-ring {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 20;
+.campaign-input {
+  width: 100%;
+  height: 56px;
+  background: #081322;
+  border: 2px solid rgba(16, 185, 129, 0.4);
+  border-radius: var(--r-sm);
+  padding: 0 var(--s-16);
+  font-family: inherit;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--c-white);
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  direction: rtl;
+  text-align: center;
 }
 
-.led-dot {
-  position: absolute;
-  border-radius: 50%;
-  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+.campaign-input::placeholder {
+  color: #64748B;
+  font-weight: 500;
+  text-align: center;
 }
 
-/* Canvas Wrapper with Precision Concentric Gauge Bezel */
-.canvas-wrapper {
-  position: relative;
+.campaign-input:focus {
+  border-color: #0066FF;
+  background: rgba(0, 102, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.3), 0 0 24px rgba(16, 185, 129, 0.4);
+}
+
+.campaign-input.is-invalid {
+  border-color: #EF4444;
+}
+
+/* Phone input: Centered with prominent Saudi flag prefix */
+.phone-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #081322;
+  border: 2px solid rgba(16, 185, 129, 0.4);
+  border-radius: var(--r-sm);
+  height: 56px;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.phone-row:focus-within {
+  border-color: #0066FF;
+  background: rgba(0, 102, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.3), 0 0 24px rgba(16, 185, 129, 0.4);
+}
+
+.phone-row.is-invalid {
+  border-color: #EF4444;
+}
+
+.phone-affix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--s-16);
+  background: linear-gradient(135deg, #006C35 0%, #004D25 100%);
+  border-right: 2px solid #D4AF37;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  user-select: none;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.phone-field {
+  flex: 1;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  box-shadow: 
-    0 0 0 2px rgba(0, 102, 204, 0.18),
-    0 0 0 7px #FFFFFF,
-    0 0 0 9px rgba(0, 102, 204, 0.08),
-    0 18px 45px rgba(0, 40, 90, 0.14),
-    inset 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: none !important;
+  background: transparent !important;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.12em;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.phone-field::placeholder {
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.input-err {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #EF4444;
+  min-height: 18px;
+  text-align: center;
+}
+
+/* Primary Action Button: BOLD, POWERFUL, GO WASH COBALT WITH SAUDI GOLD BASE */
+.btn-primary-action {
+  width: 100%;
+  height: 58px;
+  background: linear-gradient(135deg, #0066FF 0%, #0047AB 100%);
+  color: var(--c-white);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 4px solid #D4AF37;
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 1.18rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFFFFF;
-  overflow: hidden;
+  gap: 8px;
+  box-shadow: 0 8px 30px rgba(0, 102, 255, 0.5);
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  margin-top: var(--s-8);
+}
+
+.btn-primary-action:hover {
+  background: linear-gradient(135deg, #0284C7 0%, #0052CC 100%);
+  box-shadow: 0 10px 36px rgba(0, 102, 255, 0.65), 0 0 18px rgba(212, 175, 55, 0.5);
+}
+
+.btn-primary-action:active {
+  transform: scale(0.99);
+}
+
+.btn-primary-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.entry-hint {
+  font-size: 0.76rem;
+  color: var(--c-slate-400);
+  text-align: center;
+  margin-top: var(--s-12);
+}
+
+/* Existing Participant State (Polite, No Error) */
+.existing-state-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--s-12);
+  padding: var(--s-24) 0;
+}
+
+.existing-greeting {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--c-white);
+}
+
+.existing-sub {
+  font-size: 0.95rem;
+  color: var(--c-slate-400);
+  line-height: 1.5;
+  margin-bottom: var(--s-8);
+}
+
+/* Transition State */
+.transition-state-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--s-16);
+  padding: var(--s-32) 0;
+}
+
+.transition-indicator {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.12);
+  border-top-color: var(--c-blue-brand);
+  border-radius: 50%;
+  animation: rotateSpinner 0.75s linear infinite;
+}
+
+@keyframes rotateSpinner {
+  to { transform: rotate(360deg); }
+}
+
+.transition-text {
+  font-size: 0.95rem;
+  color: var(--c-slate-200);
+}
+
+/* --------------------------------------------------------------------------
+   2. Spin Screen (Wheel as Mittelpunkt / Centerpiece)
+   -------------------------------------------------------------------------- */
+.spin-view {
+  padding-top: var(--s-8);
+}
+
+.spin-intro {
+  text-align: center;
+  margin-bottom: var(--s-24);
+}
+
+.spin-headline {
+  font-size: clamp(1.75rem, 5.5vw, 2.2rem);
+  font-weight: 900;
+  color: var(--c-white);
+  line-height: 1.2;
+  margin-bottom: var(--s-4);
+}
+
+.spin-subline {
+  font-size: 0.9rem;
+  color: var(--c-slate-400);
+}
+
+/* Wheel Stage Wrap */
+.wheel-stage-wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wheel-canvas-container {
+  position: relative;
+  width: min(350px, 86vw);
+  height: min(350px, 86vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #wheelCanvas {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   display: block;
+  border-radius: 50%;
 }
 
-/* Wheel Center Cap (Automotive Hub with GW × 96) */
-.wheel-center-cap {
+/* Center Cap: BOLD SAUDI EMERALD & GOLD MEDALLION */
+.wheel-hub-cap {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 86px;
-  height: 86px;
+  width: 74px;
+  height: 74px;
+  background: #04090E;
+  border: 3px solid #006C35;
+  box-shadow: 0 0 0 3px #D4AF37, 0 8px 24px rgba(0, 0, 0, 0.85);
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #0A1E3F 0%, #061325 100%);
-  border: 3px solid #FFFFFF;
-  box-shadow: 
-    0 0 0 2px rgba(0, 102, 204, 0.3),
-    0 8px 20px rgba(0, 30, 70, 0.35),
-    inset 0 1px 3px rgba(255, 255, 255, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 30;
   pointer-events: none;
+  z-index: 5;
 }
 
-.cap-brand {
-  font-size: 0.65rem;
+.hub-brand {
+  font-size: 0.62rem;
   font-weight: 900;
-  letter-spacing: 1.2px;
-  color: #FFFFFF;
+  color: #38BDF8;
+  letter-spacing: 0.08em;
   line-height: 1;
 }
 
-.cap-year {
+.hub-number {
   font-size: 1.25rem;
   font-weight: 900;
-  color: var(--gw-orange-bright);
-  line-height: 1.1;
-  margin-top: 1px;
+  color: #FFFFFF;
+  line-height: 1;
+  margin-top: 2px;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
 }
 
-/* --------------------------------------------------------------------------
-   Spin CTA & Action Area (Hero Action)
-   -------------------------------------------------------------------------- */
-.wheel-action-area {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 24px;
+/* Mechanical Gauge Pointer (Top Center) */
+.wheel-pointer-assembly {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
+  transition: transform 0.07s ease;
 }
 
-.btn-spin-hero {
-  position: relative;
+.wheel-pointer-assembly.is-ticking {
+  transform: translateX(-50%) rotate(-7deg);
+}
+
+/* Perimeter Dial Ticks */
+.wheel-bezel-ticks {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(366px, 90vw);
+  height: min(366px, 90vw);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Spin Controls Zone */
+.wheel-action-zone {
   width: 100%;
   max-width: 350px;
-  padding: 16px 28px;
-  background: linear-gradient(135deg, #FF7A00 0%, #FF6600 50%, #E04800 100%);
-  color: #FFFFFF;
-  border: none;
-  border-radius: var(--radius-full);
-  font-family: inherit;
-  font-size: 1.35rem;
-  font-weight: 900;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  box-shadow: 
-    var(--shadow-cta),
-    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  overflow: hidden;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, filter 0.2s ease;
-}
-
-/* Subtle Automotive Light Sweep */
-.btn-spin-hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transform: skewX(-25deg);
-  animation: btnSweep 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes btnSweep {
-  0% { left: -120%; }
-  30%, 100% { left: 160%; }
-}
-
-.btn-spin-hero:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 14px 34px -3px rgba(255, 102, 0, 0.55);
-}
-
-.btn-spin-hero:active:not(:disabled) {
-  transform: translateY(1px) scale(0.98);
-}
-
-.btn-spin-hero:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-  filter: grayscale(0.2);
-  box-shadow: none;
-}
-
-.btn-spin-arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
-}
-
-.btn-spin-hero:hover:not(:disabled) .btn-spin-arrow {
-  transform: rotate(25deg);
-}
-
-.spin-sub-notice {
-  margin-top: 14px;
-  font-size: 0.86rem;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.notice-dot {
-  opacity: 0.5;
-}
-
-.btn-recover-link {
-  background: none;
-  border: none;
-  color: var(--gw-blue-primary);
-  font-family: inherit;
-  font-size: 0.86rem;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  cursor: pointer;
-  padding: 0;
-  transition: color 0.2s ease;
-}
-
-.btn-recover-link:hover {
-  color: var(--gw-blue-deep);
-}
-
-.spin-status-banner {
-  margin-top: 12px;
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  min-height: 24px;
-  transition: all 0.2s ease;
-}
-
-.spin-status-banner.error {
-  color: #DC2626;
-}
-
-/* --------------------------------------------------------------------------
-   3. Campaign VIP Ticket (Returning Winner & Persistent Voucher)
-   Designed as an Elite Campaign Pass
-   -------------------------------------------------------------------------- */
-.winner-ticket-section {
-  width: 100%;
-  margin-top: 16px;
-  animation: fadeInTicket 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeInTicket {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.vip-ticket {
-  background: var(--gw-white);
-  border: 1px solid var(--border-subtle);
-  border-top: 4px solid var(--gw-blue-primary);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: 26px 22px;
-  position: relative;
-  overflow: hidden;
-  text-align: right;
-}
-
-/* Watermark 96 inside ticket */
-.ticket-watermark-96 {
-  position: absolute;
-  bottom: -30px;
-  left: -15px;
-  font-size: 9.5rem;
-  font-weight: 900;
-  color: rgba(0, 102, 204, 0.03);
-  pointer-events: none;
-  line-height: 1;
-  font-family: 'Cairo', sans-serif;
-}
-
-.ticket-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px dashed var(--border-subtle);
-  padding-bottom: 14px;
-  margin-bottom: 18px;
-}
-
-.ticket-badge-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.ticket-badge {
-  font-size: 0.86rem;
-  font-weight: 800;
-  color: var(--gw-blue-primary);
-}
-
-.ticket-saudi-cue {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--nd-green-royal);
-  display: inline-block;
-}
-
-.ticket-status-live {
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: var(--nd-green-royal);
-  background: var(--nd-green-badge-bg);
-  border: 1px solid var(--nd-green-border);
-  padding: 3px 12px;
-  border-radius: var(--radius-full);
-}
-
-.ticket-status-live.redeemed {
-  color: #1E40AF;
-  background: #EFF6FF;
-  border-color: #BFDBFE;
-}
-
-.ticket-status-live.expired {
-  color: #475569;
-  background: #F1F5F9;
-  border-color: #CBD5E1;
-}
-
-.ticket-status-live.cancelled {
-  color: #991B1B;
-  background: #FEF2F2;
-  border-color: #FECACA;
-}
-
-.ticket-kicker {
-  font-size: 0.86rem;
-  color: var(--text-muted);
-  font-weight: 700;
-}
-
-.ticket-prize-name {
-  font-size: clamp(2rem, 6.5vw, 2.6rem);
-  font-weight: 900;
-  color: var(--gw-blue-navy);
-  line-height: 1.2;
-  margin: 4px 0;
-}
-
-.ticket-prize-sub {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 18px;
-}
-
-/* Campaign Promo Code Box */
-.ticket-code-card {
-  background: var(--gw-blue-ice);
-  border: 1.5px dashed rgba(0, 102, 204, 0.35);
-  border-radius: var(--radius-md);
-  padding: 14px 16px;
-  margin-bottom: 20px;
-}
-
-.code-label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 1.2px;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-
-.code-value-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.code-value {
-  font-family: 'SF Mono', 'Courier New', monospace;
-  font-size: 1.45rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: var(--gw-blue-primary);
-  user-select: all;
-}
-
-.btn-ticket-copy {
-  background: var(--gw-white);
-  border: 1px solid var(--border-medium);
-  color: var(--text-primary);
-  border-radius: var(--radius-sm);
-  padding: 9px 16px;
-  font-family: inherit;
-  font-size: 0.88rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  box-shadow: var(--shadow-xs);
-}
-
-.btn-ticket-copy:hover {
-  background: var(--gw-blue-primary);
-  border-color: var(--gw-blue-primary);
-  color: #FFFFFF;
-}
-
-.ticket-actions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  margin-top: var(--s-24);
+  gap: var(--s-12);
 }
 
-/* WhatsApp Booking CTA */
-.btn-whatsapp-ticket,
-.btn-celebrate-whatsapp {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: #25D366;
-  color: #FFFFFF;
-  text-decoration: none;
+.btn-spin-action {
+  width: 100%;
+  height: 58px;
+  background: linear-gradient(135deg, #FF5500 0%, #D84000 100%);
+  color: var(--c-white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 4px solid #D4AF37;
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 1.22rem;
   font-weight: 900;
-  font-size: 1.05rem;
-  padding: 14px 22px;
-  border-radius: var(--radius-full);
-  box-shadow: 0 8px 20px -3px rgba(37, 211, 102, 0.4);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-whatsapp-ticket:hover,
-.btn-celebrate-whatsapp:hover {
-  background: #20BA5A;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -3px rgba(37, 211, 102, 0.5);
-}
-
-.btn-whatsapp-ticket:active,
-.btn-celebrate-whatsapp:active {
-  transform: translateY(1px);
-}
-
-.ticket-sub-actions,
-.celebration-sub-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.btn-ticket-share,
-.btn-celebrate-share {
-  background: var(--gw-white);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 0.88rem;
-  padding: 11px 16px;
-  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
   cursor: pointer;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  box-shadow: var(--shadow-xs);
+  box-shadow: 0 8px 32px rgba(255, 85, 0, 0.55);
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
 }
 
-.btn-ticket-share:hover,
-.btn-celebrate-share:hover {
-  background: var(--gw-blue-subtle);
-  border-color: var(--gw-blue-primary);
-  color: var(--gw-blue-primary);
-  transform: translateY(-1px);
+.btn-spin-action:hover {
+  background: linear-gradient(135deg, #FF661A 0%, #FF5500 100%);
+  box-shadow: 0 10px 38px rgba(255, 85, 0, 0.7), 0 0 16px rgba(212, 175, 55, 0.5);
 }
 
-.btn-ticket-how,
-.btn-celebrate-how {
-  background: transparent;
-  border: 1px solid var(--border-subtle);
-  color: var(--text-muted);
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 0.88rem;
-  padding: 11px 16px;
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: all 0.2s ease;
+.btn-spin-action:active {
+  transform: scale(0.99);
+}
+
+.btn-spin-action:disabled {
+  background: #334155;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Micro-flow: 01 لف · 02 اربح · 03 استخدم (No Cards) */
+.campaign-micro-flow {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-}
-
-.btn-ticket-how:hover,
-.btn-celebrate-how:hover {
-  background: var(--gw-white);
-  color: var(--text-primary);
-  border-color: var(--border-medium);
-}
-
-.ticket-status-notice {
-  margin-top: 14px;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  font-size: 0.88rem;
-  font-weight: 700;
-  text-align: center;
-  border: 1px solid transparent;
-}
-
-.ticket-status-notice.redeemed {
-  background: #EFF6FF;
-  border-color: #BFDBFE;
-  color: #1E40AF;
-}
-
-.ticket-status-notice.expired {
-  background: #F1F5F9;
-  border-color: #CBD5E1;
-  color: #475569;
-}
-
-.ticket-status-notice.cancelled {
-  background: #FEF2F2;
-  border-color: #FECACA;
-  color: #991B1B;
-}
-
-.ticket-meta {
-  margin-top: 16px;
-  display: flex;
-  justify-content: space-between;
+  gap: var(--s-8);
   font-size: 0.82rem;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border-subtle);
-  padding-top: 12px;
+  font-weight: 700;
+  color: var(--c-slate-400);
 }
 
-.ticket-meta strong {
-  color: var(--text-primary);
+.flow-dot {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.spin-status-message {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #38BDF8;
+  min-height: 22px;
+  text-align: center;
+}
+
+.spin-status-message.error {
+  color: #EF4444;
 }
 
 /* --------------------------------------------------------------------------
-   4. How to Use (Clean Minimal Steps)
+   3. Campaign Pass (Winner & Result Experience)
    -------------------------------------------------------------------------- */
-.how-to-use-section {
+.pass-view {
+  padding-top: var(--s-8);
+  gap: var(--s-24);
+}
+
+.campaign-vip-pass {
+  position: relative;
   width: 100%;
-  margin-top: 32px;
+  background: var(--c-white);
+  color: var(--c-slate-900);
+  border-radius: var(--r-md);
+  padding: var(--s-24);
+  box-shadow: var(--sh-elevated);
+  overflow: hidden;
+  text-align: right;
+  border-top: 4px solid var(--c-saudi-green);
 }
 
-.how-to-use-header {
-  margin-bottom: 12px;
-}
-
-.how-badge {
-  display: inline-block;
-  font-size: 0.8rem;
-  font-weight: 800;
-  color: var(--text-muted);
-  background: var(--gw-white);
-  border: 1px solid var(--border-subtle);
-  padding: 4px 14px;
-  border-radius: var(--radius-full);
-}
-
-.steps-mini-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: var(--gw-white);
-  border: 1px solid var(--border-subtle);
-  padding: 12px 18px;
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-sm);
-}
-
-.step-mini-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.step-num {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--gw-blue-ice);
-  color: var(--gw-blue-primary);
+.pass-watermark-96 {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  font-family: 'Cairo', sans-serif;
   font-weight: 900;
-  font-size: 0.82rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(0, 102, 204, 0.2);
+  font-size: 150px;
+  line-height: 0.7;
+  color: rgba(0, 108, 53, 0.04);
+  pointer-events: none;
+  user-select: none;
 }
 
-.step-label {
+.pass-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--c-slate-200);
+  padding-bottom: var(--s-12);
+  margin-bottom: var(--s-16);
+}
+
+.pass-type-tag {
+  display: flex;
+  align-items: center;
+  gap: var(--s-6);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--c-saudi-green);
+}
+
+.pass-status-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--c-saudi-green);
+  background: var(--c-saudi-green-tint);
+  padding: 3px var(--s-8);
+  border-radius: var(--r-xs);
+}
+
+.pass-status-badge.redeemed {
+  color: #475569;
+  background: #E2E8F0;
+}
+
+.pass-status-badge.expired,
+.pass-status-badge.cancelled {
+  color: #DC2626;
+  background: #FEE2E2;
+}
+
+.pass-kicker {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--text-secondary);
-  white-space: nowrap;
+  color: var(--c-slate-400);
+  margin-bottom: var(--s-4);
 }
 
-.step-arrow {
-  color: var(--text-light);
-  font-size: 0.95rem;
+.pass-prize-heading {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: var(--c-blue-deep);
+  line-height: 1.15;
+  margin-bottom: var(--s-4);
 }
 
-/* --------------------------------------------------------------------------
-   5. Two Cars Secondary Offer (Sleek Compact Strip)
-   -------------------------------------------------------------------------- */
-.two-cars-strip {
-  width: 100%;
-  margin-top: 24px;
+.pass-prize-caption {
+  font-size: 0.9rem;
+  color: var(--c-slate-700);
+  line-height: 1.4;
+  margin-bottom: var(--s-20);
 }
 
-.offer-compact-box {
-  background: var(--gw-white);
-  border: 1px solid var(--border-subtle);
-  border-right: 4px solid var(--gw-orange-primary);
-  border-radius: var(--radius-md);
-  padding: 16px 20px;
+/* Promo Code Strip: Monospace Numeral Treatment */
+.pass-code-strip {
+  background: var(--c-slate-100);
+  border: 1px solid var(--c-slate-200);
+  border-radius: var(--r-sm);
+  padding: var(--s-16);
+  margin-bottom: var(--s-20);
+}
+
+.pass-code-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--c-slate-400);
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: var(--s-6);
+}
+
+.pass-code-value-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  text-align: right;
-  box-shadow: var(--shadow-sm);
+  gap: var(--s-12);
 }
 
-.offer-tag {
-  display: inline-block;
-  font-size: 0.74rem;
+.pass-code-numeral {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.25rem;
   font-weight: 800;
-  color: var(--gw-orange-primary);
-  margin-bottom: 2px;
+  letter-spacing: 0.08em;
+  color: var(--c-slate-900);
 }
 
-.offer-title {
-  font-size: 0.96rem;
+.btn-copy-action {
+  background: var(--c-navy-dark);
+  color: var(--c-white);
+  border: none;
+  border-radius: var(--r-xs);
+  padding: var(--s-8) var(--s-16);
+  font-family: inherit;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.35;
-}
-
-.offer-title strong {
-  color: var(--gw-orange-primary);
-  font-size: 1.1rem;
-}
-
-.btn-compact-offer {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--gw-blue-ice);
-  border: 1px solid rgba(0, 102, 204, 0.25);
-  color: var(--gw-blue-primary);
-  text-decoration: none;
-  font-size: 0.88rem;
-  font-weight: 800;
-  padding: 9px 16px;
-  border-radius: var(--radius-full);
+  cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s ease;
 }
 
-.btn-compact-offer:hover {
-  background: var(--gw-blue-primary);
-  color: #FFFFFF;
-  border-color: var(--gw-blue-primary);
-  transform: translateY(-1px);
+.btn-copy-action:hover {
+  background: var(--c-blue-brand);
 }
 
-.offer-nonstackable-hint {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-top: 8px;
-  text-align: center;
-}
-
-/* --------------------------------------------------------------------------
-   6. Social Strip
-   -------------------------------------------------------------------------- */
-.social-strip {
-  width: 100%;
-  margin-top: 32px;
+/* QR Code Section */
+.pass-qr-box {
+  margin-top: var(--s-16);
+  padding-top: var(--s-16);
+  border-top: 1px dashed var(--c-slate-200);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: var(--s-8);
 }
 
-.social-strip-label {
+.qr-border-wrap {
+  background: #FFFFFF;
+  padding: 6px;
+  border: 1px solid var(--c-slate-200);
+  border-radius: var(--r-xs);
+}
+
+.qr-caption {
+  font-size: 0.76rem;
+  color: var(--c-slate-400);
+  text-align: center;
+}
+
+/* Pass Action Buttons */
+.pass-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+  margin-bottom: var(--s-16);
+}
+
+.btn-whatsapp-action {
+  width: 100%;
+  height: 50px;
+  background: #25D366;
+  color: #FFFFFF;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-8);
+  transition: background-color 0.2s ease;
+}
+
+.btn-whatsapp-action:hover {
+  background: #20BA5A;
+}
+
+.pass-dual-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-12);
+}
+
+.btn-secondary-action {
+  height: 44px;
+  background: transparent;
+  color: var(--c-slate-900);
+  border: 1px solid var(--c-slate-200);
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.btn-secondary-action:hover {
+  background: var(--c-slate-100);
+}
+
+.pass-status-notice {
   font-size: 0.84rem;
   font-weight: 700;
-  color: var(--text-muted);
-  letter-spacing: 0.4px;
+  padding: var(--s-12);
+  border-radius: var(--r-xs);
+  margin-bottom: var(--s-12);
+  text-align: center;
 }
 
-.social-icons-row {
+.pass-status-notice.redeemed {
+  background: #E2E8F0;
+  color: #334155;
+}
+
+.pass-status-notice.expired {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+.pass-status-notice.cancelled {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.pass-meta-row {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  justify-content: space-between;
+  border-top: 1px solid var(--c-slate-200);
+  padding-top: var(--s-12);
+  font-size: 0.78rem;
+  color: var(--c-slate-400);
 }
 
-.social-icon-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  text-decoration: none;
-  background: var(--gw-white);
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-xs);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.social-icon-btn.whatsapp:hover {
-  background: #25D366;
-  border-color: #25D366;
-  color: #FFF;
-  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
-  transform: translateY(-2px);
-}
-
-.social-icon-btn.instagram:hover {
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-  border-color: transparent;
-  color: #FFF;
-  box-shadow: 0 6px 18px rgba(214, 36, 159, 0.4);
-  transform: translateY(-2px);
-}
-
-.social-icon-btn.tiktok:hover {
-  background: #000000;
-  border-color: #000000;
-  color: #FFF;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
-}
-
-/* --------------------------------------------------------------------------
-   7. Footer
-   -------------------------------------------------------------------------- */
-.event-footer {
+/* How to Use (Minimalistic Row) */
+.usage-summary-row {
   width: 100%;
-  margin-top: 36px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: var(--s-16) var(--s-12);
+  background: var(--c-navy-dark);
+  border: 1px solid var(--c-navy-border);
+  border-radius: var(--r-sm);
+}
+
+.usage-item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-6);
+}
+
+.usage-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--c-orange-brand);
+}
+
+.usage-text {
   font-size: 0.8rem;
-  color: var(--text-light);
+  font-weight: 600;
+  color: var(--c-slate-200);
 }
 
-.footer-simple-content {
+.usage-sep {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.9rem;
+}
+
+/* Two Cars Offer (Secondary, Compact, Elegant) */
+.two-cars-banner {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: var(--s-16);
+  padding: var(--s-16);
+  background: var(--c-navy-dark);
+  border: 1px solid rgba(0, 108, 53, 0.35);
+  border-radius: var(--r-sm);
+  text-align: right;
 }
 
-.footer-dot {
-  opacity: 0.5;
+.two-cars-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.two-cars-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--c-saudi-green-accent);
+}
+
+.two-cars-title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--c-white);
+}
+
+.two-cars-desc {
+  font-size: 0.8rem;
+  color: var(--c-slate-400);
+}
+
+.btn-two-cars {
+  background: var(--c-saudi-green);
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: var(--s-8) var(--s-16);
+  border-radius: var(--r-xs);
+  font-size: 0.88rem;
+  font-weight: 800;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.btn-two-cars:hover {
+  background: var(--c-saudi-green-accent);
 }
 
 /* --------------------------------------------------------------------------
-   Modals (Elite Dialog Architecture)
+   4. Social Channels & Minimal Footer
    -------------------------------------------------------------------------- */
-.modal-dialog {
+.campaign-social-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-12);
+  margin-top: var(--s-32);
+}
+
+.social-tag {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--c-slate-400);
+}
+
+.social-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-12);
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-xs);
+  background: var(--c-navy-dark);
+  border: 1px solid var(--c-navy-border);
+  color: var(--c-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.social-btn:hover {
+  background: var(--c-navy-hover);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.campaign-footer {
+  margin-top: var(--s-32);
+  padding-top: var(--s-16);
+  border-top: 1px solid var(--c-navy-border);
+  width: 100%;
+  text-align: center;
+}
+
+.footer-meta {
+  font-size: 0.76rem;
+  color: var(--c-slate-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-8);
+}
+
+.footer-divider {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   Modal Dialogs (Clean, Mobile-First)
+   -------------------------------------------------------------------------- */
+.campaign-dialog {
   border: none;
   background: transparent;
-  padding: 16px;
-  max-width: 460px;
-  width: 94vw;
+  padding: var(--s-16);
   margin: auto;
+  max-width: 420px;
+  width: 100%;
+  outline: none;
 }
 
-.modal-dialog::backdrop {
-  background: rgba(10, 25, 47, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+.campaign-dialog::backdrop {
+  background: rgba(5, 11, 20, 0.85);
 }
 
-.terms-modal-card,
-.modal-celebration-card,
-.recover-modal-card {
-  background: var(--gw-white);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 26px 22px;
-  color: var(--text-primary);
-  box-shadow: var(--shadow-lg);
+.dialog-inner {
   position: relative;
+  background: var(--c-navy-surface);
+  border: 1px solid var(--c-navy-border);
+  border-radius: var(--r-md);
+  padding: var(--s-24);
+  color: var(--c-white);
   text-align: right;
-  animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--sh-elevated);
 }
 
-@keyframes modalPopIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.modal-close-icon {
+.dialog-close {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  background: var(--gw-bg);
-  border: 1px solid var(--border-subtle);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: var(--s-16);
+  left: var(--s-16);
+  background: transparent;
+  border: none;
+  color: var(--c-slate-400);
+  font-size: 1.2rem;
+  line-height: 1;
   cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 4px;
 }
 
-.modal-close-icon:hover {
-  background: var(--border-subtle);
-  color: var(--text-primary);
+.dialog-close:hover {
+  color: var(--c-white);
 }
 
-.modal-event-head {
-  text-align: center;
-  margin-bottom: 20px;
+.dialog-masthead {
+  margin-bottom: var(--s-16);
 }
 
-.modal-badge-nd {
-  display: inline-block;
-  font-size: 0.8rem;
+.dialog-pill {
+  font-size: 0.74rem;
   font-weight: 800;
-  color: var(--gw-blue-primary);
-  background: var(--gw-blue-ice);
-  border: 1px solid rgba(0, 102, 204, 0.2);
-  padding: 4px 14px;
-  border-radius: var(--radius-full);
-  margin-bottom: 8px;
+  color: var(--c-orange-brand);
+  background: var(--c-orange-tint);
+  padding: 2px var(--s-8);
+  border-radius: var(--r-xs);
+  display: inline-block;
+  margin-bottom: var(--s-6);
 }
 
-.modal-title-bold {
-  font-size: 1.5rem;
+.dialog-h3 {
+  font-size: 1.35rem;
   font-weight: 900;
-  color: var(--gw-blue-navy);
+  color: var(--c-white);
 }
 
-.modal-subtext {
+.dialog-subtitle {
   font-size: 0.88rem;
-  color: var(--text-muted);
-  margin-top: 6px;
+  color: var(--c-slate-400);
+  margin-top: var(--s-4);
+}
+
+.dialog-scrollable {
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--c-navy-black);
+  border: 1px solid var(--c-navy-border);
+  border-radius: var(--r-xs);
+  padding: var(--s-16);
+  margin-bottom: var(--s-20);
+}
+
+.dialog-terms-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+  font-size: 0.85rem;
+  color: var(--c-slate-400);
   line-height: 1.5;
 }
 
-/* Modal Form Controls */
-.modal-entry-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.dialog-terms-list strong {
+  color: var(--c-white);
 }
 
-.form-group-event {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.dialog-btn-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--s-12);
 }
 
-.form-label-event {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-}
-
-.form-input-event {
-  width: 100%;
-  background: var(--gw-white);
-  border: 1.5px solid var(--border-medium);
-  border-radius: var(--radius-md);
-  padding: 12px 16px;
-  font-family: inherit;
-  font-size: 1.05rem;
-  color: var(--text-primary);
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-input-event:focus {
-  border-color: var(--gw-blue-primary);
-  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.12);
-}
-
-.phone-box-event {
-  display: flex;
-  align-items: center;
-  background: var(--gw-white);
-  border: 1.5px solid var(--border-medium);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.phone-box-event:focus-within {
-  border-color: var(--gw-blue-primary);
-  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.12);
-}
-
-.phone-flag {
-  padding: 0 14px;
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--text-secondary);
-  background: var(--gw-bg);
-  border-right: 1px solid var(--border-subtle);
+.btn-dialog-agree {
   height: 48px;
-  display: flex;
-  align-items: center;
-}
-
-.phone-inner {
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  height: 48px;
-  padding: 0 14px;
-  letter-spacing: 1px;
-}
-
-.field-error {
-  font-size: 0.82rem;
-  color: #DC2626;
-  font-weight: 700;
-  min-height: 18px;
-}
-
-/* Full Terms Box inside Modal */
-.terms-full-box {
-  background: var(--gw-bg);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 14px 16px;
-  max-height: 240px;
-  overflow-y: auto;
-}
-
-.terms-version-heading {
-  font-size: 0.86rem;
-  font-weight: 800;
-  color: var(--gw-blue-primary);
-  margin-bottom: 10px;
-}
-
-.terms-official-list {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-  padding-right: 18px;
-  text-align: right;
-}
-
-.terms-official-list li {
-  margin-bottom: 7px;
-}
-
-.terms-official-list strong {
-  color: var(--text-primary);
-}
-
-.modal-action-row {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.btn-modal-agree,
-.btn-modal-spin {
-  flex: 2;
-  background: linear-gradient(135deg, #FF7A00 0%, #E04800 100%);
-  color: #FFF;
+  background: var(--c-blue-brand);
+  color: var(--c-white);
   border: none;
-  border-radius: var(--radius-full);
-  font-family: inherit;
-  font-size: 1.1rem;
-  font-weight: 900;
-  padding: 13px 20px;
-  cursor: pointer;
-  box-shadow: var(--shadow-cta);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-modal-agree:hover,
-.btn-modal-spin:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px -3px rgba(255, 102, 0, 0.55);
-}
-
-.btn-modal-decline,
-.btn-modal-cancel {
-  flex: 1;
-  background: var(--gw-bg);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-full);
+  border-radius: var(--r-sm);
   font-family: inherit;
   font-size: 0.95rem;
-  font-weight: 700;
-  padding: 13px;
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.btn-modal-decline:hover,
-.btn-modal-cancel:hover {
-  background: var(--border-subtle);
-  color: var(--text-primary);
+.btn-dialog-agree:hover {
+  background: var(--c-blue-deep);
 }
 
-/* --------------------------------------------------------------------------
-   Winner Event Moment Celebration Modal
-   -------------------------------------------------------------------------- */
-.modal-celebration-card {
+.btn-dialog-decline {
+  height: 48px;
+  background: transparent;
+  color: var(--c-slate-400);
+  border: 1px solid var(--c-navy-border);
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-dialog-decline:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--c-white);
+}
+
+/* Reward Moment Modal */
+.reward-moment-inner {
+  background: var(--c-white);
+  color: var(--c-slate-900);
   text-align: center;
 }
 
-.celebration-hero {
-  margin-bottom: 14px;
+.reward-moment-inner .dialog-close {
+  color: var(--c-slate-400);
 }
 
-.celebration-badge {
-  display: inline-block;
-  font-size: 0.86rem;
+.reward-moment-inner .dialog-close:hover {
+  color: var(--c-slate-900);
+}
+
+.reward-lead {
+  margin-bottom: var(--s-16);
+}
+
+.reward-brand-tag {
+  font-size: 0.78rem;
   font-weight: 800;
-  color: var(--gw-blue-primary);
-  background: var(--gw-blue-ice);
-  border: 1px solid rgba(0, 102, 204, 0.2);
-  padding: 4px 16px;
-  border-radius: var(--radius-full);
+  color: var(--c-blue-brand);
+  background: var(--c-blue-tint);
+  padding: 3px var(--s-12);
+  border-radius: var(--r-xs);
+  display: inline-block;
+  margin-bottom: var(--s-8);
 }
 
-.celebration-headline {
-  font-size: 2.25rem;
+.reward-title {
+  font-size: 2.2rem;
   font-weight: 900;
-  color: var(--gw-blue-navy);
-  margin-top: 6px;
-  letter-spacing: -0.5px;
+  color: var(--c-slate-900);
+  line-height: 1.1;
 }
 
-.celebration-prize-hero {
-  background: var(--gw-blue-ice);
-  border: 1px solid rgba(0, 102, 204, 0.15);
-  border-radius: var(--radius-md);
-  padding: 18px 12px;
-  margin-bottom: 16px;
+.reward-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--c-slate-400);
+}
+
+.reward-prize-block {
+  margin-bottom: var(--s-20);
 }
 
 .prize-percent-huge {
-  font-size: clamp(3.2rem, 12vw, 4.4rem);
+  font-size: 3.2rem;
   font-weight: 900;
+  color: var(--c-blue-deep);
   line-height: 1;
-  color: var(--gw-blue-primary);
-  font-family: 'Cairo', sans-serif;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--s-6);
 }
 
 .prize-title-custom {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 900;
-  color: var(--gw-blue-navy);
-  line-height: 1.25;
+  color: var(--c-navy-black);
+  line-height: 1.2;
 }
 
 .prize-sub-custom {
   font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-top: 6px;
+  font-weight: 600;
+  color: var(--c-slate-700);
 }
 
-.winning-ticket-card {
-  background: var(--gw-bg);
-  border: 1.5px dashed rgba(0, 102, 204, 0.35);
-  border-radius: var(--radius-md);
-  padding: 14px 16px;
-  margin-bottom: 18px;
+.reward-code-block {
+  background: var(--c-slate-100);
+  border: 1px solid var(--c-slate-200);
+  border-radius: var(--r-sm);
+  padding: var(--s-16);
+  margin-bottom: var(--s-20);
+  text-align: right;
 }
 
-.ticket-sub-label {
+.reward-code-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--c-slate-400);
+  letter-spacing: 0.08em;
   display: block;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 1.2px;
-  color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: var(--s-6);
 }
 
-.ticket-code-flex {
+.reward-code-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--s-12);
 }
 
-.ticket-code-big {
-  font-family: 'SF Mono', 'Courier New', monospace;
-  font-size: 1.45rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: var(--gw-blue-primary);
+.reward-code-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--c-slate-900);
+  letter-spacing: 0.08em;
 }
 
-.btn-copy-ticket {
-  background: var(--gw-white);
-  border: 1px solid var(--border-medium);
-  color: var(--text-primary);
-  border-radius: var(--radius-sm);
-  padding: 9px 16px;
-  font-family: inherit;
-  font-size: 0.88rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.btn-copy-ticket:hover {
-  background: var(--gw-blue-primary);
-  border-color: var(--gw-blue-primary);
-  color: #FFFFFF;
-}
-
-.celebration-actions {
+.reward-actions-row {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--s-12);
+  margin-bottom: var(--s-16);
 }
 
-.celebration-footer-note {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 16px;
+.reward-dual-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-12);
+}
+
+.reward-note {
+  font-size: 0.78rem;
+  color: var(--c-slate-400);
 }
 
 /* Confetti Overlay */
-.confetti-canvas-overlay {
+.confetti-overlay {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 120;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
+  z-index: 100;
   display: none;
 }
 
-/* --------------------------------------------------------------------------
-   App Toast Feedback
-   -------------------------------------------------------------------------- */
-.app-toast {
+/* Toast Message */
+.campaign-toast {
   position: fixed;
-  bottom: 28px;
+  bottom: var(--s-24);
   left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--gw-blue-navy);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: var(--shadow-lg);
-  color: #FFFFFF;
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
-  font-size: 0.95rem;
-  font-weight: 800;
-  z-index: 99999;
-  pointer-events: none;
+  transform: translateX(-50%) translateY(30px);
+  background: var(--c-navy-dark);
+  color: var(--c-white);
+  border: 1px solid var(--c-navy-border);
+  padding: var(--s-12) var(--s-24);
+  border-radius: var(--r-xs);
+  font-size: 0.88rem;
+  font-weight: 700;
+  z-index: 150;
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-align: center;
+  pointer-events: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  box-shadow: var(--sh-elevated);
+  white-space: nowrap;
 }
 
-.app-toast.is-visible {
-  transform: translateX(-50%) translateY(0);
+.campaign-toast.is-visible {
   opacity: 1;
-}
-
-/* Returning Customer Hero Layout */
-body.is-returning-customer .wheel-arena {
-  display: none !important;
-}
-
-body.is-returning-customer .winner-ticket-section {
-  margin-top: 8px;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* --------------------------------------------------------------------------
-   Prize QR Code Display
+   Mobile-First Responsive Nuances
    -------------------------------------------------------------------------- */
-.prize-qr-wrapper {
-  margin: 16px auto 10px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.prize-qr-box {
-  background: #FFFFFF;
-  padding: 8px;
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border-subtle);
-}
-
-.prize-qr-box img {
-  width: 130px;
-  height: 130px;
-  display: block;
-  border-radius: 4px;
-}
-
-.prize-qr-hint {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-top: 8px;
-  text-align: center;
-}
-
-/* --------------------------------------------------------------------------
-   Mobile Optimizations (<480px)
-   -------------------------------------------------------------------------- */
-@media (max-width: 480px) {
-  .event-wrapper {
-    padding: 16px 14px 36px 14px;
+@media (max-width: 380px) {
+  .campaign-stage {
+    padding: 0 var(--s-12) var(--s-32);
   }
-
-  .event-brand-mark {
-    width: 135px;
-    margin-bottom: 10px;
+  .wheel-canvas-container {
+    width: 290px;
+    height: 290px;
   }
-
-  .event-headline {
-    font-size: 2.25rem;
+  .wheel-bezel-ticks {
+    width: 304px;
+    height: 304px;
   }
-
-  .event-subheadline {
-    font-size: 0.88rem;
-  }
-
-  .wheel-stage-container {
-    width: min(90vw, 350px);
-    height: min(90vw, 350px);
-  }
-
-  .btn-spin-hero {
-    font-size: 1.25rem;
-    padding: 15px 24px;
-  }
-
-  .code-value,
-  .ticket-code-big {
-    font-size: 1.25rem;
-  }
-
-  .offer-compact-box {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .btn-compact-offer {
-    align-self: stretch;
-    justify-content: center;
+  .pass-code-numeral,
+  .reward-code-display {
+    font-size: 1.05rem;
   }
 }

@@ -1,67 +1,69 @@
 /* ==========================================================================
-   Go Wash — Saudi National Day 96 Event Microsite
-   Elite Design System • Luxury Mobile First • High-DPI Experience
+   Go Wash — Saudi National Day 96 Event Experience
+   Art Direction: Premium Automotive Campaign × Contemporary Saudi Campaign
+   Zero AI Look · No Template Cards · Pure Editorial Typography & Composition
    ========================================================================== */
 
 :root {
-  /* Brand Palette (Go Wash & National Day 96 Luxury Edition) */
-  --gw-blue-primary: #0077E6;
-  --gw-blue-vibrant: #0099FF;
-  --gw-blue-electric: #00C2FF;
-  --gw-blue-glow: rgba(0, 194, 255, 0.45);
-  
-  --gw-navy-deep: #030914;
-  --gw-navy-dark: #061224;
-  --gw-navy-card: #0A1C36;
-  --gw-navy-surface: #0E2649;
-  --gw-navy-border: rgba(0, 194, 255, 0.22);
+  /* ------------------------------------------------------------------------
+     1. Strict Brand Palette
+     Go Wash Blue (Anchor) -> White (Space) -> Orange (Highlight) -> Saudi Green (Accent)
+     ------------------------------------------------------------------------ */
+  --c-navy-black: #050B14;
+  --c-navy-dark: #0A1424;
+  --c-navy-surface: #0F1D33;
+  --c-navy-border: rgba(255, 255, 255, 0.12);
+  --c-navy-hover: #172B4C;
 
-  --gw-orange-primary: #FF6600;
-  --gw-orange-bright: #FF8533;
-  --gw-orange-deep: #D43800;
-  --gw-orange-glow: rgba(255, 102, 0, 0.55);
+  --c-blue-brand: #0066FF;
+  --c-blue-deep: #0047AB;
+  --c-blue-tint: #EBF3FF;
 
-  --nd-green-royal: #00733E;
-  --nd-green-bright: #10B981;
-  --nd-green-emerald: #059669;
-  --nd-green-glow: rgba(16, 185, 129, 0.45);
+  --c-orange-brand: #FF5500;
+  --c-orange-hover: #E04800;
+  --c-orange-tint: rgba(255, 85, 0, 0.12);
 
-  --nd-gold-light: #FFF2A1;
-  --nd-gold-accent: #FFD000;
-  --nd-gold-deep: #D97706;
-  --nd-gold-rich: #F59E0B;
-  --nd-gold-glow: rgba(255, 208, 0, 0.45);
+  --c-saudi-green: #006C35;
+  --c-saudi-green-accent: #059669;
+  --c-saudi-green-tint: rgba(0, 108, 53, 0.12);
 
-  --gw-white: #FFFFFF;
-  --gw-silver: #E2E8F0;
-  --gw-slate: #CBD5E1;
-  --gw-muted: #8E9FB5;
-  --gw-subtle: #475569;
+  --c-white: #FFFFFF;
+  --c-offwhite: #F8FAFC;
+  --c-slate-100: #F1F5F9;
+  --c-slate-200: #E2E8F0;
+  --c-slate-400: #94A3B8;
+  --c-slate-700: #334155;
+  --c-slate-900: #0F172A;
 
-  /* Surfaces & Glassmorphism */
-  --glass-bg: rgba(10, 28, 54, 0.82);
-  --glass-bg-elevated: rgba(14, 38, 73, 0.92);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-light: rgba(255, 255, 255, 0.22);
-  --glass-border-glow: rgba(0, 194, 255, 0.4);
+  /* ------------------------------------------------------------------------
+     2. Spacing Scale: 8, 12, 16, 24, 32, 48, 64, 80
+     ------------------------------------------------------------------------ */
+  --s-8: 8px;
+  --s-12: 12px;
+  --s-16: 16px;
+  --s-24: 24px;
+  --s-32: 32px;
+  --s-48: 48px;
+  --s-64: 64px;
+  --s-80: 80px;
 
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
-  --radius-full: 9999px;
+  /* ------------------------------------------------------------------------
+     3. Structured Geometry (No Endless Pill Rounding)
+     ------------------------------------------------------------------------ */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
 
-  /* Advanced Shadows & Elevations */
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 10px 28px -4px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 20px 48px -8px rgba(0, 0, 0, 0.7);
-  --shadow-glow-cyan: 0 0 30px rgba(0, 194, 255, 0.3);
-  --shadow-glow-orange: 0 0 35px rgba(255, 102, 0, 0.4);
-  --shadow-glow-gold: 0 0 35px rgba(255, 208, 0, 0.35);
+  /* ------------------------------------------------------------------------
+     4. Subtle Natural Shadows
+     ------------------------------------------------------------------------ */
+  --sh-subtle: 0 1px 3px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+  --sh-elevated: 0 12px 36px rgba(0, 0, 0, 0.35);
 }
 
-/* Reset & Ergonomics */
+/* --------------------------------------------------------------------------
+   Reset & Baseline
+   -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -77,101 +79,88 @@ html {
 
 body.event-body {
   font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--gw-navy-deep);
-  color: var(--gw-white);
+  background-color: var(--c-navy-black);
+  color: var(--c-white);
   line-height: 1.5;
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   overflow-x: hidden;
-  text-align: center;
+  text-align: right;
+  direction: rtl;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* --------------------------------------------------------------------------
-   Dynamic Event Background (Deep Sapphire Field + Ambient Light Mesh)
+   Editorial Background Architecture
+   Deep Navy Lacquer + Technical Line Grid + Cropped 96 Watermark
    -------------------------------------------------------------------------- */
-.event-bg {
+.campaign-backdrop {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background: 
-    radial-gradient(circle at 50% 12%, rgba(0, 119, 230, 0.22) 0%, transparent 60%),
-    radial-gradient(circle at 10% 25%, rgba(0, 194, 255, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 90% 75%, rgba(255, 102, 0, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.07) 0%, transparent 55%),
-    linear-gradient(180deg, #061427 0%, #030914 100%);
+    radial-gradient(ellipse at 50% -8%, #006C35 0%, #013D1D 40%, #03080F 85%);
   overflow: hidden;
 }
 
-.bg-watermark-96 {
+.editorial-line-grid {
   position: absolute;
-  top: 4%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(20rem, 55vw, 42rem);
-  font-weight: 900;
-  line-height: 0.9;
-  color: rgba(255, 255, 255, 0.022);
-  user-select: none;
-  letter-spacing: -0.06em;
-  font-family: 'Cairo', sans-serif;
-  z-index: 1;
-  text-shadow: 0 0 80px rgba(0, 194, 255, 0.05);
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
 }
 
-.bg-sheen {
+/* 96 AS AN EDITORIAL ART ELEMENT: BOLD, UNMISTAKABLE, AND PROUD */
+.oversized-96 {
   position: absolute;
-  top: -15%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 140vw;
-  height: 70vh;
-  background: radial-gradient(ellipse at center, rgba(0, 194, 255, 0.09) 0%, rgba(0, 119, 230, 0.03) 45%, transparent 70%);
-  z-index: 2;
-  filter: blur(40px);
+  top: 15px;
+  left: -20px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(230px, 50vw, 480px);
+  line-height: 0.75;
+  letter-spacing: -0.06em;
+  color: rgba(0, 108, 53, 0.15);
+  -webkit-text-stroke: 3px rgba(16, 185, 129, 0.45);
+  filter: drop-shadow(0 0 50px rgba(0, 108, 53, 0.6));
+  user-select: none;
+  pointer-events: none;
 }
 
 /* --------------------------------------------------------------------------
-   Floating Audio Toggle (Frosted Glass Tactile Button)
+   Tactile Sound Toggle (Clean & Unobtrusive)
    -------------------------------------------------------------------------- */
-.floating-sound-btn {
+.sound-toggle-btn {
   position: fixed;
-  top: 16px;
-  left: 16px;
-  z-index: 95;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(10, 28, 54, 0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  color: #FFF;
+  top: var(--s-16);
+  left: var(--s-16);
+  z-index: 90;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--c-navy-border);
+  background: var(--c-navy-surface);
+  color: var(--c-white);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.25);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.floating-sound-btn:hover {
-  background: rgba(0, 194, 255, 0.25);
-  border-color: var(--gw-blue-electric);
-  box-shadow: 0 8px 28px var(--gw-blue-glow);
-  transform: scale(1.08);
+.sound-toggle-btn:hover {
+  background: var(--c-navy-hover);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
-.floating-sound-btn:active {
-  transform: scale(0.95);
-}
-
-.floating-sound-btn.is-muted {
-  opacity: 0.55;
-  border-color: rgba(255, 255, 255, 0.1);
+.sound-toggle-btn.is-muted {
+  opacity: 0.4;
 }
 
 /* --------------------------------------------------------------------------
@@ -180,1407 +169,1341 @@ body.event-body {
 .campaign-alert-bar {
   position: relative;
   z-index: 80;
-  background: linear-gradient(90deg, #DC2626 0%, #991B1B 100%);
-  color: #FFF;
-  padding: 12px 18px;
-  font-weight: 800;
-  font-size: 0.95rem;
+  background: #DC2626;
+  color: #FFFFFF;
+  padding: var(--s-12) var(--s-16);
+  font-weight: 700;
+  font-size: 0.88rem;
   text-align: center;
-  box-shadow: 0 4px 18px rgba(220, 38, 38, 0.4);
 }
 
 .campaign-alert-bar.paused {
-  background: linear-gradient(90deg, #D97706 0%, #B45309 100%);
-  box-shadow: 0 4px 18px rgba(217, 119, 6, 0.4);
+  background: #D97706;
 }
 
 /* --------------------------------------------------------------------------
-   Main Event Wrapper
+   Main Campaign Stage
    -------------------------------------------------------------------------- */
-.event-wrapper {
+.campaign-stage {
   position: relative;
   z-index: 10;
-  max-width: 540px;
+  width: 100%;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 20px 16px 44px 16px;
+  padding: 0 var(--s-16) var(--s-48);
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* --------------------------------------------------------------------------
-   1. Opening Screen Hero
+   Top Masthead: Clean Go Wash Brand + Saudi National Day Emblem
    -------------------------------------------------------------------------- */
-.event-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 12px;
+.campaign-masthead {
   width: 100%;
-}
-
-.event-brand-mark {
-  width: 165px;
-  margin-bottom: 12px;
+  padding: var(--s-20) 0 var(--s-16);
   display: flex;
-  justify-content: center;
-  transition: transform 0.3s ease;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--c-navy-border);
+  margin-bottom: var(--s-24);
 }
 
-.event-brand-mark:hover {
-  transform: scale(1.03);
+.masthead-brand {
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(0 4px 14px rgba(0, 102, 255, 0.45));
+  transition: transform 0.2s ease;
+}
+
+.masthead-brand:hover {
+  transform: scale(1.02);
 }
 
 .brand-svg {
-  width: 100%;
+  width: clamp(140px, 36vw, 175px);
   height: auto;
-  filter: drop-shadow(0 6px 16px rgba(0, 194, 255, 0.3));
+  display: block;
 }
 
-.event-identity-tag {
+/* Saudi National Day 96 Emblem Badge: BOLD, PROUD, AND UNMISTAKABLE */
+.national-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
-  border: 1px solid rgba(255, 208, 0, 0.4);
-  padding: 5px 16px;
-  border-radius: var(--radius-full);
-  margin-bottom: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  gap: var(--s-8);
+  background: linear-gradient(135deg, rgba(0, 108, 53, 0.6) 0%, rgba(4, 34, 20, 0.9) 100%);
+  border: 2px solid #D4AF37;
+  box-shadow: 0 4px 20px rgba(0, 108, 53, 0.5), 0 0 12px rgba(212, 175, 55, 0.4);
+  padding: 8px var(--s-16);
+  border-radius: 999px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.tag-number {
+.national-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(0, 108, 53, 0.65), 0 0 18px rgba(212, 175, 55, 0.6);
+}
+
+.saudi-emblem-svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.national-text {
+  font-size: 0.92rem;
   font-weight: 900;
-  font-size: 1.1rem;
-  color: var(--nd-gold-accent);
-  letter-spacing: 0.5px;
-  text-shadow: 0 0 12px var(--nd-gold-glow);
-}
-
-.tag-divider {
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 0.85rem;
-}
-
-.tag-name {
-  font-weight: 800;
-  font-size: 0.85rem;
-  color: var(--gw-silver);
-  letter-spacing: 0.3px;
-}
-
-.event-headline {
-  font-size: clamp(2.3rem, 7.5vw, 2.85rem);
-  font-weight: 900;
-  letter-spacing: -0.5px;
-  line-height: 1.18;
-  margin-bottom: 4px;
-  background: linear-gradient(180deg, #FFFFFF 30%, #CFE6FF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7));
+  color: var(--c-white);
+  letter-spacing: 0.03em;
 }
 
 /* --------------------------------------------------------------------------
-   2. Spin Wheel Arena (Centerpiece)
+   Screen Views Architecture (Fade in)
    -------------------------------------------------------------------------- */
-.wheel-arena {
+.screen-view {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  margin-top: 6px;
+  animation: viewFadeIn 0.3s ease-out;
 }
 
-.wheel-stage-container {
-  position: relative;
-  width: min(92vw, 410px);
-  height: min(92vw, 410px);
+@keyframes viewFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------------------------------------------
+   1. Event Entry View — NO CARDS. Pure, clean, editorial form.
+   -------------------------------------------------------------------------- */
+.entry-view {
+  padding-top: var(--s-8);
+}
+
+.entry-lead-block {
+  text-align: center;
+  margin-bottom: var(--s-24);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Authentic Saudi Slogan Tag: Bold Emerald Green with Gold Border */
+.saudi-motto-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  background: linear-gradient(90deg, #006C35 0%, #004D25 100%);
+  border: 1.5px solid #D4AF37;
+  box-shadow: 0 4px 16px rgba(0, 108, 53, 0.4), 0 0 10px rgba(212, 175, 55, 0.3);
+  padding: 6px 20px;
+  border-radius: 999px;
+  margin-bottom: var(--s-16);
+  letter-spacing: 0.03em;
+}
+
+.motto-flag {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.campaign-kicker {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--c-orange-brand);
+  letter-spacing: 0.06em;
+  margin-bottom: var(--s-8);
+}
+
+.campaign-hero-title {
+  font-size: clamp(2.1rem, 7vw, 2.75rem);
+  font-weight: 900;
+  color: var(--c-white);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--s-8);
+  text-align: center;
+}
+
+.campaign-hero-subtitle {
+  font-size: 0.92rem;
+  color: var(--c-slate-400);
+  line-height: 1.45;
+  max-width: 340px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Saudi National Day 96 Divider & Trust Elements
+   -------------------------------------------------------------------------- */
+.national-divider {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 260px;
+  margin: var(--s-16) auto var(--s-20);
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent);
+}
+
+.divider-emblem {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--c-saudi-gold);
+  letter-spacing: 0.15em;
+  user-select: none;
+}
+
+/* Form Wrap: Centered, Symmetrical, Editorial Architecture */
+.entry-form-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.entry-direct-form {
+  width: 100%;
+  max-width: 360px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-16);
+  align-items: center;
 }
 
-/* 3D Metallic Golden Pointer */
-.wheel-pointer {
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 40;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.75));
-  transition: transform 0.09s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-origin: 50% 12px;
+.input-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-8);
 }
 
-.wheel-pointer.is-ticking {
-  transform: translateX(-50%) rotate(-14deg) scale(1.12);
+.input-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  text-align: center;
 }
 
-/* Outer LED Ring */
-.wheel-led-ring {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 20;
+.campaign-input {
+  width: 100%;
+  height: 56px;
+  background: #081322;
+  border: 2px solid rgba(16, 185, 129, 0.4);
+  border-radius: var(--r-sm);
+  padding: 0 var(--s-16);
+  font-family: inherit;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--c-white);
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  direction: rtl;
+  text-align: center;
 }
 
-.led-dot {
-  position: absolute;
-  border-radius: 50%;
-  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+.campaign-input::placeholder {
+  color: #64748B;
+  font-weight: 500;
+  text-align: center;
 }
 
-/* Canvas Wrapper with Multi-Layer Bezel */
-.canvas-wrapper {
-  position: relative;
+.campaign-input:focus {
+  border-color: #0066FF;
+  background: rgba(0, 102, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.3), 0 0 24px rgba(16, 185, 129, 0.4);
+}
+
+.campaign-input.is-invalid {
+  border-color: #EF4444;
+}
+
+/* Phone input: Centered with prominent Saudi flag prefix */
+.phone-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #081322;
+  border: 2px solid rgba(16, 185, 129, 0.4);
+  border-radius: var(--r-sm);
+  height: 56px;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.phone-row:focus-within {
+  border-color: #0066FF;
+  background: rgba(0, 102, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.3), 0 0 24px rgba(16, 185, 129, 0.4);
+}
+
+.phone-row.is-invalid {
+  border-color: #EF4444;
+}
+
+.phone-affix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--s-16);
+  background: linear-gradient(135deg, #006C35 0%, #004D25 100%);
+  border-right: 2px solid #D4AF37;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  user-select: none;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.phone-field {
+  flex: 1;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  box-shadow: 
-    0 0 0 3px rgba(255, 208, 0, 0.3),
-    0 0 0 8px rgba(10, 28, 54, 0.9),
-    0 0 0 11px rgba(0, 194, 255, 0.25),
-    0 24px 50px rgba(0, 0, 0, 0.85),
-    inset 0 4px 15px rgba(0, 0, 0, 0.6);
+  border: none !important;
+  background: transparent !important;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.12em;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.phone-field::placeholder {
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.input-err {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #EF4444;
+  min-height: 18px;
+  text-align: center;
+}
+
+/* Primary Action Button: BOLD, POWERFUL, GO WASH COBALT WITH SAUDI GOLD BASE */
+.btn-primary-action {
+  width: 100%;
+  height: 58px;
+  background: linear-gradient(135deg, #0066FF 0%, #0047AB 100%);
+  color: var(--c-white);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 4px solid #D4AF37;
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 1.18rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 40% 40%, #102746 0%, #061325 100%);
-  overflow: hidden;
+  gap: 8px;
+  box-shadow: 0 8px 30px rgba(0, 102, 255, 0.5);
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  margin-top: var(--s-8);
+}
+
+.btn-primary-action:hover {
+  background: linear-gradient(135deg, #0284C7 0%, #0052CC 100%);
+  box-shadow: 0 10px 36px rgba(0, 102, 255, 0.65), 0 0 18px rgba(212, 175, 55, 0.5);
+}
+
+.btn-primary-action:active {
+  transform: scale(0.99);
+}
+
+.btn-primary-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.entry-hint {
+  font-size: 0.76rem;
+  color: var(--c-slate-400);
+  text-align: center;
+  margin-top: var(--s-12);
+}
+
+/* Existing Participant State (Polite, No Error) */
+.existing-state-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--s-12);
+  padding: var(--s-24) 0;
+}
+
+.existing-greeting {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--c-white);
+}
+
+.existing-sub {
+  font-size: 0.95rem;
+  color: var(--c-slate-400);
+  line-height: 1.5;
+  margin-bottom: var(--s-8);
+}
+
+/* Transition State */
+.transition-state-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--s-16);
+  padding: var(--s-32) 0;
+}
+
+.transition-indicator {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.12);
+  border-top-color: var(--c-blue-brand);
+  border-radius: 50%;
+  animation: rotateSpinner 0.75s linear infinite;
+}
+
+@keyframes rotateSpinner {
+  to { transform: rotate(360deg); }
+}
+
+.transition-text {
+  font-size: 0.95rem;
+  color: var(--c-slate-200);
+}
+
+/* --------------------------------------------------------------------------
+   2. Spin Screen (Wheel as Mittelpunkt / Centerpiece)
+   -------------------------------------------------------------------------- */
+.spin-view {
+  padding-top: var(--s-8);
+}
+
+.spin-intro {
+  text-align: center;
+  margin-bottom: var(--s-24);
+}
+
+.spin-headline {
+  font-size: clamp(1.75rem, 5.5vw, 2.2rem);
+  font-weight: 900;
+  color: var(--c-white);
+  line-height: 1.2;
+  margin-bottom: var(--s-4);
+}
+
+.spin-subline {
+  font-size: 0.9rem;
+  color: var(--c-slate-400);
+}
+
+/* Wheel Stage Wrap */
+.wheel-stage-wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wheel-canvas-container {
+  position: relative;
+  width: min(350px, 86vw);
+  height: min(350px, 86vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #wheelCanvas {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   display: block;
+  border-radius: 50%;
 }
 
-/* Wheel Center Cap (Embossed Luxury Hub) */
-.wheel-center-cap {
+/* Center Cap: BOLD SAUDI EMERALD & GOLD MEDALLION */
+.wheel-hub-cap {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 88px;
-  height: 88px;
+  width: 74px;
+  height: 74px;
+  background: #04090E;
+  border: 3px solid #006C35;
+  box-shadow: 0 0 0 3px #D4AF37, 0 8px 24px rgba(0, 0, 0, 0.85);
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #1F4275 0%, #0A1932 70%, #050E1D 100%);
-  border: 4px solid #FFD000;
-  box-shadow: 
-    0 0 20px rgba(255, 208, 0, 0.55),
-    inset 0 2px 6px rgba(255, 255, 255, 0.5),
-    inset 0 -3px 8px rgba(0, 0, 0, 0.8),
-    0 10px 24px rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 30;
   pointer-events: none;
+  z-index: 5;
 }
 
-.cap-brand {
-  font-size: 0.68rem;
+.hub-brand {
+  font-size: 0.62rem;
   font-weight: 900;
-  letter-spacing: 1px;
-  color: #FFF;
+  color: #38BDF8;
+  letter-spacing: 0.08em;
   line-height: 1;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
-.cap-year {
+.hub-number {
   font-size: 1.25rem;
   font-weight: 900;
-  color: var(--gw-orange-bright);
-  line-height: 1.1;
-  text-shadow: 0 0 10px var(--gw-orange-glow);
+  color: #FFFFFF;
+  line-height: 1;
+  margin-top: 2px;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
 }
 
-/* --------------------------------------------------------------------------
-   Spin CTA & Actions (The Main Magnet)
-   -------------------------------------------------------------------------- */
-.wheel-action-area {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 22px;
+/* Mechanical Gauge Pointer (Top Center) */
+.wheel-pointer-assembly {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
+  transition: transform 0.07s ease;
 }
 
-.btn-spin-hero {
-  position: relative;
+.wheel-pointer-assembly.is-ticking {
+  transform: translateX(-50%) rotate(-7deg);
+}
+
+/* Perimeter Dial Ticks */
+.wheel-bezel-ticks {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(366px, 90vw);
+  height: min(366px, 90vw);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Spin Controls Zone */
+.wheel-action-zone {
   width: 100%;
   max-width: 350px;
-  padding: 17px 30px;
-  background: linear-gradient(135deg, #FF7A00 0%, #FF5500 50%, #D43800 100%);
-  color: #FFFFFF;
-  border: none;
-  border-radius: var(--radius-full);
-  font-family: inherit;
-  font-size: 1.4rem;
-  font-weight: 900;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  box-shadow: 
-    0 12px 32px -4px rgba(255, 102, 0, 0.6),
-    0 0 0 2px rgba(255, 255, 255, 0.3),
-    inset 0 1px 2px rgba(255, 255, 255, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  overflow: hidden;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, filter 0.2s ease;
-}
-
-/* Animated Light Sweep Shimmer */
-.btn-spin-hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 70%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-25deg);
-  animation: btnSweep 3.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes btnSweep {
-  0% { left: -120%; }
-  35%, 100% { left: 160%; }
-}
-
-.btn-spin-hero:hover:not(:disabled) {
-  transform: translateY(-3px) scale(1.025);
-  box-shadow: 
-    0 16px 38px -4px rgba(255, 102, 0, 0.75),
-    0 0 0 3px rgba(255, 255, 255, 0.45);
-}
-
-.btn-spin-hero:active:not(:disabled) {
-  transform: translateY(1px) scale(0.98);
-}
-
-.btn-spin-hero:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  filter: grayscale(0.3);
-  box-shadow: none;
-}
-
-.btn-spin-arrow {
-  font-size: 1.5rem;
-  line-height: 1;
-  display: inline-block;
-  transition: transform 0.2s ease;
-}
-
-.btn-spin-hero:hover:not(:disabled) .btn-spin-arrow {
-  transform: rotate(25deg);
-}
-
-.spin-sub-notice {
-  margin-top: 14px;
-  font-size: 0.86rem;
-  color: var(--gw-muted);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.notice-dot {
-  opacity: 0.4;
-}
-
-.btn-recover-link {
-  background: none;
-  border: none;
-  color: var(--gw-blue-electric);
-  font-family: inherit;
-  font-size: 0.86rem;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  cursor: pointer;
-  padding: 0;
-  transition: color 0.2s ease, text-shadow 0.2s ease;
-}
-
-.btn-recover-link:hover {
-  color: #FFF;
-  text-shadow: 0 0 10px var(--gw-blue-glow);
-}
-
-.spin-status-banner {
-  margin-top: 12px;
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--gw-silver);
-  min-height: 24px;
-  transition: all 0.2s ease;
-}
-
-.spin-status-banner.error {
-  color: #F87171;
-  text-shadow: 0 0 10px rgba(248, 113, 113, 0.3);
-}
-
-/* --------------------------------------------------------------------------
-   3. Winner Persistent Ticket Section (VIP Perforated Voucher)
-   -------------------------------------------------------------------------- */
-.winner-ticket-section {
-  width: 100%;
-  margin-top: 16px;
-  animation: fadeInTicket 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeInTicket {
-  from { opacity: 0; transform: translateY(18px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.vip-ticket {
-  background: linear-gradient(145deg, rgba(16, 42, 78, 0.95), rgba(7, 20, 38, 0.98));
-  border: 1.5px solid rgba(0, 194, 255, 0.45);
-  border-radius: var(--radius-lg);
-  box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.7),
-    0 0 30px rgba(0, 194, 255, 0.25),
-    inset 0 1px 2px rgba(255, 255, 255, 0.2);
-  padding: 24px 22px;
-  position: relative;
-  overflow: hidden;
-}
-
-.vip-ticket::before {
-  content: "96";
-  position: absolute;
-  bottom: -35px;
-  left: -20px;
-  font-size: 10rem;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.025);
-  pointer-events: none;
-  line-height: 1;
-  font-family: 'Cairo', sans-serif;
-}
-
-.ticket-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-  padding-bottom: 14px;
-  margin-bottom: 16px;
-}
-
-.ticket-badge {
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: var(--nd-gold-accent);
-  text-shadow: 0 0 10px var(--nd-gold-glow);
-}
-
-.ticket-status-live {
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: var(--nd-green-bright);
-  background: rgba(16, 185, 129, 0.18);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
-}
-
-.ticket-status-live.redeemed {
-  color: #60A5FA;
-  background: rgba(96, 165, 250, 0.18);
-  border-color: rgba(96, 165, 250, 0.4);
-}
-
-.ticket-status-live.expired {
-  color: #94A3B8;
-  background: rgba(148, 163, 184, 0.18);
-  border-color: rgba(148, 163, 184, 0.4);
-}
-
-.ticket-status-live.cancelled {
-  color: #F87171;
-  background: rgba(248, 113, 113, 0.18);
-  border-color: rgba(248, 113, 113, 0.4);
-}
-
-.ticket-kicker {
-  font-size: 0.88rem;
-  color: var(--gw-muted);
-  font-weight: 700;
-}
-
-.ticket-prize-name {
-  font-size: clamp(2rem, 6.5vw, 2.7rem);
-  font-weight: 900;
-  color: #FFFFFF;
-  line-height: 1.2;
-  margin: 4px 0;
-  background: linear-gradient(180deg, #FFFFFF 40%, #FFE259 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 12px rgba(255, 226, 89, 0.4));
-}
-
-.ticket-prize-sub {
-  font-size: 0.95rem;
-  color: var(--gw-silver);
-  margin-bottom: 18px;
-}
-
-/* Luxury Promo Code Box */
-.ticket-code-card {
-  background: rgba(3, 10, 20, 0.7);
-  border: 1.5px dashed rgba(255, 208, 0, 0.4);
-  border-radius: var(--radius-md);
-  padding: 14px 16px;
-  margin-bottom: 18px;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.code-label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 1.4px;
-  color: var(--gw-muted);
-  margin-bottom: 6px;
-}
-
-.code-value-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.code-value {
-  font-family: 'SF Mono', 'Courier New', monospace;
-  font-size: 1.5rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: var(--nd-gold-accent);
-  user-select: all;
-  text-shadow: 0 0 12px var(--nd-gold-glow);
-}
-
-.btn-ticket-copy {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #FFF;
-  border-radius: var(--radius-sm);
-  padding: 9px 16px;
-  font-family: inherit;
-  font-size: 0.88rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
-}
-
-.btn-ticket-copy:hover {
-  background: var(--gw-blue-electric);
-  border-color: var(--gw-blue-electric);
-  color: #030914;
-  box-shadow: 0 0 16px var(--gw-blue-glow);
-}
-
-.ticket-actions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  margin-top: var(--s-24);
+  gap: var(--s-12);
 }
 
-/* WhatsApp Booking CTA */
-.btn-whatsapp-ticket,
-.btn-celebrate-whatsapp {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: linear-gradient(135deg, #25D366 0%, #1EBE5D 100%);
-  color: #FFFFFF;
-  text-decoration: none;
+.btn-spin-action {
+  width: 100%;
+  height: 58px;
+  background: linear-gradient(135deg, #FF5500 0%, #D84000 100%);
+  color: var(--c-white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 4px solid #D4AF37;
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 1.22rem;
   font-weight: 900;
-  font-size: 1.1rem;
-  padding: 15px 22px;
-  border-radius: var(--radius-full);
-  box-shadow: 
-    0 10px 24px -3px rgba(37, 211, 102, 0.5),
-    inset 0 1px 2px rgba(255, 255, 255, 0.35);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-whatsapp-ticket:hover,
-.btn-celebrate-whatsapp:hover {
-  background: linear-gradient(135deg, #28E06C 0%, #20BA5A 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px -3px rgba(37, 211, 102, 0.65);
-}
-
-.btn-whatsapp-ticket:active,
-.btn-celebrate-whatsapp:active {
-  transform: translateY(1px);
-}
-
-.ticket-sub-actions,
-.celebration-sub-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.btn-ticket-share,
-.btn-celebrate-share {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #FFF;
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 0.9rem;
-  padding: 11px 16px;
-  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
   cursor: pointer;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  box-shadow: 0 8px 32px rgba(255, 85, 0, 0.55);
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
 }
 
-.btn-ticket-share:hover,
-.btn-celebrate-share:hover {
-  background: rgba(0, 194, 255, 0.22);
-  border-color: var(--gw-blue-electric);
-  color: #FFF;
-  transform: translateY(-1px);
-  box-shadow: 0 0 18px var(--gw-blue-glow);
+.btn-spin-action:hover {
+  background: linear-gradient(135deg, #FF661A 0%, #FF5500 100%);
+  box-shadow: 0 10px 38px rgba(255, 85, 0, 0.7), 0 0 16px rgba(212, 175, 55, 0.5);
 }
 
-.btn-ticket-how,
-.btn-celebrate-how {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--gw-silver);
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 0.9rem;
-  padding: 11px 16px;
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: all 0.2s ease;
+.btn-spin-action:active {
+  transform: scale(0.99);
+}
+
+.btn-spin-action:disabled {
+  background: #334155;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Micro-flow: 01 لف · 02 اربح · 03 استخدم (No Cards) */
+.campaign-micro-flow {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--s-8);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--c-slate-400);
 }
 
-.btn-ticket-how:hover,
-.btn-celebrate-how:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #FFF;
-  border-color: rgba(255, 255, 255, 0.4);
+.flow-dot {
+  color: rgba(255, 255, 255, 0.15);
 }
 
-.ticket-status-notice {
-  margin-top: 14px;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
+.spin-status-message {
   font-size: 0.88rem;
   font-weight: 700;
+  color: #38BDF8;
+  min-height: 22px;
   text-align: center;
-  border: 1px solid transparent;
 }
 
-.ticket-status-notice.redeemed {
-  background: rgba(96, 165, 250, 0.14);
-  border-color: rgba(96, 165, 250, 0.35);
-  color: #93C5FD;
-}
-
-.ticket-status-notice.expired {
-  background: rgba(148, 163, 184, 0.14);
-  border-color: rgba(148, 163, 184, 0.35);
-  color: #CBD5E1;
-}
-
-.ticket-status-notice.cancelled {
-  background: rgba(248, 113, 113, 0.14);
-  border-color: rgba(248, 113, 113, 0.35);
-  color: #FCA5A5;
-}
-
-.ticket-meta {
-  margin-top: 16px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.82rem;
-  color: var(--gw-muted);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 12px;
-}
-
-.ticket-meta strong {
-  color: var(--gw-silver);
+.spin-status-message.error {
+  color: #EF4444;
 }
 
 /* --------------------------------------------------------------------------
-   4. How to Use (Interactive Mini Timeline)
+   3. Campaign Pass (Winner & Result Experience)
    -------------------------------------------------------------------------- */
-.how-to-use-section {
+.pass-view {
+  padding-top: var(--s-8);
+  gap: var(--s-24);
+}
+
+.campaign-vip-pass {
+  position: relative;
   width: 100%;
-  margin-top: 28px;
+  background: var(--c-white);
+  color: var(--c-slate-900);
+  border-radius: var(--r-md);
+  padding: var(--s-24);
+  box-shadow: var(--sh-elevated);
+  overflow: hidden;
+  text-align: right;
+  border-top: 4px solid var(--c-saudi-green);
 }
 
-.how-to-use-header {
-  margin-bottom: 12px;
+.pass-watermark-96 {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: 150px;
+  line-height: 0.7;
+  color: rgba(0, 108, 53, 0.04);
+  pointer-events: none;
+  user-select: none;
 }
 
-.how-badge {
-  display: inline-block;
+.pass-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--c-slate-200);
+  padding-bottom: var(--s-12);
+  margin-bottom: var(--s-16);
+}
+
+.pass-type-tag {
+  display: flex;
+  align-items: center;
+  gap: var(--s-6);
   font-size: 0.82rem;
   font-weight: 800;
-  color: var(--gw-silver);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  padding: 4px 14px;
-  border-radius: var(--radius-full);
+  color: var(--c-saudi-green);
 }
 
-.steps-mini-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: rgba(10, 28, 54, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 12px 18px;
-  border-radius: var(--radius-full);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(10px);
+.pass-status-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--c-saudi-green);
+  background: var(--c-saudi-green-tint);
+  padding: 3px var(--s-8);
+  border-radius: var(--r-xs);
 }
 
-.step-mini-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.pass-status-badge.redeemed {
+  color: #475569;
+  background: #E2E8F0;
 }
 
-.step-num {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--gw-blue-electric) 0%, var(--gw-blue-primary) 100%);
-  color: #030914;
-  font-weight: 900;
-  font-size: 0.82rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 10px var(--gw-blue-glow);
+.pass-status-badge.expired,
+.pass-status-badge.cancelled {
+  color: #DC2626;
+  background: #FEE2E2;
 }
 
-.step-label {
+.pass-kicker {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--gw-silver);
-  white-space: nowrap;
+  color: var(--c-slate-400);
+  margin-bottom: var(--s-4);
 }
 
-.step-arrow {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 0.95rem;
+.pass-prize-heading {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: var(--c-blue-deep);
+  line-height: 1.15;
+  margin-bottom: var(--s-4);
 }
 
-/* --------------------------------------------------------------------------
-   5. Two Cars Secondary Offer (Luxury Gold Strip)
-   -------------------------------------------------------------------------- */
-.two-cars-strip {
-  width: 100%;
-  margin-top: 24px;
+.pass-prize-caption {
+  font-size: 0.9rem;
+  color: var(--c-slate-700);
+  line-height: 1.4;
+  margin-bottom: var(--s-20);
 }
 
-.offer-compact-box {
-  background: linear-gradient(135deg, rgba(255, 208, 0, 0.14) 0%, rgba(10, 28, 54, 0.9) 100%);
-  border: 1px solid rgba(255, 208, 0, 0.4);
-  border-radius: var(--radius-md);
-  padding: 16px 20px;
+/* Promo Code Strip: Monospace Numeral Treatment */
+.pass-code-strip {
+  background: var(--c-slate-100);
+  border: 1px solid var(--c-slate-200);
+  border-radius: var(--r-sm);
+  padding: var(--s-16);
+  margin-bottom: var(--s-20);
+}
+
+.pass-code-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--c-slate-400);
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: var(--s-6);
+}
+
+.pass-code-value-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  text-align: right;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  gap: var(--s-12);
 }
 
-.offer-tag {
-  display: inline-block;
-  font-size: 0.76rem;
+.pass-code-numeral {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.25rem;
   font-weight: 800;
-  color: var(--nd-gold-accent);
-  margin-bottom: 3px;
-  text-shadow: 0 0 8px var(--nd-gold-glow);
+  letter-spacing: 0.08em;
+  color: var(--c-slate-900);
 }
 
-.offer-title {
-  font-size: 0.98rem;
+.btn-copy-action {
+  background: var(--c-navy-dark);
+  color: var(--c-white);
+  border: none;
+  border-radius: var(--r-xs);
+  padding: var(--s-8) var(--s-16);
+  font-family: inherit;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: #FFF;
-  line-height: 1.35;
-}
-
-.offer-title strong {
-  color: var(--nd-gold-accent);
-  font-size: 1.15rem;
-}
-
-.btn-compact-offer {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #FFE259 0%, #FFA700 100%);
-  color: #030914;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 900;
-  padding: 10px 18px;
-  border-radius: var(--radius-full);
+  cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 6px 18px rgba(255, 208, 0, 0.4);
+  transition: background-color 0.2s ease;
 }
 
-.btn-compact-offer:hover {
-  background: #FFF;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 208, 0, 0.6);
+.btn-copy-action:hover {
+  background: var(--c-blue-brand);
 }
 
-.offer-nonstackable-hint {
-  font-size: 0.78rem;
-  color: var(--gw-muted);
-  margin-top: 8px;
-  text-align: center;
-}
-
-/* --------------------------------------------------------------------------
-   6. Social Strip
-   -------------------------------------------------------------------------- */
-.social-strip {
-  width: 100%;
-  margin-top: 28px;
+/* QR Code Section */
+.pass-qr-box {
+  margin-top: var(--s-16);
+  padding-top: var(--s-16);
+  border-top: 1px dashed var(--c-slate-200);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: var(--s-8);
 }
 
-.social-strip-label {
-  font-size: 0.86rem;
-  font-weight: 700;
-  color: var(--gw-muted);
-  letter-spacing: 0.4px;
+.qr-border-wrap {
+  background: #FFFFFF;
+  padding: 6px;
+  border: 1px solid var(--c-slate-200);
+  border-radius: var(--r-xs);
 }
 
-.social-icons-row {
+.qr-caption {
+  font-size: 0.76rem;
+  color: var(--c-slate-400);
+  text-align: center;
+}
+
+/* Pass Action Buttons */
+.pass-action-buttons {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  gap: var(--s-12);
+  margin-bottom: var(--s-16);
 }
 
-.social-icon-btn {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #FFF;
-  text-decoration: none;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.social-icon-btn.whatsapp:hover {
-  background: #25D366;
-  border-color: #25D366;
-  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
-  transform: translateY(-3px);
-}
-
-.social-icon-btn.instagram:hover {
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-  border-color: transparent;
-  box-shadow: 0 8px 24px rgba(214, 36, 159, 0.5);
-  transform: translateY(-3px);
-}
-
-.social-icon-btn.tiktok:hover {
-  background: #000;
-  border-color: #00f2fe;
-  box-shadow: 0 0 16px rgba(0, 242, 254, 0.6);
-  transform: translateY(-3px);
-}
-
-/* --------------------------------------------------------------------------
-   7. Footer
-   -------------------------------------------------------------------------- */
-.event-footer {
+.btn-whatsapp-action {
   width: 100%;
-  margin-top: 32px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  height: 50px;
+  background: #25D366;
+  color: #FFFFFF;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.95rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.45);
+  gap: var(--s-8);
+  transition: background-color 0.2s ease;
 }
 
-.footer-simple-content {
+.btn-whatsapp-action:hover {
+  background: #20BA5A;
+}
+
+.pass-dual-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-12);
+}
+
+.btn-secondary-action {
+  height: 44px;
+  background: transparent;
+  color: var(--c-slate-900);
+  border: 1px solid var(--c-slate-200);
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  transition: background-color 0.2s ease;
 }
 
-.footer-dot {
-  opacity: 0.4;
+.btn-secondary-action:hover {
+  background: var(--c-slate-100);
+}
+
+.pass-status-notice {
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: var(--s-12);
+  border-radius: var(--r-xs);
+  margin-bottom: var(--s-12);
+  text-align: center;
+}
+
+.pass-status-notice.redeemed {
+  background: #E2E8F0;
+  color: #334155;
+}
+
+.pass-status-notice.expired {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+.pass-status-notice.cancelled {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.pass-meta-row {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--c-slate-200);
+  padding-top: var(--s-12);
+  font-size: 0.78rem;
+  color: var(--c-slate-400);
+}
+
+/* How to Use (Minimalistic Row) */
+.usage-summary-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--s-16) var(--s-12);
+  background: var(--c-navy-dark);
+  border: 1px solid var(--c-navy-border);
+  border-radius: var(--r-sm);
+}
+
+.usage-item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-6);
+}
+
+.usage-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--c-orange-brand);
+}
+
+.usage-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--c-slate-200);
+}
+
+.usage-sep {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.9rem;
+}
+
+/* Two Cars Offer (Secondary, Compact, Elegant) */
+.two-cars-banner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-16);
+  padding: var(--s-16);
+  background: var(--c-navy-dark);
+  border: 1px solid rgba(0, 108, 53, 0.35);
+  border-radius: var(--r-sm);
+  text-align: right;
+}
+
+.two-cars-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.two-cars-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--c-saudi-green-accent);
+}
+
+.two-cars-title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--c-white);
+}
+
+.two-cars-desc {
+  font-size: 0.8rem;
+  color: var(--c-slate-400);
+}
+
+.btn-two-cars {
+  background: var(--c-saudi-green);
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: var(--s-8) var(--s-16);
+  border-radius: var(--r-xs);
+  font-size: 0.88rem;
+  font-weight: 800;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.btn-two-cars:hover {
+  background: var(--c-saudi-green-accent);
 }
 
 /* --------------------------------------------------------------------------
-   Modals (Elite Dialog Architecture)
+   4. Social Channels & Minimal Footer
    -------------------------------------------------------------------------- */
-.modal-dialog {
+.campaign-social-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-12);
+  margin-top: var(--s-32);
+}
+
+.social-tag {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--c-slate-400);
+}
+
+.social-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-12);
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-xs);
+  background: var(--c-navy-dark);
+  border: 1px solid var(--c-navy-border);
+  color: var(--c-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.social-btn:hover {
+  background: var(--c-navy-hover);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.campaign-footer {
+  margin-top: var(--s-32);
+  padding-top: var(--s-16);
+  border-top: 1px solid var(--c-navy-border);
+  width: 100%;
+  text-align: center;
+}
+
+.footer-meta {
+  font-size: 0.76rem;
+  color: var(--c-slate-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-8);
+}
+
+.footer-divider {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   Modal Dialogs (Clean, Mobile-First)
+   -------------------------------------------------------------------------- */
+.campaign-dialog {
   border: none;
   background: transparent;
-  padding: 16px;
-  max-width: 460px;
-  width: 94vw;
+  padding: var(--s-16);
   margin: auto;
+  max-width: 420px;
+  width: 100%;
+  outline: none;
 }
 
-.modal-dialog::backdrop {
-  background: rgba(3, 9, 20, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+.campaign-dialog::backdrop {
+  background: rgba(5, 11, 20, 0.85);
 }
 
-.terms-modal-card,
-.modal-celebration-card,
-.recover-modal-card {
-  background: linear-gradient(160deg, #0C2344 0%, #06152B 100%);
-  border: 1.5px solid rgba(0, 194, 255, 0.4);
-  border-radius: var(--radius-lg);
-  padding: 26px 22px;
-  color: #FFF;
-  box-shadow: 
-    0 24px 60px rgba(0, 0, 0, 0.85),
-    0 0 35px rgba(0, 194, 255, 0.25),
-    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+.dialog-inner {
   position: relative;
+  background: var(--c-navy-surface);
+  border: 1px solid var(--c-navy-border);
+  border-radius: var(--r-md);
+  padding: var(--s-24);
+  color: var(--c-white);
   text-align: right;
-  animation: modalPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--sh-elevated);
 }
 
-@keyframes modalPopIn {
-  from {
-    opacity: 0;
-    transform: scale(0.92) translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.modal-close-icon {
+.dialog-close {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  background: rgba(255, 255, 255, 0.1);
+  top: var(--s-16);
+  left: var(--s-16);
+  background: transparent;
   border: none;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  color: #FFF;
-  font-size: 1.15rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: var(--c-slate-400);
+  font-size: 1.2rem;
+  line-height: 1;
   cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 4px;
 }
 
-.modal-close-icon:hover {
-  background: rgba(255, 255, 255, 0.22);
-  transform: rotate(90deg);
+.dialog-close:hover {
+  color: var(--c-white);
 }
 
-.modal-event-head {
-  text-align: center;
-  margin-bottom: 20px;
+.dialog-masthead {
+  margin-bottom: var(--s-16);
 }
 
-.modal-badge-nd {
-  display: inline-block;
-  font-size: 0.82rem;
+.dialog-pill {
+  font-size: 0.74rem;
   font-weight: 800;
-  color: var(--nd-gold-accent);
-  background: rgba(255, 208, 0, 0.12);
-  border: 1px solid rgba(255, 208, 0, 0.35);
-  padding: 4px 14px;
-  border-radius: var(--radius-full);
-  margin-bottom: 8px;
-  box-shadow: 0 0 12px var(--nd-gold-glow);
+  color: var(--c-orange-brand);
+  background: var(--c-orange-tint);
+  padding: 2px var(--s-8);
+  border-radius: var(--r-xs);
+  display: inline-block;
+  margin-bottom: var(--s-6);
 }
 
-.modal-title-bold {
-  font-size: 1.55rem;
+.dialog-h3 {
+  font-size: 1.35rem;
   font-weight: 900;
-  color: #FFF;
+  color: var(--c-white);
 }
 
-.modal-subtext {
+.dialog-subtitle {
   font-size: 0.88rem;
-  color: var(--gw-muted);
-  margin-top: 6px;
+  color: var(--c-slate-400);
+  margin-top: var(--s-4);
+}
+
+.dialog-scrollable {
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--c-navy-black);
+  border: 1px solid var(--c-navy-border);
+  border-radius: var(--r-xs);
+  padding: var(--s-16);
+  margin-bottom: var(--s-20);
+}
+
+.dialog-terms-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+  font-size: 0.85rem;
+  color: var(--c-slate-400);
   line-height: 1.5;
 }
 
-/* Modal Form Controls */
-.modal-entry-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.dialog-terms-list strong {
+  color: var(--c-white);
 }
 
-.form-group-event {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.dialog-btn-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--s-12);
 }
 
-.form-label-event {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--gw-silver);
-}
-
-.form-input-event {
-  width: 100%;
-  background: rgba(3, 10, 20, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-md);
-  padding: 13px 16px;
+.btn-dialog-agree {
+  height: 48px;
+  background: var(--c-blue-brand);
+  color: var(--c-white);
+  border: none;
+  border-radius: var(--r-sm);
   font-family: inherit;
-  font-size: 1.05rem;
-  color: #FFF;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-input-event:focus {
-  border-color: var(--gw-blue-electric);
-  box-shadow: 0 0 0 4px rgba(0, 194, 255, 0.25);
-}
-
-.phone-box-event {
-  display: flex;
-  align-items: center;
-  background: rgba(3, 10, 20, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.phone-box-event:focus-within {
-  border-color: var(--gw-blue-electric);
-  box-shadow: 0 0 0 4px rgba(0, 194, 255, 0.25);
-}
-
-.phone-flag {
-  padding: 0 14px;
   font-size: 0.95rem;
   font-weight: 800;
-  color: var(--gw-silver);
-  background: rgba(255, 255, 255, 0.06);
-  border-right: 1px solid rgba(255, 255, 255, 0.15);
-  height: 50px;
-  display: flex;
-  align-items: center;
-}
-
-.phone-inner {
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  height: 50px;
-  padding: 0 14px;
-  letter-spacing: 1px;
-}
-
-.field-error {
-  font-size: 0.82rem;
-  color: #F87171;
-  font-weight: 700;
-  min-height: 18px;
-}
-
-/* Full Terms Box inside Modal */
-.terms-full-box,
-.terms-mini-box {
-  background: rgba(3, 10, 20, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-md);
-  padding: 14px 16px;
-  max-height: 240px;
-  overflow-y: auto;
-}
-
-.terms-version-heading {
-  font-size: 0.86rem;
-  font-weight: 800;
-  color: var(--nd-gold-accent);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.terms-official-list {
-  font-size: 0.82rem;
-  color: var(--gw-silver);
-  line-height: 1.65;
-  padding-right: 18px;
-  text-align: right;
-}
-
-.terms-official-list li {
-  margin-bottom: 7px;
-}
-
-.terms-official-list strong {
-  color: #FFF;
-}
-
-.modal-action-row {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.btn-modal-agree,
-.btn-modal-spin {
-  flex: 2;
-  background: linear-gradient(135deg, #FF7A00 0%, #D43800 100%);
-  color: #FFF;
-  border: none;
-  border-radius: var(--radius-full);
-  font-family: inherit;
-  font-size: 1.15rem;
-  font-weight: 900;
-  padding: 14px 20px;
   cursor: pointer;
-  box-shadow: 0 10px 24px -3px rgba(255, 102, 0, 0.55);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn-modal-agree:hover,
-.btn-modal-spin:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px -3px rgba(255, 102, 0, 0.7);
+.btn-dialog-agree:hover {
+  background: var(--c-blue-deep);
 }
 
-.btn-modal-decline,
-.btn-modal-cancel {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--gw-silver);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-full);
+.btn-dialog-decline {
+  height: 48px;
+  background: transparent;
+  color: var(--c-slate-400);
+  border: 1px solid var(--c-navy-border);
+  border-radius: var(--r-sm);
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  padding: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.btn-modal-decline:hover,
-.btn-modal-cancel:hover {
-  background: rgba(255, 255, 255, 0.18);
-  color: #FFF;
+.btn-dialog-decline:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--c-white);
 }
 
-/* --------------------------------------------------------------------------
-   Winner Event Moment Celebration Modal
-   -------------------------------------------------------------------------- */
-.modal-celebration-card {
+/* Reward Moment Modal */
+.reward-moment-inner {
+  background: var(--c-white);
+  color: var(--c-slate-900);
   text-align: center;
 }
 
-.celebration-hero {
-  margin-bottom: 14px;
+.reward-moment-inner .dialog-close {
+  color: var(--c-slate-400);
 }
 
-.celebration-badge {
-  display: inline-block;
-  font-size: 0.88rem;
+.reward-moment-inner .dialog-close:hover {
+  color: var(--c-slate-900);
+}
+
+.reward-lead {
+  margin-bottom: var(--s-16);
+}
+
+.reward-brand-tag {
+  font-size: 0.78rem;
   font-weight: 800;
-  color: var(--nd-gold-accent);
-  background: rgba(255, 208, 0, 0.15);
-  border: 1px solid rgba(255, 208, 0, 0.4);
-  padding: 4px 16px;
-  border-radius: var(--radius-full);
-  box-shadow: 0 0 14px var(--nd-gold-glow);
+  color: var(--c-blue-brand);
+  background: var(--c-blue-tint);
+  padding: 3px var(--s-12);
+  border-radius: var(--r-xs);
+  display: inline-block;
+  margin-bottom: var(--s-8);
 }
 
-.celebration-headline {
-  font-size: 2.35rem;
+.reward-title {
+  font-size: 2.2rem;
   font-weight: 900;
-  color: #FFF;
-  margin-top: 6px;
-  letter-spacing: -0.5px;
+  color: var(--c-slate-900);
+  line-height: 1.1;
 }
 
-.celebration-prize-hero {
-  background: radial-gradient(circle at center, rgba(0, 194, 255, 0.25) 0%, rgba(10, 28, 54, 0) 75%);
-  padding: 18px 12px;
-  margin-bottom: 16px;
+.reward-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--c-slate-400);
+}
+
+.reward-prize-block {
+  margin-bottom: var(--s-20);
 }
 
 .prize-percent-huge {
-  font-size: clamp(3.4rem, 13vw, 4.8rem);
+  font-size: 3.2rem;
   font-weight: 900;
+  color: var(--c-blue-deep);
   line-height: 1;
-  color: var(--nd-gold-accent);
-  text-shadow: 0 0 35px rgba(255, 208, 0, 0.65);
-  font-family: 'Cairo', sans-serif;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--s-6);
 }
 
 .prize-title-custom {
-  font-size: 1.65rem;
+  font-size: 1.8rem;
   font-weight: 900;
-  color: #FFF;
-  line-height: 1.25;
+  color: var(--c-navy-black);
+  line-height: 1.2;
 }
 
 .prize-sub-custom {
-  font-size: 0.98rem;
-  color: var(--gw-silver);
-  margin-top: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--c-slate-700);
 }
 
-.winning-ticket-card {
-  background: rgba(3, 10, 20, 0.7);
-  border: 1.5px dashed rgba(255, 208, 0, 0.45);
-  border-radius: var(--radius-md);
-  padding: 14px 16px;
-  margin-bottom: 18px;
+.reward-code-block {
+  background: var(--c-slate-100);
+  border: 1px solid var(--c-slate-200);
+  border-radius: var(--r-sm);
+  padding: var(--s-16);
+  margin-bottom: var(--s-20);
+  text-align: right;
 }
 
-.ticket-sub-label {
+.reward-code-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--c-slate-400);
+  letter-spacing: 0.08em;
   display: block;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 1.4px;
-  color: var(--gw-muted);
-  margin-bottom: 6px;
+  margin-bottom: var(--s-6);
 }
 
-.ticket-code-flex {
+.reward-code-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--s-12);
 }
 
-.ticket-code-big {
-  font-family: 'SF Mono', 'Courier New', monospace;
-  font-size: 1.5rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: var(--nd-gold-accent);
-  text-shadow: 0 0 12px var(--nd-gold-glow);
+.reward-code-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--c-slate-900);
+  letter-spacing: 0.08em;
 }
 
-.btn-copy-ticket {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #FFF;
-  border-radius: var(--radius-sm);
-  padding: 9px 16px;
-  font-family: inherit;
-  font-size: 0.88rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.btn-copy-ticket:hover {
-  background: var(--gw-blue-electric);
-  border-color: var(--gw-blue-electric);
-  color: #030914;
-}
-
-.celebration-actions {
+.reward-actions-row {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--s-12);
+  margin-bottom: var(--s-16);
 }
 
-.celebration-footer-note {
-  font-size: 0.8rem;
-  color: var(--gw-muted);
-  margin-top: 16px;
+.reward-dual-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-12);
+}
+
+.reward-note {
+  font-size: 0.78rem;
+  color: var(--c-slate-400);
 }
 
 /* Confetti Overlay */
-.confetti-canvas-overlay {
+.confetti-overlay {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 120;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
+  z-index: 100;
   display: none;
 }
 
-/* --------------------------------------------------------------------------
-   App Toast Feedback
-   -------------------------------------------------------------------------- */
-.app-toast {
+/* Toast Message */
+.campaign-toast {
   position: fixed;
-  bottom: 28px;
+  bottom: var(--s-24);
   left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: rgba(7, 22, 44, 0.96);
-  border: 1.5px solid var(--gw-blue-electric);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px var(--gw-blue-glow);
-  color: #FFFFFF;
-  padding: 13px 26px;
-  border-radius: var(--radius-full);
-  font-size: 0.98rem;
-  font-weight: 800;
-  z-index: 99999;
-  pointer-events: none;
+  transform: translateX(-50%) translateY(30px);
+  background: var(--c-navy-dark);
+  color: var(--c-white);
+  border: 1px solid var(--c-navy-border);
+  padding: var(--s-12) var(--s-24);
+  border-radius: var(--r-xs);
+  font-size: 0.88rem;
+  font-weight: 700;
+  z-index: 150;
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-  backdrop-filter: blur(14px);
+  pointer-events: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  box-shadow: var(--sh-elevated);
+  white-space: nowrap;
 }
 
-.app-toast.is-visible {
-  transform: translateX(-50%) translateY(0);
+.campaign-toast.is-visible {
   opacity: 1;
-}
-
-/* Returning Customer Hero Layout */
-body.is-returning-customer .wheel-arena {
-  display: none !important;
-}
-
-body.is-returning-customer .winner-ticket-section {
-  margin-top: 8px;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* --------------------------------------------------------------------------
-   Prize QR Code Display
+   Mobile-First Responsive Nuances
    -------------------------------------------------------------------------- */
-.prize-qr-wrapper {
-  margin: 16px auto 10px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.prize-qr-box {
-  background: #FFFFFF;
-  padding: 10px;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px var(--gw-blue-glow);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.95);
-}
-
-.prize-qr-box img {
-  width: 140px;
-  height: 140px;
-  display: block;
-  border-radius: 6px;
-}
-
-.prize-qr-hint {
-  font-size: 0.8rem;
-  color: var(--gw-silver);
-  margin-top: 8px;
-  opacity: 0.95;
-  text-align: center;
-}
-
-/* --------------------------------------------------------------------------
-   Mobile Optimizations (<480px)
-   -------------------------------------------------------------------------- */
-@media (max-width: 480px) {
-  .event-wrapper {
-    padding: 14px 14px 32px 14px;
+@media (max-width: 380px) {
+  .campaign-stage {
+    padding: 0 var(--s-12) var(--s-32);
   }
-
-  .event-brand-mark {
-    width: 140px;
-    margin-bottom: 8px;
+  .wheel-canvas-container {
+    width: 290px;
+    height: 290px;
   }
-
-  .event-headline {
-    font-size: 2.25rem;
+  .wheel-bezel-ticks {
+    width: 304px;
+    height: 304px;
   }
-
-  .wheel-stage-container {
-    width: min(90vw, 350px);
-    height: min(90vw, 350px);
-  }
-
-  .btn-spin-hero {
-    font-size: 1.25rem;
-    padding: 15px 24px;
-  }
-
-  .code-value,
-  .ticket-code-big {
-    font-size: 1.3rem;
-  }
-
-  .offer-compact-box {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .btn-compact-offer {
-    align-self: stretch;
-    justify-content: center;
+  .pass-code-numeral,
+  .reward-code-display {
+    font-size: 1.05rem;
   }
 }

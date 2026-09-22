@@ -189,11 +189,38 @@ function redeemRateLimiter(maxRequests = 15, windowMs = 60000) {
   };
 }
 
+function entryRateLimiter(maxRequests = 20, windowMs = 60000) {
+  return (req, res, next) => {
+    if (process.env.NODE_ENV === 'test') return next();
+    const ip = req.ip || req.connection.remoteAddress || '127.0.0.1';
+    const key = hashIp(ip);
+    const now = Date.now();
+
+    let record = consentWindows.get('entry_' + key);
+    if (!record || (now - record.startTime > windowMs)) {
+      record = { count: 1, startTime: now };
+      consentWindows.set('entry_' + key, record);
+    } else {
+      record.count++;
+    }
+
+    if (record.count > maxRequests) {
+      return res.status(429).json({
+        success: false,
+        error: 'تم تجاوز الحد المسموح لمحاولات الدخول. يرجى الانتظار دقيقة.'
+      });
+    }
+
+    next();
+  };
+}
+
 module.exports = {
   apiRateLimiter,
   spinRateLimiter,
   loginRateLimiter,
   consentRateLimiter,
+  entryRateLimiter,
   redeemRateLimiter,
   hashIp
 };

@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Backend API Base URL Configuration for GitHub Pages & Railway Hosting
-  // When running on GitHub Pages (e.g. https://mcro25.github.io/gowash/),
-  // requests route to Railway Backend. In local dev, falls back to current origin.
   const API_BASE_URL = window.GOWASH_API_URL || 
     (window.location.hostname.includes('github.io') 
       ? "https://gowash-production.up.railway.app" 
@@ -31,25 +29,37 @@ document.addEventListener("DOMContentLoaded", () => {
     return res;
   }
 
-  // Elements
+  // Core Elements
   const spinBtn = document.getElementById("spinBtn");
   const spinBtnLabel = document.getElementById("spinBtnLabel");
   const spinStatusMsg = document.getElementById("spinStatusMsg");
   const campaignAlert = document.getElementById("campaignAlert");
 
-  // Terms & Entry Modal
+  // Entry Screen Elements
+  const entryScreenSection = document.getElementById("entryScreenSection");
+  const entryCard = document.getElementById("entryCard");
+  const entryForm = document.getElementById("entryForm");
+  const entryNameInput = document.getElementById("entryNameInput");
+  const entryPhoneInput = document.getElementById("entryPhoneInput");
+  const entrySubmitBtn = document.getElementById("entrySubmitBtn");
+  const entryBtnLabel = document.getElementById("entryBtnLabel");
+  const entryNameError = document.getElementById("entryNameError");
+  const entryPhoneError = document.getElementById("entryPhoneError");
+  const alreadyParticipatedCard = document.getElementById("alreadyParticipatedCard");
+  const existingParticipantName = document.getElementById("existingParticipantName");
+  const viewMyPrizeBtn = document.getElementById("viewMyPrizeBtn");
+  const entryTransitionCard = document.getElementById("entryTransitionCard");
+  const transitionParticipantName = document.getElementById("transitionParticipantName");
+
+  // Spin Screen Section Elements
+  const spinScreenSection = document.getElementById("spinScreenSection");
+  const spinGreetingTitle = document.getElementById("spinGreetingTitle");
+
+  // Terms Modal Elements
   const termsModal = document.getElementById("termsModal");
   const termsCloseIcon = document.getElementById("termsCloseIcon");
-  const termsStep1 = document.getElementById("termsStep1");
-  const termsStep2 = document.getElementById("termsStep2");
-  const acceptTermsBtn = document.getElementById("acceptTermsBtn");
   const declineTermsBtn = document.getElementById("declineTermsBtn");
-  const participantNameInput = document.getElementById("participantName");
-  const participantPhoneInput = document.getElementById("participantPhone");
-  const nameErrorMsg = document.getElementById("nameErrorMsg");
-  const phoneErrorMsg = document.getElementById("phoneErrorMsg");
-  const startSpinSubmitBtn = document.getElementById("startSpinSubmitBtn");
-  const backToTermsBtn = document.getElementById("backToTermsBtn");
+  const agreeAndSpinBtn = document.getElementById("agreeAndSpinBtn");
 
   // Wheel Arena Elements
   const wheelArena = document.getElementById("wheelArena");
@@ -101,8 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let hasUserWon = false;
   let currentWinningPrizeLabel = "خصم اليوم الوطني 96";
   const currentTermsVersion = "1.1";
-  let currentParticipantName = "";
-  let currentParticipantPhone = "";
+  let currentParticipant = null;
+  let cachedExistingPrize = null;
 
   let toastTimer = null;
   function showToast(message) {
@@ -200,20 +210,20 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         this.init();
         if (!this.ctx) return;
-        // Triumphal Royal Chords (C5, E5, G5, B5, C6)
-        const notes = [523.25, 659.25, 783.99, 987.77, 1046.5];
+        // Clean, elegant harmonic chords (C5, E5, G5, C6)
+        const notes = [523.25, 659.25, 783.99, 1046.5];
         notes.forEach((freq, idx) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
-          const startTime = this.ctx.currentTime + (idx * 0.1);
+          const startTime = this.ctx.currentTime + (idx * 0.09);
           osc.type = "sine";
           osc.frequency.setValueAtTime(freq, startTime);
-          gain.gain.setValueAtTime(0.28, startTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.75);
+          gain.gain.setValueAtTime(0.22, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.65);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(startTime);
-          osc.stop(startTime + 0.8);
+          osc.stop(startTime + 0.7);
         });
       } catch (e) {}
     },
@@ -243,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Visual Wheel Canvas Engine (High-DPI Retina + 3D Shaded Sectors + Metallic Studs)
+  // Visual Wheel Canvas Engine: Automotive Precision Dial
   class VisualWheel {
     constructor(canvasId, prizes) {
       this.canvas = document.getElementById(canvasId);
@@ -256,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       this.initDPI();
       this.draw();
-      this.initLedRing();
+      this.initDialTicks();
     }
 
     initDPI() {
@@ -267,43 +277,42 @@ document.addEventListener("DOMContentLoaded", () => {
       this.ctx.scale(dpr, dpr);
     }
 
-    initLedRing() {
+    initDialTicks() {
       const ring = document.getElementById("wheelLedRing");
       if (!ring) return;
       ring.innerHTML = "";
-      const totalDots = 20;
-      const radius = 228;
-      for (let i = 0; i < totalDots; i++) {
-        const dot = document.createElement("div");
-        dot.className = "led-dot";
-        const angle = (i / totalDots) * (2 * Math.PI);
+      const totalTicks = 36;
+      const radius = 184;
+      for (let i = 0; i < totalTicks; i++) {
+        const tick = document.createElement("div");
+        const angle = (i / totalTicks) * (2 * Math.PI);
         const x = Math.cos(angle) * radius;
         const y = Math.sin(angle) * radius;
-        dot.style.cssText = `
+        const deg = (angle * 180 / Math.PI) + 90;
+        const isMajor = i % 3 === 0;
+        tick.style.cssText = `
           position: absolute;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: #FFD000;
-          box-shadow: 0 0 10px #FFD000, 0 0 4px #FFF;
+          width: ${isMajor ? '2px' : '1px'};
+          height: ${isMajor ? '8px' : '5px'};
+          background: ${isMajor ? '#38BDF8' : 'rgba(255, 255, 255, 0.2)'};
           top: calc(50% + ${y}px - 4px);
-          left: calc(50% + ${x}px - 4px);
-          transition: all 0.18s ease;
+          left: calc(50% + ${x}px - 1px);
+          transform: rotate(${deg}deg);
         `;
-        ring.appendChild(dot);
+        ring.appendChild(tick);
       }
     }
 
     draw() {
       const center = this.size / 2;
-      const radius = center - 14;
+      const radius = center - 12;
 
       this.ctx.clearRect(0, 0, this.size, this.size);
       this.ctx.save();
       this.ctx.translate(center, center);
       this.ctx.rotate(this.rotation);
 
-      // 1. Draw Sectors with Rich 3D Gradients
+      // 1. Draw Sectors (Go Wash Blue, White, Saudi Green, and Signature Navy/Orange)
       for (let i = 0; i < this.num; i++) {
         const p = this.prizes[i];
         const start = i * this.arc;
@@ -314,135 +323,96 @@ document.addEventListener("DOMContentLoaded", () => {
         this.ctx.moveTo(0, 0);
         this.ctx.arc(0, 0, radius, start, end);
 
-        // Create specialized sector gradients based on prize identity
         const isGrand = p.id === 'signature_upgrade' || p.type === 'upgrade';
         const isGreen = p.color === '#006C35' || p.color === '#005429';
-        const isBlue = p.color === '#1D6FB8';
-
-        const grad = this.ctx.createRadialGradient(0, 0, 30, 0, 0, radius);
 
         if (isGrand) {
-          // Fiery Sunset Gold for Signature Grand Prize
-          grad.addColorStop(0, "#FF4D00");
-          grad.addColorStop(0.5, "#FF8C00");
-          grad.addColorStop(0.85, "#FFB800");
-          grad.addColorStop(1, "#FFE066");
+          // Signature: Deep Go Wash Navy with Electric Orange presence
+          this.ctx.fillStyle = "#07111E";
         } else if (isGreen) {
-          // Saudi Royal Emerald Green
-          grad.addColorStop(0, "#004722");
-          grad.addColorStop(0.6, "#006C35");
-          grad.addColorStop(1, "#0A8A48");
-        } else if (isBlue) {
-          // Go Wash Electric Sapphire
-          grad.addColorStop(0, "#082B54");
-          grad.addColorStop(0.55, "#105EA6");
-          grad.addColorStop(1, "#0099FF");
+          // Saudi Royal Green
+          this.ctx.fillStyle = "#006C35";
+        } else if (i % 2 === 0) {
+          // Go Wash Solid Blue
+          this.ctx.fillStyle = "#0052CC";
         } else {
-          // Midnight Obsidian Navy
-          grad.addColorStop(0, "#07172B");
-          grad.addColorStop(0.6, "#0E294B");
-          grad.addColorStop(1, "#183F72");
+          // Crisp White
+          this.ctx.fillStyle = "#FFFFFF";
         }
 
-        this.ctx.fillStyle = grad;
         this.ctx.fill();
 
-        // Subtle Inner Sector Bevel / Glow
-        this.ctx.save();
+        // Sector Divider Line: Clean hairline
         this.ctx.beginPath();
-        this.ctx.arc(0, 0, radius - 2, start + 0.01, end - 0.01);
-        this.ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+        this.ctx.moveTo(0, 0);
+        this.ctx.lineTo(Math.cos(start) * radius, Math.sin(start) * radius);
         this.ctx.lineWidth = 1.5;
-        this.ctx.stroke();
-        this.ctx.restore();
-
-        // Sector Divider Lines (Metallic Specular Edge)
-        this.ctx.beginPath();
-        this.ctx.moveTo(0, 0);
-        this.ctx.lineTo(Math.cos(start) * radius, Math.sin(start) * radius);
-        this.ctx.lineWidth = 2.8;
-        this.ctx.strokeStyle = "rgba(255, 235, 170, 0.4)";
+        this.ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
         this.ctx.stroke();
 
-        this.ctx.beginPath();
-        this.ctx.moveTo(0, 0);
-        this.ctx.lineTo(Math.cos(start) * radius, Math.sin(start) * radius);
-        this.ctx.lineWidth = 1;
-        this.ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
-        this.ctx.stroke();
-
-        // 2. Sector Typography (High-Contrast Bold with Drop Shadow)
+        // Sector Typography
         this.ctx.save();
         this.ctx.rotate(midAngle);
         this.ctx.textAlign = "right";
         this.ctx.textBaseline = "middle";
 
-        // Text Drop Shadow
-        this.ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
-        this.ctx.shadowBlur = 8;
-        this.ctx.shadowOffsetX = 1;
-        this.ctx.shadowOffsetY = 2;
+        const isWhiteSector = !isGrand && !isGreen && (i % 2 !== 0);
 
         if (isGrand) {
-          // Grand Prize: Crown Icon + Bold Signature
-          this.ctx.fillStyle = "#FFFFFF";
+          this.ctx.fillStyle = "#FF5500";
           this.ctx.font = "900 21px 'Cairo', sans-serif";
-          this.ctx.fillText("👑 " + p.label, radius - 24, 0);
+          this.ctx.fillText("SIGNATURE", radius - 26, 0);
 
-          this.ctx.fillStyle = "#FFF7CC";
+          this.ctx.fillStyle = "#FFFFFF";
           this.ctx.font = "800 11px 'Cairo', sans-serif";
-          this.ctx.fillText("ترقية شاملة", radius - 24, 22);
-        } else {
-          this.ctx.fillStyle = p.text_color || "#FFFFFF";
-          this.ctx.font = "900 22px 'Cairo', sans-serif";
-          this.ctx.fillText(p.label, radius - 24, 0);
+          this.ctx.fillText("باقة مجانية", radius - 26, 20);
+        } else if (isWhiteSector) {
+          this.ctx.fillStyle = "#0B192C";
+          this.ctx.font = "900 23px 'Cairo', sans-serif";
+          this.ctx.fillText(p.label, radius - 26, 0);
 
           if (p.subtext) {
-            this.ctx.fillStyle = "rgba(255, 255, 255, 0.88)";
-            this.ctx.font = "700 11px 'Cairo', sans-serif";
+            this.ctx.fillStyle = "#0052CC";
+            this.ctx.font = "800 11px 'Cairo', sans-serif";
             const shortSub = p.subtext.includes("خصم") ? "خصم فوري" : p.subtext;
-            this.ctx.fillText(shortSub, radius - 24, 20);
+            this.ctx.fillText(shortSub, radius - 26, 20);
+          }
+        } else {
+          this.ctx.fillStyle = "#FFFFFF";
+          this.ctx.font = "900 23px 'Cairo', sans-serif";
+          this.ctx.fillText(p.label, radius - 26, 0);
+
+          if (p.subtext) {
+            this.ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+            this.ctx.font = "800 11px 'Cairo', sans-serif";
+            const shortSub = p.subtext.includes("خصم") ? "خصم فوري" : p.subtext;
+            this.ctx.fillText(shortSub, radius - 26, 20);
           }
         }
         this.ctx.restore();
       }
 
-      // 3. Draw Outer 3D Metallic Bezel (Gold Rim)
+      // 2. Outer Precision Gauge Bezel
       this.ctx.beginPath();
       this.ctx.arc(0, 0, radius, 0, Math.PI * 2);
-      this.ctx.lineWidth = 9;
-      const rimGrad = this.ctx.createLinearGradient(-radius, -radius, radius, radius);
-      rimGrad.addColorStop(0, "#FFF3B0");
-      rimGrad.addColorStop(0.25, "#B38200");
-      rimGrad.addColorStop(0.5, "#FFEAA7");
-      rimGrad.addColorStop(0.75, "#7A5900");
-      rimGrad.addColorStop(1, "#FFD000");
-      this.ctx.strokeStyle = rimGrad;
+      this.ctx.lineWidth = 4;
+      this.ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
       this.ctx.stroke();
 
-      // 4. Draw 24 Golden Rivets / Studded Chrome Pegs around the Perimeter
-      const totalRivets = 24;
-      for (let r = 0; r < totalRivets; r++) {
-        const rivetAngle = (r / totalRivets) * Math.PI * 2;
-        const rx = Math.cos(rivetAngle) * (radius - 1);
-        const ry = Math.sin(rivetAngle) * (radius - 1);
+      // 3. Perimeter Gauge Tick Marks (Automotive Tachometer Dial)
+      const totalBezelTicks = 48;
+      for (let b = 0; b < totalBezelTicks; b++) {
+        const tickAngle = (b / totalBezelTicks) * Math.PI * 2;
+        const isMajor = b % 6 === 0;
+        const innerR = isMajor ? radius - 7 : radius - 4;
+        const outerR = radius - 1;
 
-        // Rivet Base Shadow
         this.ctx.beginPath();
-        this.ctx.arc(rx, ry, 4.2, 0, Math.PI * 2);
-        this.ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
-        this.ctx.fill();
-
-        // Rivet Metallic Sphere
-        const rGrad = this.ctx.createRadialGradient(rx - 1.2, ry - 1.2, 0.5, rx, ry, 3.8);
-        rGrad.addColorStop(0, "#FFFFFF");
-        rGrad.addColorStop(0.35, "#FFE680");
-        rGrad.addColorStop(0.8, "#B8860B");
-        rGrad.addColorStop(1, "#593E00");
-        this.ctx.beginPath();
-        this.ctx.arc(rx, ry, 3.6, 0, Math.PI * 2);
-        this.ctx.fillStyle = rGrad;
-        this.ctx.fill();
+        this.ctx.moveTo(Math.cos(tickAngle) * innerR, Math.sin(tickAngle) * innerR);
+        this.ctx.lineTo(Math.cos(tickAngle) * outerR, Math.sin(tickAngle) * outerR);
+        this.ctx.lineWidth = isMajor ? 2 : 1;
+        this.ctx.strokeStyle = isMajor ? "#FF5500" : "rgba(255, 255, 255, 0.35)";
+        this.ctx.stroke();
       }
 
       this.ctx.restore();
@@ -467,14 +437,12 @@ document.addEventListener("DOMContentLoaded", () => {
       this.isSpinning = true;
 
       const pointer = document.getElementById("wheelPointer");
-      const dots = document.querySelectorAll(".led-dot");
-
       const startAngle = this.rotation % (2 * Math.PI);
       const totalDelta = targetAngle - startAngle;
       const duration = 5000;
       const startTime = performance.now();
 
-      // Quintic Ease-out for smooth natural deceleration
+      // Quintic Ease-out for natural deceleration
       const easeOut = (t) => 1 - Math.pow(1 - t, 5);
       let lastTickIndex = -1;
 
@@ -486,11 +454,10 @@ document.addEventListener("DOMContentLoaded", () => {
         this.rotation = startAngle + (totalDelta * eased);
         this.draw();
 
-        // Realistic Tick Physics & Dynamic Pitch
+        // Tactile Tick Physics
         const currentTick = Math.floor((this.rotation + this.arc / 2) / this.arc);
         if (currentTick !== lastTickIndex) {
           lastTickIndex = currentTick;
-          // Pitch modulates with remaining speed
           const speedFactor = 1 - progress;
           soundEngine.playTick(0.85 + speedFactor * 0.35);
           if (pointer) {
@@ -503,29 +470,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // LED Neon Chase Sequence
-        if (dots.length > 0) {
-          const activeIdx = Math.floor((this.rotation * 3.5) % dots.length);
-          dots.forEach((dot, idx) => {
-            if (idx === activeIdx || idx === (activeIdx + 1) % dots.length) {
-              dot.style.background = "#00C2FF";
-              dot.style.boxShadow = "0 0 16px #00C2FF, 0 0 6px #FFF";
-              dot.style.transform = "scale(1.35)";
-            } else {
-              dot.style.background = "#FFD000";
-              dot.style.boxShadow = "0 0 8px rgba(255, 208, 0, 0.7)";
-              dot.style.transform = "scale(1)";
-            }
-          });
-        }
-
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
           this.isSpinning = false;
           soundEngine.playWinFanfare();
           if (navigator.vibrate) {
-            try { navigator.vibrate([100, 50, 100, 50, 200]); } catch (e) {}
+            try { navigator.vibrate([80, 40, 80]); } catch (e) {}
           }
           if (onComplete) onComplete();
         }
@@ -535,33 +486,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Display Winner & Populate VIP Ticket
+  // Display Winner & Populate Campaign Pass
   function displayWinner(prize, promo, participantData) {
     hasUserWon = true;
     currentWinningPrizeLabel = prize.label;
-    const name = participantData?.name || participantNameInput?.value?.trim() || 'عميل Go Wash المميز';
-    const phone = participantData?.phone || normalizeSaudiPhone(participantPhoneInput?.value) || '';
+    const name = participantData?.name || currentParticipant?.name || 'عميل Go Wash';
+    const phone = participantData?.phone || currentParticipant?.phone || '';
 
-    // 1. Update Persistent VIP Ticket in the page
-    if (ticketBadgeText) ticketBadgeText.textContent = "🇸🇦 تذكرة الفائز · اليوم الوطني 96";
+    // 1. Update Persistent Campaign Pass
+    if (ticketBadgeText) ticketBadgeText.textContent = "تذكرة الفائز · اليوم الوطني 96";
     if (ticketKickerText) ticketKickerText.textContent = "جائزتك مع Go Wash:";
     if (ticketStatusBadge) {
       ticketStatusBadge.textContent = "مفعل وجاهز للاستخدام";
-      ticketStatusBadge.className = "ticket-status-live";
+      ticketStatusBadge.className = "pass-status-pill";
     }
     if (ticketRedeemedNotice) ticketRedeemedNotice.style.display = "none";
 
     savedPrizeTitle.textContent = prize.label;
-    savedPrizeSubtext.textContent = prize.subtext || '';
+    savedPrizeSubtext.textContent = prize.subtext || 'خصم Go Wash على جميع باقات الغسيل المتنقل';
     savedParticipantName.textContent = name;
-    savedParticipantPhone.textContent = phone;
+    if (savedParticipantPhone) savedParticipantPhone.textContent = phone;
+    const savedParticipationStatus = document.getElementById("savedParticipationStatus");
+    if (savedParticipationStatus) savedParticipationStatus.textContent = "تم تسجيل مشاركتك";
     savedPromoCode.textContent = promo.code;
 
     const bookingUrl = getWhatsAppUrl(promo.code, prize.label, prize.subtext);
     savedBookingBtn.href = bookingUrl;
     bookingCtaBtn.href = bookingUrl;
 
-    // QR Code Display in VIP Ticket & Winner Modal
+    // QR Code Display
     const qrSrc = promo.qrDataUrl || (promo.qrToken ? `${API_BASE_URL}/api/qr/${promo.qrToken}` : '');
     const savedQrWrapper = document.getElementById("savedQrWrapper");
     const savedQrCodeImg = document.getElementById("savedQrCodeImg");
@@ -577,9 +530,8 @@ document.addEventListener("DOMContentLoaded", () => {
       modalQrWrapper.style.display = "flex";
     }
 
-    if (entryStepSection) entryStepSection.style.display = "none";
     winnerPersistentCard.style.display = "block";
-    spinBtnLabel.textContent = "تم استلام جائزتك 🎉";
+    spinBtnLabel.textContent = "تم استلام جائزتك";
     spinBtn.disabled = true;
 
     // 2. Save to localStorage (UX caching only, PostgreSQL is true source)
@@ -600,30 +552,30 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("gowash_saved_prize", JSON.stringify(payload));
     } catch (e) {}
 
-    // 3. Populate Celebration Modal (Event Moment)
+    // 3. Populate Celebration Modal (Reward Moment)
     const isSignature = (prize.type === 'UPGRADE') || (prize.label && prize.label.toUpperCase().includes('SIGNATURE'));
 
     if (isSignature) {
       modalPrizeCard.innerHTML = `
-        <div style="display: inline-block; background: #FFE259; color: #000; font-weight: 900; font-size: 0.8rem; padding: 3px 12px; border-radius: 999px; margin-bottom: 6px;">الجائزة الكبرى</div>
-        <div class="prize-title-custom" style="color: #00C2FF;">GOWASH SIGNATURE</div>
-        <div class="prize-sub-custom">ادفع العادي واحصل على Signature</div>
+        <div style="display: inline-block; background: var(--gw-orange-subtle); color: var(--gw-orange); font-weight: 800; font-size: 0.8rem; padding: 2px 10px; border-radius: var(--radius-xs); margin-bottom: 8px;">الجائزة الكبرى · Signature</div>
+        <div class="prize-title-custom">GOWASH SIGNATURE</div>
+        <div class="prize-sub-custom">ادفع العادي واحصل على باقة Signature الفاخرة لسيارتك</div>
       `;
     } else {
       modalPrizeCard.innerHTML = `
         <div class="prize-percent-huge">${prize.label}</div>
-        <div class="prize-sub-custom">أنت الفائز — ${prize.subtext || 'خصم مباشر على الخدمة'}</div>
+        <div class="prize-sub-custom">${prize.subtext || 'خصم مباشر على الخدمة'}</div>
       `;
     }
 
     promoCodeDisplay.textContent = promo.code;
 
-    // Open Modal and fire confetti
+    // Open Modal and fire light celebratory confetti
     winnerModal.showModal();
     launchConfetti();
   }
 
-  // 60fps 3D Metallic Confetti Cannon (Gold, Emerald, Cyan & Pure White)
+  // Graceful 60fps Metallic Confetti
   function launchConfetti() {
     const canvas = document.getElementById("confettiCanvas");
     if (!canvas) return;
@@ -632,30 +584,30 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.height = window.innerHeight;
     canvas.style.display = "block";
 
-    const colors = ["#FFD700", "#FFE875", "#10B981", "#00C2FF", "#FF6600", "#FFFFFF", "#F59E0B"];
+    const colors = ["#0066FF", "#38BDF8", "#FF5500", "#FFFFFF", "#006C35"];
     const particles = [];
-    const total = 160;
+    const total = 90;
 
     for (let i = 0; i < total; i++) {
       const isLeft = i < total / 2;
       particles.push({
-        x: isLeft ? 50 + Math.random() * 100 : canvas.width - (50 + Math.random() * 100),
-        y: canvas.height - 40,
-        vx: (isLeft ? 1 : -1) * (Math.random() * 11 + 5),
-        vy: -(Math.random() * 17 + 12),
-        size: Math.random() * 9 + 6,
+        x: isLeft ? 40 + Math.random() * 80 : canvas.width - (40 + Math.random() * 80),
+        y: canvas.height - 30,
+        vx: (isLeft ? 1 : -1) * (Math.random() * 9 + 4),
+        vy: -(Math.random() * 15 + 10),
+        size: Math.random() * 8 + 5,
         color: colors[Math.floor(Math.random() * colors.length)],
         rotation: Math.random() * 360,
-        rotSpeed: (Math.random() - 0.5) * 14,
+        rotSpeed: (Math.random() - 0.5) * 12,
         tilt: Math.random() * Math.PI,
-        tiltSpeed: Math.random() * 0.12 + 0.06,
-        isRibbon: Math.random() > 0.4,
+        tiltSpeed: Math.random() * 0.1 + 0.05,
+        isRibbon: Math.random() > 0.5,
         opacity: 1
       });
     }
 
     let start = performance.now();
-    const duration = 4200;
+    const duration = 3500;
 
     function render(now) {
       const elapsed = now - start;
@@ -665,13 +617,13 @@ document.addEventListener("DOMContentLoaded", () => {
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.38;
+        p.vy += 0.35;
         p.vx *= 0.985;
         p.rotation += p.rotSpeed;
         p.tilt += p.tiltSpeed;
 
-        if (elapsed > 2800) {
-          p.opacity = Math.max(0, 1 - (elapsed - 2800) / 1400);
+        if (elapsed > 2400) {
+          p.opacity = Math.max(0, 1 - (elapsed - 2400) / 1100);
         }
 
         if (p.opacity > 0 && p.y < canvas.height + 40) {
@@ -682,7 +634,6 @@ document.addEventListener("DOMContentLoaded", () => {
           ctx.globalAlpha = p.opacity;
           ctx.fillStyle = p.color;
 
-          // 3D Perspective Tumble (Cosine Scaling)
           const scaleY = Math.cos(p.tilt);
           ctx.scale(1, scaleY);
 
@@ -706,70 +657,72 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(render);
   }
 
-  // Render Returning Customer State (Persistent DB Driven)
+  // Render Returning Customer State
   function renderReturningCustomer(res) {
     hasUserWon = true;
     currentWinningPrizeLabel = res.label || "خصم اليوم الوطني 96";
     document.body.classList.add("is-returning-customer");
 
-    const name = res.participant?.name || res.name || 'عميل Go Wash المميز';
-    const phone = res.participant?.phone || res.phone || '';
+    const name = res.participant?.name || res.name || currentParticipant?.name || 'عميل Go Wash';
+    const phone = res.participant?.phone || res.phone || currentParticipant?.phone || '';
 
-    if (ticketBadgeText) ticketBadgeText.textContent = "🇸🇦 أنت شاركت بالفعل";
+    if (ticketBadgeText) ticketBadgeText.textContent = "أنت شاركت بالفعل · اليوم الوطني 96";
     if (ticketKickerText) ticketKickerText.textContent = "جائزتك مع Go Wash:";
     savedPrizeTitle.textContent = res.label;
     savedPrizeSubtext.textContent = res.subtext || 'خصم Go Wash على جميع باقات الغسيل المتنقل';
     savedPromoCode.textContent = res.code || '---';
     savedParticipantName.textContent = name;
-    savedParticipantPhone.textContent = phone;
+    if (savedParticipantPhone) savedParticipantPhone.textContent = phone;
+    const savedParticipationStatus = document.getElementById("savedParticipationStatus");
+    if (savedParticipationStatus) savedParticipationStatus.textContent = "تم تسجيل مشاركتك";
 
     const bookingUrl = getWhatsAppUrl(res.code, res.label, res.subtext);
     savedBookingBtn.href = bookingUrl;
     bookingCtaBtn.href = bookingUrl;
 
-    // Server-side State Determination (No Spin / Already Spun / Redeemed / Expired)
+    // Server-side State Determination
     const status = res.status || 'ACTIVE';
     if (status === 'ACTIVE' || status === 'ALREADY_SPUN') {
       if (ticketStatusBadge) {
         ticketStatusBadge.textContent = "كودك نشط وجاهز للاستخدام";
-        ticketStatusBadge.className = "ticket-status-live";
+        ticketStatusBadge.className = "pass-status-pill";
       }
       if (ticketRedeemedNotice) ticketRedeemedNotice.style.display = "none";
     } else if (status === 'REDEEMED') {
       if (ticketStatusBadge) {
         ticketStatusBadge.textContent = "مُستخدَم (تم الصرف)";
-        ticketStatusBadge.className = "ticket-status-live redeemed";
+        ticketStatusBadge.className = "pass-status-pill redeemed";
       }
       const redeemedStr = res.redeemedAt ? new Date(res.redeemedAt).toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' }) : '';
       if (ticketRedeemedNotice) {
         ticketRedeemedNotice.style.display = "block";
-        ticketRedeemedNotice.className = "ticket-status-notice redeemed";
+        ticketRedeemedNotice.className = "pass-alert-notice redeemed";
         ticketRedeemedNotice.innerHTML = `✅ تم صرف واستخدام هذه الجائزة مسبقاً لدى Go Wash ${redeemedStr ? `(بتاريخ: <strong>${redeemedStr}</strong>)` : ''}. شكراً لمشاركتك!`;
       }
     } else if (status === 'EXPIRED') {
       if (ticketStatusBadge) {
         ticketStatusBadge.textContent = "منتهي الصلاحية";
-        ticketStatusBadge.className = "ticket-status-live expired";
+        ticketStatusBadge.className = "pass-status-pill expired";
       }
       if (ticketRedeemedNotice) {
         ticketRedeemedNotice.style.display = "block";
-        ticketRedeemedNotice.className = "ticket-status-notice expired";
+        ticketRedeemedNotice.className = "pass-alert-notice expired";
         ticketRedeemedNotice.innerHTML = "⏳ انتهت فترة صلاحية هذا الكود (مدة الصلاحية 48 ساعة من تاريخ الحصول عليه).";
       }
     } else if (status === 'CANCELLED') {
       if (ticketStatusBadge) {
         ticketStatusBadge.textContent = "ملغي";
-        ticketStatusBadge.className = "ticket-status-live cancelled";
+        ticketStatusBadge.className = "pass-status-pill cancelled";
       }
       if (ticketRedeemedNotice) {
         ticketRedeemedNotice.style.display = "block";
-        ticketRedeemedNotice.className = "ticket-status-notice cancelled";
+        ticketRedeemedNotice.className = "pass-alert-notice cancelled";
         ticketRedeemedNotice.innerHTML = "⚠️ تم إلغاء هذا الكود من قبل الإدارة.";
       }
     }
 
-    // QR Code display in VIP ticket
-    const qrSrc = res.qrDataUrl || (res.qrToken ? `/api/qr/${res.qrToken}` : '');
+    // QR Code display
+    const qrSrc = res.qrDataUrl || (res.qrToken ? `${API_BASE_URL}/api/qr/${res.qrToken}` : '');
     const savedQrWrapper = document.getElementById("savedQrWrapper");
     const savedQrCodeImg = document.getElementById("savedQrCodeImg");
     if (savedQrWrapper && savedQrCodeImg && qrSrc) {
@@ -777,13 +730,10 @@ document.addEventListener("DOMContentLoaded", () => {
       savedQrWrapper.style.display = "flex";
     }
 
-    if (entryStepSection) entryStepSection.style.display = "none";
-    if (wheelArena) wheelArena.style.display = "none";
     winnerPersistentCard.style.display = "block";
     spinBtnLabel.textContent = "أنت شاركت بالفعل";
     spinBtn.disabled = true;
 
-    // Cache to localStorage solely as UX cache (PostgreSQL is authoritative)
     try {
       localStorage.setItem("gowash_saved_prize", JSON.stringify({
         name,
@@ -802,10 +752,19 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (e) {}
   }
 
-  // Check existing saved prize from backend (Primary) or local storage (Secondary cache)
+  // Check existing saved prize
   function checkExistingSavedPrize(backendParticipant) {
     if (backendParticipant && backendParticipant.hasSpun && backendParticipant.existingResult) {
-      renderReturningCustomer(backendParticipant.existingResult);
+      cachedExistingPrize = backendParticipant.existingResult;
+      currentParticipant = {
+        name: backendParticipant.existingResult?.participant?.name || 'عميل Go Wash',
+        phone: backendParticipant.existingResult?.participant?.phone || ''
+      };
+      if (entryForm) entryForm.style.display = "none";
+      if (alreadyParticipatedCard) {
+        if (existingParticipantName) existingParticipantName.textContent = currentParticipant.name;
+        alreadyParticipatedCard.style.display = "flex";
+      }
       return true;
     }
 
@@ -816,25 +775,34 @@ document.addEventListener("DOMContentLoaded", () => {
       return false;
     }
 
-    // Secondary local fallback if offline
+    // Fallback if offline
     try {
       const localData = localStorage.getItem("gowash_saved_prize");
       if (localData) {
         const parsed = JSON.parse(localData);
         if (parsed && parsed.promo && parsed.promo.code) {
-          renderReturningCustomer({
-            label: parsed.prize.label,
-            type: parsed.prize.type,
-            subtext: parsed.prize.subtext,
-            code: parsed.promo.code,
-            status: parsed.promo.status || 'ACTIVE',
-            expiresAt: parsed.promo.expiresAt,
-            redeemedAt: parsed.promo.redeemedAt,
-            qrToken: parsed.promo.qrToken,
-            qrDataUrl: parsed.promo.qrDataUrl,
+          cachedExistingPrize = {
+            label: parsed.prize?.label,
+            type: parsed.prize?.type,
+            subtext: parsed.prize?.subtext,
+            code: parsed.promo?.code,
+            status: parsed.promo?.status || 'ACTIVE',
+            expiresAt: parsed.promo?.expiresAt,
+            redeemedAt: parsed.promo?.redeemedAt,
+            qrToken: parsed.promo?.qrToken,
+            qrDataUrl: parsed.promo?.qrDataUrl,
             name: parsed.name,
             phone: parsed.phone
-          });
+          };
+          currentParticipant = {
+            name: parsed.name || 'عميل Go Wash',
+            phone: parsed.phone || ''
+          };
+          if (entryForm) entryForm.style.display = "none";
+          if (alreadyParticipatedCard) {
+            if (existingParticipantName) existingParticipantName.textContent = currentParticipant.name;
+            alreadyParticipatedCard.style.display = "flex";
+          }
           return true;
         }
       }
@@ -855,7 +823,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tiks && links.tiktok) tiks.href = links.tiktok;
   }
 
-  // Load campaign metadata & query persistent result via GET /api/my-result
+  // Load campaign metadata
   async function initCampaign() {
     try {
       const res = await apiFetch("/api/campaign");
@@ -863,7 +831,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!data.success) {
         spinStatusMsg.textContent = data.error || "تعذر تحميل بيانات الفعالية.";
-        spinStatusMsg.className = "spin-status-banner error";
+        spinStatusMsg.className = "spin-status-note error";
         spinBtn.disabled = true;
         return;
       }
@@ -905,17 +873,26 @@ document.addEventListener("DOMContentLoaded", () => {
           if (myResultData.status === 'NO_SPIN') {
             try { localStorage.removeItem("gowash_saved_prize"); } catch (e) {}
           } else {
-            renderReturningCustomer({
-              label: myResultData.prize.label,
-              type: myResultData.prize.type,
-              subtext: myResultData.prize.subtext,
-              code: myResultData.promo.code,
+            cachedExistingPrize = {
+              label: myResultData.prize?.label,
+              type: myResultData.prize?.type,
+              subtext: myResultData.prize?.subtext,
+              code: myResultData.promo?.code,
               status: myResultData.status,
-              expiresAt: myResultData.promo.expiresAt,
-              redeemedAt: myResultData.promo.redeemedAt,
+              expiresAt: myResultData.promo?.expiresAt,
+              redeemedAt: myResultData.promo?.redeemedAt,
               name: myResultData.participant?.name,
               phone: myResultData.participant?.phone
-            });
+            };
+            currentParticipant = {
+              name: myResultData.participant?.name || 'عميل Go Wash',
+              phone: myResultData.participant?.phone || ''
+            };
+            if (entryForm) entryForm.style.display = "none";
+            if (alreadyParticipatedCard) {
+              if (existingParticipantName) existingParticipantName.textContent = currentParticipant.name;
+              alreadyParticipatedCard.style.display = "flex";
+            }
             return;
           }
         }
@@ -929,12 +906,12 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.error("Init campaign error:", err);
       spinStatusMsg.textContent = "تعذر الاتصال بالخادم. يرجى تحديث الصفحة.";
-      spinStatusMsg.className = "spin-status-banner error";
+      spinStatusMsg.className = "spin-status-note error";
       spinBtn.disabled = true;
     }
   }
 
-  // Copy code helper with clear toast feedback
+  // Copy code helper with clear feedback
   function setupCopyBtn(btn, textSpan, codeSourceEl) {
     btn?.addEventListener("click", async () => {
       const code = codeSourceEl.textContent.trim();
@@ -942,7 +919,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         await navigator.clipboard.writeText(code);
         if (navigator.vibrate) {
-          try { navigator.vibrate(35); } catch (e) {}
+          try { navigator.vibrate(30); } catch (e) {}
         }
         showToast("تم نسخ الكود");
         if (textSpan) {
@@ -959,13 +936,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setupCopyBtn(copyCodeBtn, copyBtnText, promoCodeDisplay);
   setupCopyBtn(copySavedCodeBtn, copySavedCodeText, savedPromoCode);
 
-  // Social Sharing Telemetry & Safe Link Sharing
+  // Social Sharing
   async function shareWinner(prizeLabel) {
     const prize = prizeLabel || currentWinningPrizeLabel || "خصماً حصرياً";
-    const shareText = `لقد ربحت ${prize} مع Go Wash في فعالية اليوم الوطني السعودي 96! جرب حظك والعب الآن:`;
+    const shareText = `ربحت ${prize} مع Go Wash في فعالية اليوم الوطني 96! 🚗✨ جرب حظك الآن:`;
     const shareUrl = window.location.origin + window.location.pathname;
 
-    // Send share telemetry to Railway Backend
     apiFetch("/api/share-event", {
       method: "POST",
       body: JSON.stringify({
@@ -987,7 +963,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Fallback: Copy share text
     try {
       await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
       showToast("تم نسخ نص المشاركة بنجاح! شاركه الآن مع أصدقائك.");
@@ -1017,41 +992,257 @@ document.addEventListener("DOMContentLoaded", () => {
   termsCloseIcon?.addEventListener("click", () => termsModal.close());
   recoverCloseBtn?.addEventListener("click", () => recoverModal.close());
 
-  // Decline Terms ("غير موافق")
+  // Decline Terms ("رفض")
   declineTermsBtn?.addEventListener("click", () => {
     termsModal.close();
     showToast("يلزمك الموافقة على الشروط والأحكام للمشاركة في الفعالية.");
   });
 
-  // Accept Terms ("موافق") -> Advances to Step 2 (بيانات استلام الجائزة)
-  acceptTermsBtn?.addEventListener("click", () => {
-    apiFetch("/api/consent", {
-      method: "POST",
-      body: JSON.stringify({ termsAccepted: true, termsVersion: currentTermsVersion })
-    }).catch(err => console.warn("Consent async error:", err));
+  // Transition to Spin Screen Helper
+  function transitionToSpinScreen(name, callback) {
+    if (entryScreenSection) entryScreenSection.style.display = "none";
+    if (spinScreenSection) {
+      spinScreenSection.style.display = "flex";
+      if (spinGreetingTitle && name) {
+        spinGreetingTitle.textContent = `أهلًا ${name}، وش راح تربح؟`;
+      }
+    }
+    if (typeof callback === "function") callback();
+  }
 
-    if (termsStep1 && termsStep2) {
-      termsStep1.style.display = "none";
-      termsStep2.style.display = "block";
-      setTimeout(() => participantNameInput?.focus(), 80);
+  // 1. Entry Form Handler
+  async function handleEntrySubmit() {
+    if (entryNameError) entryNameError.textContent = "";
+    if (entryPhoneError) entryPhoneError.textContent = "";
+    entryNameInput?.classList.remove("is-invalid");
+    entryPhoneInput?.closest(".phone-input-wrap")?.classList.remove("is-invalid");
+
+    const rawName = entryNameInput?.value?.trim() || "";
+    if (rawName.length < 2) {
+      if (entryNameError) entryNameError.textContent = "يرجى إدخال اسمك الكريم (حرفين على الأقل).";
+      entryNameInput?.classList.add("is-invalid");
+      entryNameInput?.focus();
+      return;
+    }
+
+    const rawPhone = entryPhoneInput?.value?.trim() || "";
+    const phone = normalizeSaudiPhone(rawPhone);
+    if (!phone) {
+      if (entryPhoneError) entryPhoneError.textContent = "يرجى إدخال رقم جوال سعودي صحيح يبدأ بـ 05 (10 أرقام).";
+      entryPhoneInput?.closest(".phone-input-wrap")?.classList.add("is-invalid");
+      entryPhoneInput?.focus();
+      return;
+    }
+
+    if (entrySubmitBtn) entrySubmitBtn.disabled = true;
+    if (entryBtnLabel) entryBtnLabel.textContent = "جاري التحقق...";
+
+    try {
+      const res = await apiFetch("/api/participant/entry", {
+        method: "POST",
+        body: JSON.stringify({ name: rawName, phone })
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        if (entrySubmitBtn) entrySubmitBtn.disabled = false;
+        if (entryBtnLabel) entryBtnLabel.textContent = "دخول الفعالية";
+        const errMsg = data.error || data.message || "تعذر تسجيل الدخول، يرجى المحاولة لاحقاً.";
+        if (errMsg.includes("جوال") || errMsg.includes("الهاتف") || errMsg.includes("phone")) {
+          if (entryPhoneError) entryPhoneError.textContent = errMsg;
+          entryPhoneInput?.closest(".phone-input-wrap")?.classList.add("is-invalid");
+        } else {
+          if (entryNameError) entryNameError.textContent = errMsg;
+          entryNameInput?.classList.add("is-invalid");
+        }
+        return;
+      }
+
+      const participantName = data.participant?.name || rawName;
+      const participantPhone = data.participant?.phone || phone;
+
+      currentParticipant = {
+        name: participantName,
+        phone: participantPhone
+      };
+
+      // If participant has already spun in this campaign
+      if (data.alreadyParticipated) {
+        cachedExistingPrize = data.existingPrize || data.existingResult;
+        if (entryForm) entryForm.style.display = "none";
+        if (alreadyParticipatedCard) {
+          if (existingParticipantName) existingParticipantName.textContent = participantName;
+          alreadyParticipatedCard.style.display = "flex";
+        }
+        return;
+      }
+
+      // New participant: Transition state
+      if (entryForm) entryForm.style.display = "none";
+      if (entryTransitionCard) {
+        if (transitionParticipantName) transitionParticipantName.textContent = participantName;
+        entryTransitionCard.style.display = "flex";
+      }
+
+      setTimeout(() => {
+        transitionToSpinScreen(participantName);
+      }, 700);
+
+    } catch (err) {
+      console.error("Entry error:", err);
+      if (entrySubmitBtn) entrySubmitBtn.disabled = false;
+      if (entryBtnLabel) entryBtnLabel.textContent = "دخول الفعالية";
+      if (entryNameError) entryNameError.textContent = "حدث خطأ في الاتصال، يرجى إعادة المحاولة.";
+    }
+  }
+
+  // View Existing Prize Click
+  viewMyPrizeBtn?.addEventListener("click", () => {
+    transitionToSpinScreen(currentParticipant?.name || "", () => {
+      if (cachedExistingPrize) {
+        renderReturningCustomer(cachedExistingPrize);
+      }
+      winnerPersistentCard?.scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  // Entry Form Inputs
+  entryNameInput?.addEventListener("input", () => {
+    if (entryNameError) entryNameError.textContent = "";
+    entryNameInput.classList.remove("is-invalid");
+  });
+
+  entryPhoneInput?.addEventListener("input", () => {
+    if (entryPhoneError) entryPhoneError.textContent = "";
+    entryPhoneInput.closest(".phone-input-wrap")?.classList.remove("is-invalid");
+  });
+
+  entryNameInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      entryPhoneInput?.focus();
     }
   });
 
-  // Back to Terms from Step 2
-  backToTermsBtn?.addEventListener("click", () => {
-    if (termsStep1 && termsStep2) {
-      termsStep2.style.display = "none";
-      termsStep1.style.display = "block";
+  entryPhoneInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleEntrySubmit();
     }
   });
 
+  entrySubmitBtn?.addEventListener("click", handleEntrySubmit);
+
+  // 2. Open Terms Modal on Spin Button Click
+  spinBtn?.addEventListener("click", () => {
+    if (hasUserWon) {
+      winnerPersistentCard?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    if (!wheelInstance || wheelInstance.isSpinning) return;
+    if (campaignState !== 'ACTIVE') return;
+
+    termsModal?.showModal();
+  });
+
+  // 3. Agree to Terms & Execute Atomic Spin
+  async function handleAgreeAndSpin() {
+    termsModal?.close();
+
+    spinBtn.disabled = true;
+    spinBtnLabel.textContent = "جاري السحب...";
+    spinStatusMsg.textContent = "جاري تجهيز جائزتك...";
+    spinStatusMsg.className = "spin-status-note";
+
+    let idempotencyKey = sessionStorage.getItem("gowash_idempotency_key");
+    if (!idempotencyKey) {
+      idempotencyKey = "idemp_" + Math.random().toString(36).substring(2) + Date.now();
+      sessionStorage.setItem("gowash_idempotency_key", idempotencyKey);
+    }
+
+    const name = currentParticipant?.name || 'عميل Go Wash';
+    const phone = currentParticipant?.phone || '';
+
+    try {
+      // Step 1: Record Consent
+      try {
+        await apiFetch("/api/consent", {
+          method: "POST",
+          body: JSON.stringify({
+            termsAccepted: true,
+            termsVersion: currentTermsVersion,
+            name,
+            phone
+          })
+        });
+      } catch (consentErr) {
+        console.warn("Consent recording notice:", consentErr);
+      }
+
+      // Step 2: Atomic Spin
+      const response = await apiFetch("/api/spin", {
+        method: "POST",
+        headers: {
+          "Idempotency-Key": idempotencyKey
+        },
+        body: JSON.stringify({
+          idempotencyKey,
+          termsAccepted: true,
+          termsVersion: currentTermsVersion,
+          name,
+          phone
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        spinBtn.disabled = false;
+        spinBtnLabel.textContent = "لف واربح";
+        const errMsg = data.message || data.error || "حدث خطأ أثناء السحب.";
+        spinStatusMsg.textContent = errMsg;
+        spinStatusMsg.className = "spin-status-note error";
+
+        if (data.code === 'ALREADY_SPUN') {
+          spinBtn.disabled = true;
+          spinBtnLabel.textContent = "أنت شاركت بالفعل";
+          if (data.existingPrize) {
+            renderReturningCustomer(data.existingPrize);
+          }
+        }
+        return;
+      }
+
+      // Success: Spin the wheel to the exact sector
+      spinStatusMsg.textContent = "مبروك! العجلة تدور الآن...";
+      sessionStorage.removeItem("gowash_idempotency_key");
+
+      const targetAngle = wheelInstance.calculateAngle(data.prize.id);
+
+      wheelInstance.spinTo(targetAngle, () => {
+        displayWinner(data.prize, data.promo, { name: data.participant?.name || name, phone: data.participant?.phone || phone });
+        spinStatusMsg.textContent = "";
+      });
+
+    } catch (err) {
+      console.error("Spin error:", err);
+      spinBtn.disabled = false;
+      spinBtnLabel.textContent = "لف واربح";
+      spinStatusMsg.textContent = "فشل الاتصال بالخادم. يرجى المحاولة مجدداً.";
+      spinStatusMsg.className = "spin-status-note error";
+    }
+  }
+
+  agreeAndSpinBtn?.addEventListener("click", handleAgreeAndSpin);
+
+  // Recover Prize Modal Handlers
   openRecoverModalBtn?.addEventListener("click", () => {
     recoverErrorMsg.textContent = "";
     recoverPhoneInput.value = "";
     recoverModal.showModal();
   });
 
-  // Recover by phone
   submitRecoverBtn?.addEventListener("click", async () => {
     const raw = recoverPhoneInput.value.trim();
     const phone = normalizeSaudiPhone(raw);
@@ -1089,158 +1280,6 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast("تم استرجاع جائزتك بنجاح!");
     } catch (e) {
       recoverErrorMsg.textContent = "حدث خطأ أثناء الاتصال. يرجى المحاولة لاحقاً.";
-    }
-  });
-
-  // --------------------------------------------------------------------------
-  // User clicks [ لف واربح ] (Wheel Button)
-  // ↓
-  // If already won: scroll to ticket
-  // If not: open Terms & Conditions Modal (Step 1 with موافق / غير موافق)
-  // ↓
-  // If "غير موافق": close modal, no spin, show toast
-  // If "موافق": switch to Step 2 (Name & Saudi Phone)
-  // ↓
-  // User clicks [ ابدأ السحب 🎡 ]: Validate data -> POST /api/spin -> Spin Wheel!
-  // --------------------------------------------------------------------------
-
-  spinBtn?.addEventListener("click", () => {
-    if (hasUserWon) {
-      winnerPersistentCard?.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
-
-    if (!wheelInstance || wheelInstance.isSpinning) return;
-    if (campaignState !== 'ACTIVE') return;
-
-    // Open Terms Modal at Step 1 (الشروط والأحكام)
-    if (termsStep1 && termsStep2) {
-      termsStep1.style.display = "block";
-      termsStep2.style.display = "none";
-    }
-    if (nameErrorMsg) nameErrorMsg.textContent = "";
-    if (phoneErrorMsg) phoneErrorMsg.textContent = "";
-
-    termsModal.showModal();
-  });
-
-  // Submit Lead Capture & Start Spin
-  async function handleSpinSubmission() {
-    if (nameErrorMsg) nameErrorMsg.textContent = "";
-    if (phoneErrorMsg) phoneErrorMsg.textContent = "";
-
-    const name = participantNameInput?.value?.trim() || "";
-    if (name.length < 2) {
-      if (nameErrorMsg) nameErrorMsg.textContent = "يرجى إدخال اسمك الكريم (حرفين على الأقل).";
-      participantNameInput?.focus();
-      return;
-    }
-
-    const rawPhone = participantPhoneInput?.value?.trim() || "";
-    const phone = normalizeSaudiPhone(rawPhone);
-    if (!phone) {
-      if (phoneErrorMsg) phoneErrorMsg.textContent = "يرجى إدخال رقم جوال سعودي صحيح يبدأ بـ 05 (10 أرقام).";
-      participantPhoneInput?.focus();
-      return;
-    }
-
-    // Validation passed: Close modal & start spin
-    termsModal.close();
-
-    spinBtn.disabled = true;
-    spinBtnLabel.textContent = "جاري السحب...";
-    spinStatusMsg.textContent = "جاري الاتصال بالنظام المشفر واختيار هديتك...";
-    spinStatusMsg.className = "spin-status-banner";
-
-    let idempotencyKey = sessionStorage.getItem("gowash_idempotency_key");
-    if (!idempotencyKey) {
-      idempotencyKey = "idemp_" + Math.random().toString(36).substring(2) + Date.now();
-      sessionStorage.setItem("gowash_idempotency_key", idempotencyKey);
-    }
-
-    try {
-      // Step 1: POST /api/consent
-      try {
-        await apiFetch("/api/consent", {
-          method: "POST",
-          body: JSON.stringify({
-            termsAccepted: true,
-            termsVersion: currentTermsVersion,
-            name,
-            phone
-          })
-        });
-      } catch (consentErr) {
-        console.warn("Consent recording notice:", consentErr);
-      }
-
-      // Step 2: POST /api/spin
-      const response = await apiFetch("/api/spin", {
-        method: "POST",
-        headers: {
-          "Idempotency-Key": idempotencyKey
-        },
-        body: JSON.stringify({
-          idempotencyKey,
-          termsAccepted: true,
-          termsVersion: currentTermsVersion,
-          name,
-          phone
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        spinBtn.disabled = false;
-        spinBtnLabel.textContent = "لف واربح";
-        const errMsg = data.message || data.error || "حدث خطأ أثناء السحب.";
-        spinStatusMsg.textContent = errMsg;
-        spinStatusMsg.className = "spin-status-banner error";
-
-        if (data.code === 'ALREADY_SPUN') {
-          spinBtn.disabled = true;
-          spinBtnLabel.textContent = "أنت شاركت بالفعل";
-          if (data.existingPrize) {
-            renderReturningCustomer(data.existingPrize);
-          }
-        }
-        return;
-      }
-
-      // Success from Backend
-      spinStatusMsg.textContent = "مبروك! العجلة تدور الآن...";
-      sessionStorage.removeItem("gowash_idempotency_key");
-
-      const targetAngle = wheelInstance.calculateAngle(data.prize.id);
-
-      wheelInstance.spinTo(targetAngle, () => {
-        displayWinner(data.prize, data.promo, { name: data.participant?.name || name, phone: data.participant?.phone || phone });
-        spinStatusMsg.textContent = "";
-      });
-
-    } catch (err) {
-      console.error("Spin error:", err);
-      spinBtn.disabled = false;
-      spinBtnLabel.textContent = "لف واربح";
-      spinStatusMsg.textContent = "فشل الاتصال بالخادم. يرجى المحاولة مجدداً.";
-      spinStatusMsg.className = "spin-status-banner error";
-    }
-  }
-
-  startSpinSubmitBtn?.addEventListener("click", handleSpinSubmission);
-
-  participantNameInput?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      participantPhoneInput?.focus();
-    }
-  });
-
-  participantPhoneInput?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleSpinSubmission();
     }
   });
 
